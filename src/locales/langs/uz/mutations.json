@@ -1,0 +1,26 @@
+{
+  "wordBattle": {
+    "categorySaved": "Kategoriya muvaffaqiyatli saqlandi",
+    "categoryDeleted": "Kategoriya muvaffaqiyatli o'chirildi",
+    "wordDeleted": "So'z muvaffaqiyatli o'chirildi",
+    "categoryEdited": "Kategoriya muvaffaqiyatli taxrirlandi",
+    "settingsEdited": "Sozlamalar muvaffaqiyatli tahrirlandi",
+    "errorOccurred": "Xatolik yuz berdi"
+  },
+  "flashCard": {
+    "topicCreated": "Topik muvaffaqiyatli yaratildi",
+    "topicWordAdded": "Topik so'zi muvaffaqiyatli qo'shildi",
+    "topicDeleted": "Topik muvaffaqiyatli o'chirildi",
+    "wordDeleted": "So'z muvaffaqiyatli o'chirildi",
+    "topicEdited": "Topik muvaffaqiyatli taxrirlandi",
+    "wordEdited": "So'z muvaffaqiyatli taxrirlandi",
+    "errorOccurred": "Xatolik yuz berdi"
+  },
+  "picWord": {
+    "questionAdded": "Savol muvaffaqiyatli qo'shildi",
+    "questionDeleted": "Savol muvaffaqiyatli o'chirildi",
+    "questionUpdated": "Savol muvaffaqiyatli yangilandi",
+    "settingsUpdated": "Sozlamalar muvaffaqiyatli yangilandi",
+    "errorOccurred": "Xatolik yuz berdi"
+  }
+}

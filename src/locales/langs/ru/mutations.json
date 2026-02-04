@@ -1,0 +1,26 @@
+{
+  "wordBattle": {
+    "categorySaved": "Категория успешно сохранена",
+    "categoryDeleted": "Категория успешно удалена",
+    "wordDeleted": "Слово успешно удалено",
+    "categoryEdited": "Категория успешно отредактирована",
+    "settingsEdited": "Настройки успешно отредактированы",
+    "errorOccurred": "Произошла ошибка"
+  },
+  "flashCard": {
+    "topicCreated": "Топик успешно создан",
+    "topicWordAdded": "Слово для топика успешно добавлено",
+    "topicDeleted": "Топик успешно удалён",
+    "wordDeleted": "Слово успешно удалено",
+    "topicEdited": "Топик успешно отредактирован",
+    "wordEdited": "Слово успешно отредактировано",
+    "errorOccurred": "Произошла ошибка"
+  },
+  "picWord": {
+    "questionAdded": "Вопрос успешно добавлен",
+    "questionDeleted": "Вопрос успешно удалён",
+    "questionUpdated": "Вопрос успешно обновлён",
+    "settingsUpdated": "Настройки успешно обновлены",
+    "errorOccurred": "Произошла ошибка"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "title": "Savollar ro'yxati",
+  "main": "Asosiy",
+  "add": "Qo'shish",
+  "edit": "Taxrirlash",
+  "delete": "O'chirish",
+  "cancel": "Bekor qilish",
+  "save": "Saqlash",
+  "table": {
+    "images": "Rasmlar",
+    "answer": "Javob",
+    "createdAt": "Yaratilgan sana",
+    "updatedAt": "Yangilangan sana",
+    "deleteContent": "Siz ushbu savolni rostdanham o'chirmoqchimisiz? Ushbu savol butunlay o'chib ketadi."
+  },
+  "form": {
+    "title": "Savol qo'shish",
+    "titleUpdated": "Savolni taxrirlash",
+    "letters": "Harflar",
+    "answer": "Javob"
+  },
+  "settings": {
+    "title": "O'yin sozlamalari",
+    "settings": "Sozlamalar",
+    "maxTimeForPlayer": "O'yinchi uchun maksimal vaqt (soniya)",
+    "maxWordLength": "Maksimal so'z uzunligi",
+    "minWordLength": "Minimal so'z uzunligi",
+    "diamondsToWin": "G'alaba uchun olmoslar soni",
+    "starsToWin": "G'alaba uchun yulduzlar soni",
+    "defaultLanguage": "Standart til",
+    "maxPlayers": "Maksimal o'yinchilar soni",
+    "russian": "Rus tili",
+    "english": "Ingliz tili"
+  }
+}

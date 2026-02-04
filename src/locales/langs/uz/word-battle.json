@@ -1,0 +1,72 @@
+{
+  "categories": "Kategoriyalar ro'yxati",
+  "main": "Asosiy",
+  "list": "Ro'yxati",
+  "add": "Qo'shish",
+  "table": {
+    "image": "Rasm",
+    "topic": "Mavzu",
+    "createdAt": "Yaratilgan sana",
+    "updatedAt": "Taxrirlangan sana",
+    "edit": "Taxrirlash",
+    "delete": "O'chirish"
+  },
+  "innerTable": {
+    "words": "So'zlari",
+    "word": "So'z",
+    "searchWord": "So'zni qidirish"
+  },
+  "create": {
+    "add": "Yangi kategoriya qo'shish",
+    "create": "Yaratish",
+    "categoryName": "Kategoriya nomi",
+    "words": "So'zlari",
+    "upload": ".csv fayl yuklang",
+    "cancel": "Bekor qilish",
+    "save": "Saqlash"
+  },
+  "users": {
+    "gamersList": "O'yinchilar ro'yxati",
+    "main": "Asosiy",
+    "gamers": "O'yinchilar",
+    "name": "Ism",
+    "wordsCount": "So'zlar soni",
+    "stars": "Yulduzlar",
+    "gems": "Olmoslar",
+    "streak": "Streaklar soni",
+    "gamesCount": "O'yinlar soni",
+    "vicoties": "Yutganlar soni",
+    "defeats": "Yutqizganlar soni"
+  },
+  "settings": {
+    "gameSettings": "O'yin sozlamalari",
+    "main": "Asosiy",
+    "settings": "Sozlamalar",
+    "cancel": "Bekor qilish",
+    "save": "Saqlash",
+    "maxTime": "Oʻyinchiga ajratilgan maksimal vaqt (soniya)",
+    "maxWordLength": "Maksimal soʻz uzunligi",
+    "winApples": "Gʻalaba uchun beriladigan olmoslar",
+    "winStars": "Gʻalaba uchun beriladigan yulduzlar",
+    "minWordLength": "Minimal soʻz uzunligi",
+    "maxPlayers": "Maksimal oʻyinchilar soni",
+    "mainLanguage": "Asosiy til",
+    "allowDuplicates": "Takrorlanuvchi soʻzlarga ruxsat berilsinmi?",
+    "ru": "Rus tili",
+    "en": "Ingliz tili"
+  },
+  "deleteDialog": {
+    "title": "Kategoriyani o'chirish",
+    "delete": "O'chirish",
+    "content": "Siz ushbu kategoriyani rostdanham o'chirmoqchimisiz? Ushbu kategoriya butunlay o'chib ketadi."
+  },
+  "editDialog": {
+    "edit": "taxrirlash",
+    "cancel": "Bekor qilish",
+    "save": "Saqlash",
+    "categoryName": "Kategoriya nomi"
+  },
+  "addWord": {
+    "title": "Yangi so'z qo'shish"
+  }
+}

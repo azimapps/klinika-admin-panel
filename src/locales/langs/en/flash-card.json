@@ -1,0 +1,61 @@
+{
+  "title": "Topic List",
+  "main": "Main",
+  "list": "List",
+  "add": "Add",
+  "edit": "Edit",
+  "delete": "Delete",
+  "cancel": "Cancel",
+  "save": "Save",
+  "table": {
+    "image": "Image",
+    "topic": "Topic",
+    "info": "Information",
+    "level": "Level",
+    "lang": "Language",
+    "status": "Status",
+    "createdAt": "Created At",
+    "deleteDialogContent": "Are you sure you want to delete this topic? It will be permanently deleted.",
+    "deleteWord": "Delete Word"
+  },
+  "innerTable": {
+    "title": "Topic Words",
+    "word": "Word",
+    "words": "Words",
+    "wordT": "Word",
+    "translate": "Translation",
+    "status": "Status",
+    "audio": "Audio",
+    "deleteDialogContent": "Are you sure you want to delete this word? It will be permanently deleted."
+  },
+  "topicCreateUpdate": {
+    "title": "Add New Topic",
+    "edit": "Edit",
+    "create": "Create",
+    "topicName": "Topic Name",
+    "topicDesc": "Topic Description",
+    "lang": "Select Language",
+    "translate": "Select Translation",
+    "level": "Select Level",
+    "status": "Select Status"
+  },
+  "enums": {
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard",
+    "active": "Active",
+    "inactive": "Inactive",
+    "archive": "Archived",
+    "uz": "Uzbek Language",
+    "en": "English Language",
+    "ru": "Russian Language"
+  },
+  "wordCreateUpdate": {
+    "title": "Add Word",
+    "edit": "Edit Word",
+    "word": "Word",
+    "translate": "Translation",
+    "status": "Status",
+    "file": "Audio File"
+  }
+}

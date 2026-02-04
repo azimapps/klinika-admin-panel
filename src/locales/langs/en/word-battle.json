@@ -1,0 +1,72 @@
+{
+  "categories": "Category list",
+  "main": "Main",
+  "list": "List",
+  "add": "Add",
+  "table": {
+    "image": "Image",
+    "topic": "Topic",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "innerTable": {
+    "words": "Words",
+    "word": "Word",
+    "searchWord": "Search word"
+  },
+  "create": {
+    "add": "Add new category",
+    "create": "Create",
+    "categoryName": "Category name",
+    "words": "Words",
+    "upload": "Upload .csv file",
+    "cancel": "Cancel",
+    "save": "Save"
+  },
+  "users": {
+    "gamersList": "Gamers list",
+    "main": "Main",
+    "gamers": "Gamers",
+    "name": "Name",
+    "wordsCount": "Word count",
+    "stars": "Stars",
+    "gems": "Gems",
+    "streak": "Streak count",
+    "gamesCount": "Game count",
+    "vicoties": "Victories",
+    "defeats": "Defeats"
+  },
+  "settings": {
+    "gameSettings": "Game settings",
+    "main": "Main",
+    "settings": "Settings",
+    "cancel": "Cancel",
+    "save": "Save",
+    "maxTime": "Max time per player (seconds)",
+    "maxWordLength": "Max word length",
+    "winApples": "Gems for win",
+    "winStars": "Stars for win",
+    "minWordLength": "Min word length",
+    "maxPlayers": "Max players count",
+    "mainLanguage": "Main language",
+    "allowDuplicates": "Allow duplicate words?",
+    "ru": "Russian Language",
+    "en": "English Language"
+  },
+  "deleteDialog": {
+    "title": "Delete Category",
+    "delete": "Delete",
+    "content": "Are you sure you want to delete this category? It will be permanently deleted."
+  },
+  "editDialog": {
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "categoryName": "Category Name"
+  },
+  "addWord": {
+    "title": "Add word"
+  }
+}

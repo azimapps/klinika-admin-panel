@@ -1,0 +1,61 @@
+{
+  "title": "Topiklar ro'yxati",
+  "main": "Asosiy",
+  "list": "Ro'yxati",
+  "add": "Qo'shish",
+  "edit": "Taxrirlash",
+  "delete": "O'chirish",
+  "cancel": "Bekor qilish",
+  "save": "Saqlash",
+  "table": {
+    "image": "Rasm",
+    "topic": "Topik",
+    "info": "Ma'lumot",
+    "level": "Daraja",
+    "lang": "Til",
+    "status": "Holat",
+    "createdAt": "Yaratilgan sana",
+    "deleteDialogContent": "Siz ushbu topikni rostdanham o'chirmoqchimisiz? Ushbu topik butunlay o'chib ketadi."
+  },
+  "innerTable": {
+    "title": "Topik so'zlari",
+    "word": "so'z",
+    "words": "So'zlari",
+    "wordT": "So'z",
+    "translate": "Tarjimasi",
+    "status": "Holat",
+    "audio": "Audio",
+    "deleteDialogContent": "Siz ushbu so'zni rostdanham o'chirmoqchimisiz? Ushbu so'z butunlay o'chib ketadi.",
+    "deleteWord": "So'zni o'chirish"
+  },
+  "topicCreateUpdate": {
+    "title": "Yangi topik qo'shish",
+    "edit": "taxrirlash",
+    "create": "Yaratish",
+    "topicName": "Topik nomi",
+    "topicDesc": "Topik haqida ma'lumot",
+    "lang": "Tilni tanlang",
+    "translate": "Tarjimani tanlang",
+    "level": "Darajani tanlang",
+    "status": "Holatni tanlang"
+  },
+  "enums": {
+    "easy": "Oson",
+    "medium": "O'rtacha",
+    "hard": "Qiyin",
+    "active": "Faol",
+    "inactive": "Faol emas",
+    "archive": "Arxivlangan",
+    "uz": "O'zbek tili",
+    "en": "Ingliz tili",
+    "ru": "Rus tili"
+  },
+  "wordCreateUpdate": {
+    "title": "So'z qo'shish",
+    "edit": "So'zni taxrirlash",
+    "word": "So'z",
+    "translate": "Tarjimasi",
+    "status": "Holat",
+    "file": "Audio fayl"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "wordBattle": {
+    "categorySaved": "Category saved successfully",
+    "categoryDeleted": "Category deleted successfully",
+    "wordDeleted": "Word deleted successfully",
+    "categoryEdited": "Category edited successfully",
+    "settingsEdited": "Settings edited successfully",
+    "errorOccurred": "An error occurred"
+  },
+  "flashCard": {
+    "topicCreated": "Topic created successfully",
+    "topicWordAdded": "Topic word added successfully",
+    "topicDeleted": "Topic deleted successfully",
+    "wordDeleted": "Word deleted successfully",
+    "topicEdited": "Topic edited successfully",
+    "wordEdited": "Word edited successfully",
+    "errorOccurred": "An error occurred"
+  },
+  "picWord": {
+    "questionAdded": "Question added successfully",
+    "questionDeleted": "Question deleted successfully",
+    "questionUpdated": "Question updated successfully",
+    "settingsUpdated": "Settings updated successfully",
+    "errorOccurred": "An error occurred"
+  }
+}

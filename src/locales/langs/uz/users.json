@@ -1,0 +1,13 @@
+{
+  "users": "Foydalanuvchilar",
+  "list": "Ro'yxati",
+  "main": "Asosiy",
+  "search": "Qidiruv",
+  "table": {
+    "name": "Ism",
+    "phone": "Telefon raqam",
+    "email": "Email",
+    "status": "Holat",
+    "role": "Ro'llar"
+  }
+}

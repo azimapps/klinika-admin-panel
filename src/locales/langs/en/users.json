@@ -1,0 +1,13 @@
+{
+  "users": "Users",
+  "list": "List",
+  "main": "Main",
+  "search": "Search",
+  "table": {
+    "name": "Name",
+    "phone": "Phone Number",
+    "email": "Email",
+    "status": "Status",
+    "role": "Roles"
+  }
+}
