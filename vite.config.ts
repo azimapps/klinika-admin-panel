@@ -31,6 +31,21 @@ export default defineConfig({
       },
     ],
   },
-  server: { port: PORT, host: true },
+  server: {
+    port: PORT,
+    host: true,
+    proxy: {
+      '/admin': {
+        target: 'https://klinika-production.up.railway.app',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/users': {
+        target: 'https://klinika-production.up.railway.app',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
   preview: { port: PORT, host: true },
 });

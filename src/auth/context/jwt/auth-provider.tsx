@@ -1,14 +1,14 @@
-import cookies from 'js-cookie';
 import { useSetState } from 'minimal-shared/hooks';
 import { useMemo, useEffect, useCallback } from 'react';
 
-import { decodeToken } from 'src/utils/decode';
-
 import axios, { endpoints } from 'src/lib/axios';
 
+import { JWT_STORAGE_KEY } from './constant';
 import { AuthContext } from '../auth-context';
+import { setSession, isValidToken } from './utils';
 
 import type { AuthState } from '../../types';
+
 // ----------------------------------------------------------------------
 
 /**
@@ -26,16 +26,20 @@ export function AuthProvider({ children }: Props) {
 
   const checkUserSession = useCallback(async () => {
     try {
-      const accessToken = decodeToken(cookies.get('m_at') as string)?._id || '';
+      const accessToken = sessionStorage.getItem(JWT_STORAGE_KEY);
 
-      if (accessToken) {
-        const res = await axios.get(endpoints.auth.me(accessToken));
-        setState({ user: { ...res.data.data, accessToken }, loading: false });
+      if (accessToken && isValidToken(accessToken)) {
+        setSession(accessToken);
+
+        const res = await axios.get(endpoints.auth.me('me')); // Placeholder, update if 'me' endpoint differs
+        setState({ user: { ...res.data, accessToken }, loading: false });
       } else {
+        setSession(null);
         setState({ user: null, loading: false });
       }
     } catch (error) {
       console.error(error);
+      setSession(null);
       setState({ user: null, loading: false });
     }
   }, [setState]);
@@ -44,9 +48,11 @@ export function AuthProvider({ children }: Props) {
     checkUserSession();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   const checkAuthenticated = state.user ? 'authenticated' : 'unauthenticated';
 
   const status = state.loading ? 'loading' : checkAuthenticated;
+
   const memoizedValue = useMemo(
     () => ({
       user: state.user ? { ...state.user } : null,

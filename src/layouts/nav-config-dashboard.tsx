@@ -44,99 +44,10 @@ export const useNavData = (): NavSectionProps['data'] => {
   const { t } = useTranslate('navbar');
   return useMemo(
     () => [
-      /**
-       * Overview
-       */
       {
         subheader: t('allInformation'),
         items: [
           { title: t('statistics'), path: paths.dashboard.root, icon: ICONS.analytics },
-          {
-            title: t('users'),
-            path: paths.dashboard.user.root,
-            icon: ICONS.user,
-            children: [{ title: t('list'), path: paths.dashboard.user.list }],
-          },
-        ],
-      },
-      /**
-       * Management
-       */
-      {
-        subheader: t('game'),
-        items: [
-          {
-            title: 'Word battle',
-            path: paths.dashboard.games.wordBattle.root,
-            icon: ICONS.wordBattle,
-            children: [
-              {
-                title: t('list'),
-                path: paths.dashboard.games.wordBattle.list,
-              },
-              {
-                title: t('create'),
-                path: paths.dashboard.games.wordBattle.create,
-              },
-              {
-                title: t('users'),
-                path: paths.dashboard.games.wordBattle.users,
-              },
-              {
-                title: t('settings'),
-                path: paths.dashboard.games.wordBattle.settings,
-              },
-            ],
-          },
-          {
-            title: 'Flash Card',
-            path: paths.dashboard.games.flashCard.root,
-            icon: ICONS.flashCard,
-            children: [
-              {
-                title: t('list'),
-                path: paths.dashboard.games.flashCard.list,
-              },
-              {
-                title: t('create'),
-                path: paths.dashboard.games.flashCard.create,
-              },
-              {
-                title: 'Category List',
-                path: paths.dashboard.games.flashCard.categoryList,
-              },
-            ],
-          },
-          {
-            title: '4Pics 1Word',
-            path: paths.dashboard.games.picsWord.root,
-            icon: ICONS.picWord,
-            children: [
-              {
-                title: t('list'),
-                path: paths.dashboard.games.picsWord.list,
-              },
-              {
-                title: t('create'),
-                path: paths.dashboard.games.picsWord.create,
-              },
-              {
-                title: t('settings'),
-                path: paths.dashboard.games.picsWord.settings,
-              },
-            ],
-          },
-          {
-            title: 'Odd One Out',
-            path: paths.dashboard.games.oddOneOut.root,
-            icon: ICONS.oddOneOut,
-            children: [
-              {
-                title: t('list'),
-                path: paths.dashboard.games.oddOneOut.list,
-              },
-            ],
-          },
         ],
       },
     ],

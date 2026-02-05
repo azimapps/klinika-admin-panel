@@ -1,9 +1,9 @@
 import type { TextFieldProps } from '@mui/material/TextField';
 import type { Value, Country } from 'react-phone-number-input/input';
 
+import { useState, useCallback } from 'react';
 import { parsePhoneNumber } from 'react-phone-number-input';
 import PhoneNumberInput from 'react-phone-number-input/input';
-import { useState, useEffect, useCallback, startTransition } from 'react';
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -32,34 +32,30 @@ export function PhoneInput({
   country: inputCountryCode,
   ...other
 }: PhoneInputProps) {
-  const defaultCountryCode = getCountryCode(value, inputCountryCode);
-
   const [searchCountry, setSearchCountry] = useState('');
-  const [selectedCountry, setSelectedCountry] = useState(defaultCountryCode);
+
+  const currentCountryCode = getCountryCode(value, inputCountryCode);
 
   const hasLabel = !!label;
 
-  const cleanValue = value.replace(/[\s-]+/g, '');
+  const cleanValue = value ? value.replace(/[\s-]+/g, '') : '';
 
   const handleClear = useCallback(() => {
     onChange('' as Value);
   }, [onChange]);
 
-  useEffect(() => {
-    if (!selectedCountry) {
-      setSelectedCountry(defaultCountryCode);
-    }
-  }, [defaultCountryCode, selectedCountry]);
-
-  const handleClickCountry = (inputValue: Country) => {
-    startTransition(() => {
-      setSelectedCountry(inputValue);
-    });
-  };
-
   const handleSearchCountry = (inputValue: string) => {
     setSearchCountry(inputValue);
   };
+
+  const handleClickCountry = useCallback(
+    (inputValue: Country) => {
+      // Logic from similar components: manually selecting a country can just clear the value 
+      // or we can try to append the dial code. For now, let's keep it simple.
+      onChange('' as Value);
+    },
+    [onChange]
+  );
 
   return (
     <Box
@@ -82,7 +78,7 @@ export function PhoneInput({
         <CountryListPopover
           countries={countries}
           searchCountry={searchCountry}
-          countryCode={selectedCountry}
+          countryCode={currentCountryCode}
           onClickCountry={handleClickCountry}
           onSearchCountry={handleSearchCountry}
           sx={{
@@ -103,7 +99,7 @@ export function PhoneInput({
         variant={variant}
         onChange={onChange}
         hiddenLabel={!label}
-        country={selectedCountry}
+        country={currentCountryCode}
         inputComponent={CustomInput}
         placeholder={placeholder ?? 'Enter phone number'}
         slotProps={{
@@ -134,9 +130,15 @@ function CustomInput({ ref, ...other }: TextFieldProps) {
 
 function getCountryCode(inputValue: string, countryCode?: Country): Country {
   if (inputValue) {
-    const phoneNumber = parsePhoneNumber(inputValue);
-    return phoneNumber?.country as Country;
+    try {
+      const phoneNumber = parsePhoneNumber(inputValue);
+      if (phoneNumber?.country) {
+        return phoneNumber.country as Country;
+      }
+    } catch (err) {
+      // Do nothing
+    }
   }
 
-  return countryCode as Country;
+  return (countryCode || 'UZ') as Country;
 }

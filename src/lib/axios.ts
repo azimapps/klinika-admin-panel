@@ -40,6 +40,8 @@ export const endpoints = {
     me: (id: string) => `users/${id}`,
     signIn: 'users/login',
     signUp: '/api/auth/sign-up',
+    request: '/admin/login/request',
+    verify: '/admin/login/verify',
   },
   mail: {
     list: '/api/mail/list',

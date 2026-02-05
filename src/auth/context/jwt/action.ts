@@ -1,7 +1,7 @@
 import { toast } from 'sonner';
 import { useMutation } from '@tanstack/react-query';
 
-import axiosInstance from 'src/lib/axios';
+import axiosInstance, { endpoints } from 'src/lib/axios';
 
 import { useAuthContext } from 'src/auth/hooks';
 
@@ -9,33 +9,55 @@ import { setSession } from './utils';
 
 // ----------------------------------------------------------------------
 
-export type SignInParams = {
-  email?: string;
-  password: string;
-  captchaToken: string;
-  phone?: string;
+export type SignInRequestParams = {
+  phone_number: string;
+};
+
+export type SignInVerifyParams = {
+  phone_number: string;
+  code: string;
 };
 
 interface CustomError extends Error {
-  error: {
-    code: string;
-  };
+  detail: string;
 }
 
 /** **************************************
  * Sign in
  *************************************** */
 
-export const useSignIn = () => {
+export const useSignInRequest = () => {
+  const { isPending, mutateAsync } = useMutation({
+    mutationFn: (value: SignInRequestParams) =>
+      axiosInstance.post(endpoints.auth.request, value),
+    onSuccess: () => {
+      toast.success('Tasdiqlash kodi yuborildi', { position: 'top-center' });
+    },
+    onError: (err: CustomError) => {
+      toast.error(err.detail || 'Xatolik yuz berdi', { position: 'top-center' });
+    },
+  });
+
+  return { isPending, mutateAsync };
+};
+
+export const useSignInVerify = () => {
   const { checkUserSession } = useAuthContext();
   const { isPending, mutateAsync } = useMutation({
-    mutationFn: (value: SignInParams) =>
-      axiosInstance.post('users/login', value).then(() => checkUserSession?.()),
+    mutationFn: (value: SignInVerifyParams) =>
+      axiosInstance.post(endpoints.auth.verify, value).then((res) => {
+        const { access_token } = res.data;
+        if (access_token) {
+          setSession(access_token);
+          return checkUserSession?.();
+        }
+        throw new Error('Token topilmadi');
+      }),
     onSuccess: () => {
       toast.success('Hush kelibsiz', { position: 'top-center' });
     },
     onError: (err: CustomError) => {
-      toast.error(err.error.code, { position: 'top-center' });
+      toast.error(err.detail || 'Xatolik yuz berdi', { position: 'top-center' });
     },
   });
 

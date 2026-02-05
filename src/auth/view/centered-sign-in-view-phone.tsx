@@ -1,87 +1,139 @@
 import { z as zod } from 'zod';
 import { useForm } from 'react-hook-form';
-import { useBoolean } from 'minimal-shared/hooks';
+import { useState, useCallback } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useCountdownSeconds } from 'minimal-shared/hooks';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
 
-import { paths } from 'src/routes/paths';
-import { RouterLink } from 'src/routes/components';
+import { useTranslate } from 'src/locales';
 
-import { Iconify } from 'src/components/iconify';
-import { Form, Field } from 'src/components/hook-form';
+import { Form } from 'src/components/hook-form';
 import { AnimateLogoRotate } from 'src/components/animate';
 
-import { useSignIn } from '../context/jwt';
 import { FormHead } from '../components/form-head';
+import { FormResendCode } from '../components/form-resend-code';
+import { FormReturnLink } from '../components/form-return-link';
+import { useSignInVerify, useSignInRequest } from '../context/jwt';
 
 // ----------------------------------------------------------------------
 
-export type SignInSchemaType = zod.infer<typeof SignInSchema>;
-
 export const SignInSchema = zod.object({
-  phone: zod.string().min(1, { message: 'Phone number is required!' }),
-  password: zod.string().min(8, { message: 'Password must be at least 8 characters!' }),
+  phone_number: zod.string().min(1, { message: 'Phone number is required!' }),
+  code: zod.string().optional(),
 });
+
+export type SignInSchemaType = zod.infer<typeof SignInSchema>;
 
 // ----------------------------------------------------------------------
 
 export function CenteredSignInViewPhone() {
+  const { t } = useTranslate('auth');
+  const [isVerifyStep, setIsVerifyStep] = useState(false);
+
   const { executeRecaptcha } = useGoogleReCaptcha();
-  const showPassword = useBoolean();
-  const { isPending, mutateAsync } = useSignIn();
-  const defaultValues: SignInSchemaType = {
-    phone: '',
-    password: '',
-  };
+
+  const { isPending: isRequestPending, mutateAsync: requestSignIn } = useSignInRequest();
+  const { isPending: isVerifyPending, mutateAsync: verifySignIn } = useSignInVerify();
+
+  const countdown = useCountdownSeconds(60);
 
   const methods = useForm<SignInSchemaType>({
     resolver: zodResolver(SignInSchema),
-    defaultValues,
+    defaultValues: { phone_number: '+998', code: '' },
   });
 
-  const { handleSubmit } = methods;
+  const { handleSubmit, register, setValue, watch, formState: { errors } } = methods;
+
+  const phoneValue = watch('phone_number');
+
+  const handleSendCode = useCallback(async (phone: string) => {
+    try {
+      if (executeRecaptcha) {
+        await executeRecaptcha('login_request');
+      }
+      await requestSignIn({ phone_number: phone });
+      setIsVerifyStep(true);
+      countdown.start();
+    } catch (error) {
+      console.error(error);
+    }
+  }, [executeRecaptcha, requestSignIn, countdown]);
 
   const onSubmit = handleSubmit(async (data) => {
-    if (!executeRecaptcha) return null;
-    const token = await executeRecaptcha('form_submit');
-    return await mutateAsync({
-      ...data,
-      captchaToken: token,
-    });
+    try {
+      if (!isVerifyStep) {
+        await handleSendCode(data.phone_number);
+      } else {
+        await verifySignIn({
+          phone_number: data.phone_number,
+          code: data.code || '',
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
   });
+
+  const handleBack = () => {
+    setIsVerifyStep(false);
+    setValue('code', '');
+    countdown.reset();
+  };
+
+  const handleResendCode = useCallback(async () => {
+    await handleSendCode(phoneValue);
+  }, [handleSendCode, phoneValue]);
 
   const renderForm = () => (
     <Box sx={{ gap: 3, display: 'flex', flexDirection: 'column' }}>
-      <Field.Phone name="phone" label="Phone number" slotProps={{ inputLabel: { shrink: true } }} />
+      <TextField
+        {...register('phone_number')}
+        fullWidth
+        label={t('phoneLabel')}
+        placeholder={t('phonePlaceholder')}
+        disabled={isVerifyStep}
+        error={!!errors.phone_number}
+        helperText={errors.phone_number?.message ? t('invalidPhone') : ''}
+        slotProps={{ inputLabel: { shrink: true } }}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (!value.startsWith('+998')) {
+            value = '+998';
+          }
+          const prefix = '+998';
+          const rest = value.substring(prefix.length).replace(/[^\d]/g, '');
+          value = prefix + rest;
+          if (value.length > 13) {
+            value = value.slice(0, 13);
+          }
+          setValue('phone_number', value, { shouldValidate: true });
+        }}
+      />
 
-      <Box sx={{ gap: 1.5, display: 'flex', flexDirection: 'column' }}>
-        <Field.Text
-          name="password"
-          label="Password"
-          placeholder="8+ characters"
-          type={showPassword.value ? 'text' : 'password'}
-          slotProps={{
-            inputLabel: { shrink: true },
-            input: {
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={showPassword.onToggle} edge="end">
-                    <Iconify
-                      icon={showPassword.value ? 'solar:eye-bold' : 'solar:eye-closed-bold'}
-                    />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            },
-          }}
-        />
-      </Box>
+      {isVerifyStep && (
+        <Box sx={{ gap: 3, display: 'flex', flexDirection: 'column' }}>
+          <TextField
+            {...register('code')}
+            fullWidth
+            label={t('codeLabel')}
+            placeholder={t('codePlaceholder')}
+            autoFocus
+            error={!!errors.code}
+            helperText={errors.code?.message ? t('invalidCode') : ''}
+            slotProps={{ inputLabel: { shrink: true } }}
+          />
+
+          <FormResendCode
+            disabled={countdown.isCounting}
+            value={countdown.value}
+            onResendCode={handleResendCode}
+          />
+        </Box>
+      )}
 
       <Button
         fullWidth
@@ -89,11 +141,20 @@ export function CenteredSignInViewPhone() {
         size="large"
         type="submit"
         variant="contained"
-        loading={isPending}
-        loadingIndicator="Sign in..."
+        loading={isRequestPending || isVerifyPending}
+        sx={{ mt: 1 }}
       >
-        Sign in
+        {isVerifyStep ? t('verifyCode') : t('sendCode')}
       </Button>
+
+      {isVerifyStep && (
+        <FormReturnLink
+          onClick={handleBack}
+          href="#"
+          label={t('backToPhone')}
+          sx={{ mt: 2 }}
+        />
+      )}
     </Box>
   );
 
@@ -102,15 +163,8 @@ export function CenteredSignInViewPhone() {
       <AnimateLogoRotate sx={{ mb: 3, mx: 'auto' }} />
 
       <FormHead
-        title="Sign in to your account"
-        description={
-          <>
-            {`Sign in with `}
-            <Link component={RouterLink} href={paths.auth.signIn} variant="subtitle2">
-              Email
-            </Link>
-          </>
-        }
+        title={isVerifyStep ? t('codeLabel') : t('signInTitle')}
+        description={isVerifyStep ? t('codeSent') : t('signInDescription')}
       />
 
       <Form methods={methods} onSubmit={onSubmit}>
