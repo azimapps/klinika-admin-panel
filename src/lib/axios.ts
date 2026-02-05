@@ -48,8 +48,6 @@ export const endpoints = {
   calendar: '/api/calendar',
   auth: {
     me: (id: string) => `users/${id}`,
-    signInPhone: '/admin/login/request',
-    verifyPhone: '/admin/login/verify',
     signIn: 'users/login',
     signUp: '/api/auth/sign-up',
     request: '/admin/login/request',

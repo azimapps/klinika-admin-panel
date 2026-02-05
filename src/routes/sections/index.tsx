@@ -18,19 +18,6 @@ import { authDemoRoutes } from './auth';
 // Overview
 const OverviewAnalyticsPage = lazy(() => import('src/pages/dashboard/analytics'));
 
-/*
-const UserListPage = lazy(() => import('src/pages/dashboard/user/list'));
-const WordBattle = lazy(() => import('src/pages/dashboard/word-battle/list'));
-const CreateCategory = lazy(() => import('src/pages/dashboard/word-battle/create'));
-const FlashCardList = lazy(() => import('src/pages/dashboard/flash-card/topicList'));
-
-// Klinika New Pages (Remote)
-const CategoryListPage = lazy(() => import('src/pages/dashboard/category/list'));
-const DoctorListPage = lazy(() => import('src/pages/dashboard/doctor/list'));
-const AdvantageListPage = lazy(() => import('src/pages/dashboard/advantage/list'));
-const FounderListPage = lazy(() => import('src/pages/dashboard/founder/list'));
-*/
-
 // ----------------------------------------------------------------------
 
 function SuspenseOutlet() {
@@ -58,43 +45,6 @@ export const routesSection: RouteObject[] = [
     element: <AuthGuard>{dashboardLayout()}</AuthGuard>,
     children: [
       { index: true, element: <OverviewAnalyticsPage /> },
-      /*
-      {
-        path: 'category',
-        children: [
-          { index: true, element: <CategoryListPage /> },
-          { path: 'list', element: <CategoryListPage /> },
-        ],
-      },
-      {
-        path: 'user',
-        children: [
-          { index: true, element: <UserListPage /> },
-          { path: 'list', element: <UserListPage /> },
-        ],
-      },
-      {
-        path: 'doctor',
-        children: [
-          { index: true, element: <DoctorListPage /> },
-          { path: 'list', element: <DoctorListPage /> },
-        ],
-      },
-      {
-        path: 'advantage',
-        children: [
-          { index: true, element: <AdvantageListPage /> },
-          { path: 'list', element: <AdvantageListPage /> },
-        ],
-      },
-      {
-        path: 'founder',
-        children: [
-          { index: true, element: <FounderListPage /> },
-          { path: 'list', element: <FounderListPage /> },
-        ],
-      },
-      */
     ],
   },
 
@@ -107,3 +57,15 @@ export const routesSection: RouteObject[] = [
   // No match
   { path: '*', element: <Page404 /> },
 ];
+
+/*
+// Previously used pages (commented out for future reference)
+const UserListPage = lazy(() => import('src/pages/dashboard/user/list'));
+const WordBattle = lazy(() => import('src/pages/dashboard/word-battle/list'));
+const CreateCategory = lazy(() => import('src/pages/dashboard/word-battle/create'));
+const FlashCardList = lazy(() => import('src/pages/dashboard/flash-card/topicList'));
+const CategoryListPage = lazy(() => import('src/pages/dashboard/category/list'));
+const DoctorListPage = lazy(() => import('src/pages/dashboard/doctor/list'));
+const AdvantageListPage = lazy(() => import('src/pages/dashboard/advantage/list'));
+const FounderListPage = lazy(() => import('src/pages/dashboard/founder/list'));
+*/

@@ -50,7 +50,7 @@ export function CenteredSignInView() {
     try {
       const fullPhoneNumber = `+998${data.phone_number.replace(/\D/g, '')}`;
       if (!isSent) {
-        await signInRequest(fullPhoneNumber);
+        await signInRequest({ phone_number: fullPhoneNumber });
         setIsSent(true);
       } else {
         await signInVerify({ phone_number: fullPhoneNumber, code: data.code || '' });
