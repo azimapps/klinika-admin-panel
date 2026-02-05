@@ -1,8 +1,8 @@
 import type { TFunction } from 'i18next';
 import type { GridColDef } from '@mui/x-data-grid';
 
-import Avatar from '@mui/material/Avatar';
 import Link from '@mui/material/Link';
+import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 
 import { Iconify } from 'src/components/iconify';
