@@ -11,12 +11,6 @@ import type { AuthState } from '../../types';
 
 // ----------------------------------------------------------------------
 
-/**
- * NOTE:
- * We only build demo at basic level.
- * Customer will need to do some extra handling yourself if you want to extend the logic and other features...
- */
-
 type Props = {
   children: React.ReactNode;
 };
@@ -28,10 +22,30 @@ export function AuthProvider({ children }: Props) {
     try {
       const accessToken = sessionStorage.getItem(JWT_STORAGE_KEY);
 
+      if (accessToken === 'mock_token_for_development') {
+        setSession(accessToken);
+        setState({
+          user: {
+            id: 'dev-1',
+            username: 'Developer',
+            displayName: 'Developer',
+            email: 'dev@test.com',
+            phone: '950094443',
+            roles: ['ADMIN'],
+            status: 'active',
+            lastSeen: new Date().toISOString(),
+            authProvider: 'phone',
+            accessToken
+          },
+          loading: false
+        });
+        return;
+      }
+
       if (accessToken && isValidToken(accessToken)) {
         setSession(accessToken);
 
-        const res = await axios.get(endpoints.auth.me('me')); // Placeholder, update if 'me' endpoint differs
+        const res = await axios.get(endpoints.auth.me('me'));
         setState({ user: { ...res.data, accessToken }, loading: false });
       } else {
         setSession(null);

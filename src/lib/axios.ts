@@ -6,11 +6,23 @@ import { CONFIG } from 'src/global-config';
 
 // ----------------------------------------------------------------------
 
-const axiosInstance = axios.create({ baseURL: CONFIG.serverUrl, withCredentials: true });
+const axiosInstance = axios.create({ baseURL: CONFIG.serverUrl });
 
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong!')
+);
+
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = sessionStorage.getItem('jwt_access_token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    // console.log('Request:', config.method?.toUpperCase(), config.baseURL, config.url, config.data);
+    return config;
+  },
+  (error) => Promise.reject(error)
 );
 
 export default axiosInstance;
@@ -58,5 +70,10 @@ export const endpoints = {
     list: '/api/product/list',
     details: '/api/product/details',
     search: '/api/product/search',
+  },
+  category: {
+    list: '/admin/categories/',
+    details: (id: string) => `/admin/categories/${id}`,
+    avatar: (id: string) => `/admin/categories/${id}/avatar`,
   },
 };

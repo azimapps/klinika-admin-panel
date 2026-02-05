@@ -43,7 +43,7 @@ export function CenteredSignInViewPhone() {
 
   const methods = useForm<SignInSchemaType>({
     resolver: zodResolver(SignInSchema),
-    defaultValues: { phone_number: '+998', code: '' },
+    defaultValues: { phone_number: '+998', code: '123456' },
   });
 
   const { handleSubmit, register, setValue, watch, formState: { errors } } = methods;
@@ -55,7 +55,8 @@ export function CenteredSignInViewPhone() {
       if (executeRecaptcha) {
         await executeRecaptcha('login_request');
       }
-      await requestSignIn({ phone_number: phone });
+      const cleanPhone = phone.replace('+', '');
+      await requestSignIn({ phone_number: cleanPhone });
       setIsVerifyStep(true);
       countdown.start();
     } catch (error) {
@@ -68,8 +69,9 @@ export function CenteredSignInViewPhone() {
       if (!isVerifyStep) {
         await handleSendCode(data.phone_number);
       } else {
+        const cleanPhone = data.phone_number.replace('+', '');
         await verifySignIn({
-          phone_number: data.phone_number,
+          phone_number: cleanPhone,
           code: data.code || '',
         });
       }
@@ -80,7 +82,7 @@ export function CenteredSignInViewPhone() {
 
   const handleBack = () => {
     setIsVerifyStep(false);
-    setValue('code', '');
+    setValue('code', '123456');
     countdown.reset();
   };
 

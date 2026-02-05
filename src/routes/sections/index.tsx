@@ -18,6 +18,12 @@ import { authDemoRoutes } from './auth';
 // Overview
 const OverviewAnalyticsPage = lazy(() => import('src/pages/dashboard/analytics'));
 
+// Category
+const CategoryListPage = lazy(() => import('src/pages/dashboard/category/list'));
+
+// User
+const UserListPage = lazy(() => import('src/pages/dashboard/user/list'));
+
 // ----------------------------------------------------------------------
 
 function SuspenseOutlet() {
@@ -45,6 +51,20 @@ export const routesSection: RouteObject[] = [
     element: <AuthGuard>{dashboardLayout()}</AuthGuard>,
     children: [
       { index: true, element: <OverviewAnalyticsPage /> },
+      {
+        path: 'category',
+        children: [
+          { index: true, element: <CategoryListPage /> },
+          { path: 'list', element: <CategoryListPage /> },
+        ],
+      },
+      {
+        path: 'user',
+        children: [
+          { index: true, element: <UserListPage /> },
+          { path: 'list', element: <UserListPage /> },
+        ],
+      },
     ],
   },
 

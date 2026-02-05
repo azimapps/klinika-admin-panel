@@ -1,0 +1,23 @@
+{
+    "category": "Category",
+    "categories": "Categories",
+    "list": "List",
+    "main": "Main",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "title_uz": "Title (UZ)",
+    "title_ru": "Title (RU)",
+    "title_en": "Title (EN)",
+    "avatar": "Avatar",
+    "upload": "Upload",
+    "save": "Save",
+    "cancel": "Cancel",
+    "table": {
+        "title_uz": "Title (UZ)",
+        "title_ru": "Title (RU)",
+        "title_en": "Title (EN)",
+        "avatar": "Avatar",
+        "actions": "Actions"
+    }
+}

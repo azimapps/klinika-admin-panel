@@ -45,6 +45,11 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
+      '/api': {
+        target: 'https://klinika-production.up.railway.app',
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
   preview: { port: PORT, host: true },
