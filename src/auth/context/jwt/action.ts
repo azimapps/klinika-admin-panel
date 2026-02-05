@@ -1,7 +1,7 @@
 import { toast } from 'sonner';
 import { useMutation } from '@tanstack/react-query';
 
-import axiosInstance from 'src/lib/axios';
+import axiosInstance, { endpoints } from 'src/lib/axios';
 
 import { useAuthContext } from 'src/auth/hooks';
 
@@ -23,6 +23,46 @@ interface CustomError extends Error {
 }
 
 /** **************************************
+ * Sign in (OTP Request)
+ *************************************** */
+export const useSignInRequest = () => {
+  const { isPending, mutateAsync } = useMutation({
+    mutationFn: (phone_number: string) =>
+      axiosInstance.post(endpoints.auth.signInPhone, { phone_number }),
+    onSuccess: () => {
+      toast.success('Kod yuborildi', { position: 'top-center' });
+    },
+    onError: (err: any) => {
+      toast.error(err.detail || 'Xatolik yuz berdi', { position: 'top-center' });
+    },
+  });
+
+  return { isPending, mutateAsync };
+};
+
+/** **************************************
+ * Sign in (OTP Verify)
+ *************************************** */
+export const useSignInVerify = () => {
+  const { checkUserSession } = useAuthContext();
+  const { isPending, mutateAsync } = useMutation({
+    mutationFn: (data: { phone_number: string; code: string }) =>
+      axiosInstance.post(endpoints.auth.verifyPhone, data),
+    onSuccess: async (res) => {
+      const { access_token } = res.data;
+      await setSession(access_token);
+      await checkUserSession?.();
+      toast.success('Hush kelibsiz', { position: 'top-center' });
+    },
+    onError: (err: any) => {
+      toast.error(err.detail || 'Xatolik yuz berdi', { position: 'top-center' });
+    },
+  });
+
+  return { isPending, mutateAsync };
+};
+
+/** **************************************
  * Sign in
  *************************************** */
 
@@ -34,8 +74,8 @@ export const useSignIn = () => {
     onSuccess: () => {
       toast.success('Hush kelibsiz', { position: 'top-center' });
     },
-    onError: (err: CustomError) => {
-      toast.error(err.error.code, { position: 'top-center' });
+    onError: (err: any) => {
+      toast.error(err.error?.code || 'Xatolik yuz berdi', { position: 'top-center' });
     },
   });
 

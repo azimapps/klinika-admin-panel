@@ -166,8 +166,8 @@ export function AccountDrawer() {
               justifyContent: 'center',
             }}
           >
-            {Array.from(user?.roles, (el: string) => (
-              <Label>{el}</Label>
+            {user?.roles && Array.from(user.roles, (el: string) => (
+              <Label key={el}>{el}</Label>
             ))}
           </Box>
 

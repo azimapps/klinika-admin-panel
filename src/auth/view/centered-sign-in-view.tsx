@@ -1,23 +1,16 @@
+import { useState } from 'react';
 import { z as zod } from 'zod';
 import { useForm } from 'react-hook-form';
-import { useBoolean } from 'minimal-shared/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 
-import { paths } from 'src/routes/paths';
-import { RouterLink } from 'src/routes/components';
-
-import { Iconify } from 'src/components/iconify';
 import { Form, Field } from 'src/components/hook-form';
 import { AnimateLogoRotate } from 'src/components/animate';
 
-import { useSignIn } from '../context/jwt';
+import { useSignInRequest, useSignInVerify } from '../context/jwt';
 import { FormHead } from '../components/form-head';
 
 // ----------------------------------------------------------------------
@@ -25,19 +18,23 @@ import { FormHead } from '../components/form-head';
 export type SignInSchemaType = zod.infer<typeof SignInSchema>;
 
 export const SignInSchema = zod.object({
-  email: zod.string().email().min(1, { message: 'Email is required!' }),
-  password: zod.string().min(4, { message: 'Password must be at least 8 characters!' }),
+  phone_number: zod
+    .string()
+    .min(9, { message: 'Telefon raqami 9 ta raqamdan iborat bo\'lishi kerak!' })
+    .max(9, { message: 'Telefon raqami 9 ta raqamdan oshmasligi kerak!' }),
+  code: zod.string().optional(),
 });
 
 // ----------------------------------------------------------------------
 
 export function CenteredSignInView() {
-  const showPassword = useBoolean();
-  const { executeRecaptcha } = useGoogleReCaptcha();
-  const { isPending, mutateAsync } = useSignIn();
+  const [isSent, setIsSent] = useState(false);
+  const { isPending: isRequestPending, mutateAsync: signInRequest } = useSignInRequest();
+  const { isPending: isVerifyPending, mutateAsync: signInVerify } = useSignInVerify();
+
   const defaultValues: SignInSchemaType = {
-    email: '',
-    password: '',
+    phone_number: '',
+    code: '',
   };
 
   const methods = useForm<SignInSchemaType>({
@@ -45,43 +42,69 @@ export function CenteredSignInView() {
     defaultValues,
   });
 
-  const { handleSubmit } = methods;
+  const { handleSubmit, watch, setValue } = methods;
+
+  const phone_number = watch('phone_number');
 
   const onSubmit = handleSubmit(async (data) => {
-    if (!executeRecaptcha) return null;
-    const token = await executeRecaptcha('form_submit');
-    return await mutateAsync({
-      ...data,
-      captchaToken: token,
-    });
+    try {
+      const fullPhoneNumber = `+998${data.phone_number.replace(/\D/g, '')}`;
+      if (!isSent) {
+        await signInRequest(fullPhoneNumber);
+        setIsSent(true);
+      } else {
+        await signInVerify({ phone_number: fullPhoneNumber, code: data.code || '' });
+      }
+    } catch (error) {
+      console.error(error);
+    }
   });
 
   const renderForm = () => (
     <Box sx={{ gap: 3, display: 'flex', flexDirection: 'column' }}>
-      <Field.Text name="email" label="Email" slotProps={{ inputLabel: { shrink: true } }} />
+      <Field.Text
+        name="phone_number"
+        label="Phone number"
+        placeholder="90 123 45 67"
+        disabled={isSent}
+        onChange={(e) => {
+          const value = e.target.value.replace(/\D/g, '').slice(0, 9);
+          setValue('phone_number', value);
+        }}
+        slotProps={{
+          inputLabel: { shrink: true },
+          htmlInput: {
+            maxLength: 9,
+            inputMode: 'numeric',
+          },
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                +998
+              </InputAdornment>
+            ),
+          },
+        }}
+      />
 
-      <Box sx={{ gap: 1.5, display: 'flex', flexDirection: 'column' }}>
+      {isSent && (
         <Field.Text
-          name="password"
-          label="Password"
-          placeholder="8+ characters"
-          type={showPassword.value ? 'text' : 'password'}
+          name="code"
+          label="Verification Code"
+          placeholder="Enter code"
+          onChange={(e) => {
+            const value = e.target.value.replace(/\D/g, '').slice(0, 6);
+            setValue('code', value);
+          }}
           slotProps={{
             inputLabel: { shrink: true },
-            input: {
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={showPassword.onToggle} edge="end">
-                    <Iconify
-                      icon={showPassword.value ? 'solar:eye-bold' : 'solar:eye-closed-bold'}
-                    />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            },
+            htmlInput: {
+              maxLength: 6,
+              inputMode: 'numeric',
+            }
           }}
         />
-      </Box>
+      )}
 
       <Button
         fullWidth
@@ -89,11 +112,22 @@ export function CenteredSignInView() {
         size="large"
         type="submit"
         variant="contained"
-        loading={isPending}
-        loadingIndicator="Sign in..."
+        loading={isRequestPending || isVerifyPending}
+        loadingIndicator={isSent ? 'Verifying...' : 'Sending code...'}
       >
-        Sign in
+        {isSent ? 'Verify' : 'Send code'}
       </Button>
+
+      {isSent && (
+        <Button
+          fullWidth
+          size="small"
+          onClick={() => setIsSent(false)}
+          sx={{ mt: -1 }}
+        >
+          Change phone number
+        </Button>
+      )}
     </Box>
   );
 
@@ -102,15 +136,8 @@ export function CenteredSignInView() {
       <AnimateLogoRotate sx={{ mb: 3, mx: 'auto' }} />
 
       <FormHead
-        title="Sign in to your account"
-        description={
-          <>
-            {`Sign in with `}
-            <Link component={RouterLink} href={paths.auth.signInPhone} variant="subtitle2">
-              Phone
-            </Link>
-          </>
-        }
+        title={isSent ? 'Verify your account' : 'Sign in to your account'}
+        description={isSent ? `Code sent to +998 ${phone_number}` : 'Enter your phone number to receive a verification code'}
       />
 
       <Form methods={methods} onSubmit={onSubmit}>

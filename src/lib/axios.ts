@@ -6,7 +6,7 @@ import { CONFIG } from 'src/global-config';
 
 // ----------------------------------------------------------------------
 
-const axiosInstance = axios.create({ baseURL: CONFIG.serverUrl, withCredentials: true });
+const axiosInstance = axios.create({ baseURL: 'https://klinika-production.up.railway.app/', withCredentials: true });
 
 axiosInstance.interceptors.response.use(
   (response) => response,
@@ -38,6 +38,8 @@ export const endpoints = {
   calendar: '/api/calendar',
   auth: {
     me: (id: string) => `users/${id}`,
+    signInPhone: '/admin/login/request',
+    verifyPhone: '/admin/login/verify',
     signIn: 'users/login',
     signUp: '/api/auth/sign-up',
   },

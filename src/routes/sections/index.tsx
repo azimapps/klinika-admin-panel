@@ -63,78 +63,7 @@ export const routesSection: RouteObject[] = [
   {
     path: '/',
     element: <AuthGuard>{dashboardLayout()}</AuthGuard>,
-    children: [
-      { index: true, element: <OverviewAnalyticsPage /> },
-      {
-        path: 'user',
-        children: [{ path: 'list', element: <UserListPage /> }],
-      },
-      {
-        path: 'word-battle',
-        children: [
-          { path: 'list', element: <WordBattle /> },
-          { path: 'create', element: <CreateCategory /> },
-          { path: 'players', element: <WordBattleUserList /> },
-          { path: ':id/view', element: <CategoryView /> },
-          { path: 'settings', element: <Settings /> },
-        ],
-      },
-      {
-        path: 'flash-card',
-        children: [
-          {
-            path: 'list',
-            element: <FlashCardList />,
-          },
-          {
-            path: 'create',
-            element: <CreateTopic />,
-          },
-          {
-            path: ':id/edit',
-            element: <EditTopic />,
-          },
-          {
-            path: ':id/view',
-            element: <FlashCardTopicView />,
-          },
-          {
-            path: 'category-list',
-            element: <FlashCardCategoryList />,
-          },
-        ],
-      },
-      {
-        path: 'pics-word',
-        children: [
-          {
-            path: 'list',
-            element: <QuestionList />,
-          },
-          {
-            path: 'create',
-            element: <CreateQuestions />,
-          },
-          {
-            path: ':id/update',
-            element: <UpdateQuestion />,
-          },
-          {
-            path: 'settings',
-            element: <SettingsPicsWord />,
-          },
-        ],
-      },
-      {
-        path: 'odd-one-out',
-        children: [
-          {
-            path: 'list',
-            element: <OddOneOutQuestionsList />,
-          },
-        ],
-      },
-    ],
+    children: [],
   },
 
   // Auth
