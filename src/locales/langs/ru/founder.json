@@ -1,0 +1,30 @@
+{
+    "list": "Список",
+    "add": "Добавить",
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "confirmDelete": "Вы уверены, что хотите удалить?",
+    "main": "Главная",
+    "founders": "Основатели",
+    "avatar": "Аватар",
+    "name_uz": "Имя (UZ)",
+    "name_ru": "Имя (RU)",
+    "name_en": "Имя (EN)",
+    "position_uz": "Должность (UZ)",
+    "position_ru": "Должность (RU)",
+    "position_en": "Должность (EN)",
+    "description_uz": "Описание (UZ)",
+    "description_ru": "Описание (RU)",
+    "description_en": "Описание (EN)",
+    "linked_url": "Ссылка LinkedIn",
+    "search": "Поиск...",
+    "table": {
+        "avatar": "Аватар",
+        "name_uz": "Имя",
+        "position_uz": "Должность",
+        "linked_url": "Ссылка",
+        "actions": "Действия"
+    }
+}

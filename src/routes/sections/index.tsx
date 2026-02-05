@@ -27,6 +27,12 @@ const UserListPage = lazy(() => import('src/pages/dashboard/user/list'));
 // Doctor
 const DoctorListPage = lazy(() => import('src/pages/dashboard/doctor/list'));
 
+// Advantage
+const AdvantageListPage = lazy(() => import('src/pages/dashboard/advantage/list'));
+
+// Founder
+const FounderListPage = lazy(() => import('src/pages/dashboard/founder/list'));
+
 // ----------------------------------------------------------------------
 
 function SuspenseOutlet() {
@@ -73,6 +79,20 @@ export const routesSection: RouteObject[] = [
         children: [
           { index: true, element: <DoctorListPage /> },
           { path: 'list', element: <DoctorListPage /> },
+        ],
+      },
+      {
+        path: 'advantage',
+        children: [
+          { index: true, element: <AdvantageListPage /> },
+          { path: 'list', element: <AdvantageListPage /> },
+        ],
+      },
+      {
+        path: 'founder',
+        children: [
+          { index: true, element: <FounderListPage /> },
+          { path: 'list', element: <FounderListPage /> },
         ],
       },
     ],

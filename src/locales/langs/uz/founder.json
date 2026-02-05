@@ -1,0 +1,30 @@
+{
+    "list": "Ro'yxat",
+    "add": "Qo'shish",
+    "edit": "Tahrirlash",
+    "delete": "O'chirish",
+    "save": "Saqlash",
+    "cancel": "Bekor qilish",
+    "confirmDelete": "Haqiqatan ham o'chirmoqchimisiz?",
+    "main": "Asosiy",
+    "founders": "Asoschilar",
+    "avatar": "Avatar",
+    "name_uz": "Ism (UZ)",
+    "name_ru": "Ism (RU)",
+    "name_en": "Ism (EN)",
+    "position_uz": "Lavozim (UZ)",
+    "position_ru": "Lavozim (RU)",
+    "position_en": "Lavozim (EN)",
+    "description_uz": "Tavsif (UZ)",
+    "description_ru": "Tavsif (RU)",
+    "description_en": "Tavsif (EN)",
+    "linked_url": "LinkedIn havolasi",
+    "search": "Qidiruv...",
+    "table": {
+        "avatar": "Avatar",
+        "name_uz": "Ism",
+        "position_uz": "Lavozim",
+        "linked_url": "Havola",
+        "actions": "Amallar"
+    }
+}

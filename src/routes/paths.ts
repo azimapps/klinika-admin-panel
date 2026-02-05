@@ -22,6 +22,14 @@ export const paths = {
       root: `/doctor`,
       list: `/doctor/list`,
     },
+    advantage: {
+      root: `/advantage`,
+      list: `/advantage/list`,
+    },
+    founder: {
+      root: `/founder`,
+      list: `/founder/list`,
+    },
     games: {
       wordBattle: {
         root: '/word-battle',

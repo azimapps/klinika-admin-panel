@@ -50,6 +50,16 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
+      '/advantages': {
+        target: 'https://klinika-production.up.railway.app',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/founders': {
+        target: 'https://klinika-production.up.railway.app',
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
   preview: { port: PORT, host: true },

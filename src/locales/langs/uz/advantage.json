@@ -1,0 +1,25 @@
+{
+    "list": "Ro'yxat",
+    "add": "Qo'shish",
+    "edit": "Tahrirlash",
+    "delete": "O'chirish",
+    "save": "Saqlash",
+    "cancel": "Bekor qilish",
+    "confirmDelete": "Haqiqatan ham o'chirmoqchimisiz?",
+    "main": "Asosiy",
+    "advantages": "Afzalliklar",
+    "image": "Rasm",
+    "title_uz": "Sarlavha (UZ)",
+    "title_ru": "Sarlavha (RU)",
+    "title_en": "Sarlavha (EN)",
+    "description_uz": "Tavsif (UZ)",
+    "description_ru": "Tavsif (RU)",
+    "description_en": "Tavsif (EN)",
+    "search": "Qidiruv...",
+    "table": {
+        "image": "Rasm",
+        "title_uz": "Sarlavha (UZ)",
+        "description_uz": "Tavsif",
+        "actions": "Amallar"
+    }
+}

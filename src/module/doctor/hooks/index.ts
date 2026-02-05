@@ -114,10 +114,10 @@ export const useDeleteDoctor = () => {
     });
 };
 
-export const useUploadDoctorAvatar = (id: string) => {
+export const useUploadDoctorAvatar = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async (file: File) => {
+        mutationFn: async ({ id, file }: { id: string; file: File }) => {
             const formData = new FormData();
             formData.append('file', file);
             const res = await axiosInstance.post(endpoints.doctor.avatar(id), formData, {
@@ -129,7 +129,6 @@ export const useUploadDoctorAvatar = (id: string) => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['doctors'] });
-            queryClient.invalidateQueries({ queryKey: ['doctor', id] });
             toast.success('Rasm muvaffaqiyatli yuklandi');
         },
         onError: (error: any) => {

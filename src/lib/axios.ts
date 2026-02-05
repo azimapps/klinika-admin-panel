@@ -81,4 +81,16 @@ export const endpoints = {
     details: (id: string) => `/admin/doctors/${id}`,
     avatar: (id: string) => `/admin/doctors/${id}/avatar`,
   },
+  advantage: {
+    list: '/advantages', // Public endpoint for listing
+    create: '/admin/advantages', // Admin endpoint for creation
+    details: (id: string) => `/admin/advantages/${id}`,
+    image: (id: string) => `/admin/advantages/${id}/image`,
+  },
+  founder: {
+    list: '/founders', // Public endpoint
+    create: '/admin/founders', // Admin creation
+    details: (id: string) => `/admin/founders/${id}`,
+    avatar: (id: string) => `/admin/founders/${id}/avatar`,
+  },
 };

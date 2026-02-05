@@ -1,0 +1,30 @@
+{
+    "list": "List",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirmDelete": "Are you sure you want to delete?",
+    "main": "Home",
+    "founders": "Founders",
+    "avatar": "Avatar",
+    "name_uz": "Name (UZ)",
+    "name_ru": "Name (RU)",
+    "name_en": "Name (EN)",
+    "position_uz": "Position (UZ)",
+    "position_ru": "Position (RU)",
+    "position_en": "Position (EN)",
+    "description_uz": "Description (UZ)",
+    "description_ru": "Description (RU)",
+    "description_en": "Description (EN)",
+    "linked_url": "LinkedIn URL",
+    "search": "Search...",
+    "table": {
+        "avatar": "Avatar",
+        "name_uz": "Name",
+        "position_uz": "Position",
+        "linked_url": "Link",
+        "actions": "Actions"
+    }
+}

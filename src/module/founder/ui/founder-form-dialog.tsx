@@ -7,7 +7,6 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -18,54 +17,54 @@ import { useTranslate } from 'src/locales';
 
 import { Form, Field } from 'src/components/hook-form';
 
-import { useGetCategories } from 'src/module/category/hooks';
+import { useCreateFounder, useUpdateFounder, useUploadFounderAvatar } from '../hooks';
 
-import { useCreateDoctor, useUpdateDoctor, useUploadDoctorAvatar } from '../hooks';
-
-import type { IDoctor } from '../types';
+import type { IFounder } from '../types';
 
 // ----------------------------------------------------------------------
 
-const DoctorSchema = zod.object({
-    fullname_uz: zod.string().min(1, { message: 'F.I.SH (UZ) majburiy!' }),
-    fullname_ru: zod.string().min(1, { message: 'F.I.SH (RU) majburiy!' }),
-    fullname_en: zod.string().min(1, { message: 'F.I.SH (EN) majburiy!' }),
-    phone_number: zod.string().min(1, { message: 'Telefon raqam majburiy!' }),
-    price: zod.coerce.number().min(0, { message: 'Narx noto\'g\'ri!' }),
-    experience: zod.coerce.number().min(0, { message: 'Tajriba noto\'g\'ri!' }),
-    category_id: zod.coerce.number().min(1, { message: 'Kategoriya tanlanishi shart!' }),
-    is_active: zod.boolean(),
+const FounderSchema = zod.object({
+    name_uz: zod.string().min(1, { message: 'Ism (UZ) majburiy!' }),
+    name_ru: zod.string().min(1, { message: 'Ism (RU) majburiy!' }),
+    name_en: zod.string().min(1, { message: 'Ism (EN) majburiy!' }),
+    position_uz: zod.string().min(1, { message: 'Lavozim (UZ) majburiy!' }),
+    position_ru: zod.string().min(1, { message: 'Lavozim (RU) majburiy!' }),
+    position_en: zod.string().min(1, { message: 'Lavozim (EN) majburiy!' }),
+    description_uz: zod.string().min(1, { message: 'Tavsif (UZ) majburiy!' }),
+    description_ru: zod.string().min(1, { message: 'Tavsif (RU) majburiy!' }),
+    description_en: zod.string().min(1, { message: 'Tavsif (EN) majburiy!' }),
+    linked_url: zod.string().url({ message: "Noto'g'ri URL formati!" }).optional().or(zod.literal('')),
     avatar: zod.any().nullable().optional(),
 });
 
-type DoctorSchemaType = zod.infer<typeof DoctorSchema>;
+type FounderSchemaType = zod.infer<typeof FounderSchema>;
 
 interface Props {
     open: boolean;
     onClose: () => void;
-    currentRow?: IDoctor;
+    currentRow?: IFounder;
 }
 
-export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
-    const { t } = useTranslate('doctor');
+export function FounderFormDialog({ open, onClose, currentRow }: Props) {
+    const { t } = useTranslate('founder');
 
-    const { data: categories = [] } = useGetCategories();
+    const { mutateAsync: createFounder, isPending: createPending } = useCreateFounder();
+    const { mutateAsync: updateFounder, isPending: updatePending } = useUpdateFounder(currentRow?.id?.toString() || '');
+    const { mutateAsync: uploadAvatar } = useUploadFounderAvatar();
 
-    const { mutateAsync: createDoctor, isPending: createPending } = useCreateDoctor();
-    const { mutateAsync: updateDoctor, isPending: updatePending } = useUpdateDoctor(currentRow?.id?.toString() || '');
-    const { mutateAsync: uploadAvatar } = useUploadDoctorAvatar();
-
-    const methods = useForm<DoctorSchemaType>({
-        resolver: zodResolver(DoctorSchema),
+    const methods = useForm<FounderSchemaType>({
+        resolver: zodResolver(FounderSchema),
         defaultValues: {
-            fullname_uz: '',
-            fullname_ru: '',
-            fullname_en: '',
-            phone_number: '',
-            price: 0,
-            experience: 0,
-            category_id: 0,
-            is_active: true,
+            name_uz: '',
+            name_ru: '',
+            name_en: '',
+            position_uz: '',
+            position_ru: '',
+            position_en: '',
+            description_uz: '',
+            description_ru: '',
+            description_en: '',
+            linked_url: '',
             avatar: null,
         },
     });
@@ -80,26 +79,30 @@ export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
     useEffect(() => {
         if (currentRow) {
             reset({
-                fullname_uz: currentRow.fullname_uz,
-                fullname_ru: currentRow.fullname_ru,
-                fullname_en: currentRow.fullname_en,
-                phone_number: currentRow.phone_number,
-                price: currentRow.price,
-                experience: currentRow.experience,
-                category_id: currentRow.category_id,
-                is_active: currentRow.is_active,
+                name_uz: currentRow.name_uz,
+                name_ru: currentRow.name_ru,
+                name_en: currentRow.name_en,
+                position_uz: currentRow.position_uz,
+                position_ru: currentRow.position_ru,
+                position_en: currentRow.position_en,
+                description_uz: currentRow.description_uz,
+                description_ru: currentRow.description_ru,
+                description_en: currentRow.description_en,
+                linked_url: currentRow.linked_url,
                 avatar: currentRow.avatar,
             });
         } else {
             reset({
-                fullname_uz: '',
-                fullname_ru: '',
-                fullname_en: '',
-                phone_number: '',
-                price: 0,
-                experience: 0,
-                category_id: 0,
-                is_active: true,
+                name_uz: '',
+                name_ru: '',
+                name_en: '',
+                position_uz: '',
+                position_ru: '',
+                position_en: '',
+                description_uz: '',
+                description_ru: '',
+                description_en: '',
+                linked_url: '',
                 avatar: null,
             });
         }
@@ -111,12 +114,15 @@ export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
             delete data.avatar;
 
             if (currentRow) {
-                await updateDoctor(data);
+                // We cast data to any or specific update type if needed to satisfy TS checks for now
+                const updateData = { ...data, linked_url: data.linked_url || "" };
+                await updateFounder(updateData);
                 if (avatarFile) {
                     await uploadAvatar({ id: currentRow.id.toString(), file: avatarFile });
                 }
             } else {
-                const res = await createDoctor(data);
+                const createData = { ...data, linked_url: data.linked_url || "" };
+                const res = await createFounder(createData);
                 if (avatarFile && res?.id) {
                     await uploadAvatar({ id: res.id.toString(), file: avatarFile });
                 }
@@ -155,30 +161,36 @@ export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
                             display="grid"
                             gridTemplateColumns={{
                                 xs: 'repeat(1, 1fr)',
-                                sm: 'repeat(2, 1fr)',
+                                sm: 'repeat(3, 1fr)',
                             }}
                         >
-                            <Field.Text name="fullname_uz" label={t('fullname_uz')} />
-                            <Field.Text name="fullname_ru" label={t('fullname_ru')} />
-                            <Field.Text name="fullname_en" label={t('fullname_en')} />
-                            <Field.Text name="phone_number" label={t('phone_number')} />
+                            <Field.Text name="name_uz" label={t('name_uz')} />
+                            <Field.Text name="name_ru" label={t('name_ru')} />
+                            <Field.Text name="name_en" label={t('name_en')} />
 
-                            <Field.Text name="price" label={t('price')} type="number" />
-                            <Field.Text name="experience" label={t('experience')} type="number" />
+                            <Field.Text name="position_uz" label={t('position_uz')} />
+                            <Field.Text name="position_ru" label={t('position_ru')} />
+                            <Field.Text name="position_en" label={t('position_en')} />
+                        </Box>
 
-                            <Field.Select name="category_id" label={t('category')}>
-                                <MenuItem value={0} disabled>Tanlang...</MenuItem>
-                                {categories.map((category) => (
-                                    <MenuItem key={category.id} value={category.id}>
-                                        {category.title_uz}
-                                    </MenuItem>
-                                ))}
-                            </Field.Select>
+                        <Box
+                            rowGap={3}
+                            columnGap={2}
+                            display="grid"
+                            gridTemplateColumns={{
+                                xs: 'repeat(1, 1fr)',
+                                sm: 'repeat(1, 1fr)',
+                            }}
+                        >
+                            <Field.Text name="description_uz" label={t('description_uz')} multiline rows={3} />
+                            <Field.Text name="description_ru" label={t('description_ru')} multiline rows={3} />
+                            <Field.Text name="description_en" label={t('description_en')} multiline rows={3} />
 
-                            <Field.Switch name="is_active" label={t('is_active')} />
+                            <Field.Text name="linked_url" label={t('linked_url')} />
                         </Box>
 
                         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+                            <Typography variant="subtitle2" sx={{ mb: 1, display: 'none' }}>{t('avatar')}</Typography>
                             <Field.UploadAvatar
                                 name="avatar"
                                 maxSize={3145728}
