@@ -16,11 +16,6 @@ export type SignInParams = {
   phone?: string;
 };
 
-interface CustomError extends Error {
-  error: {
-    code: string;
-  };
-}
 
 /** **************************************
  * Sign in (OTP Request)

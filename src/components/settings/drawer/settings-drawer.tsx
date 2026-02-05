@@ -25,6 +25,7 @@ import { FullScreenButton } from './fullscreen-button';
 import { FontSizeOptions, FontFamilyOptions } from './font-options';
 import { useSettingsContext } from '../context/use-settings-context';
 import { NavColorOptions, NavLayoutOptions } from './nav-layout-option';
+import { SignOutButton } from '../../../layouts/components/sign-out-button';
 
 import type { SettingsState, SettingsDrawerProps } from '../types';
 
@@ -295,6 +296,10 @@ export function SettingsDrawer({ sx, defaultSettings }: SettingsDrawerProps) {
           {(isNavColorVisible || isNavLayoutVisible) && renderNav()}
           {isPrimaryColorVisible && renderPresets()}
           {(isFontFamilyVisible || isFontSizeVisible) && renderFont()}
+
+          <Box sx={{ mt: 2 }}>
+            <SignOutButton onClose={settings.onCloseDrawer} />
+          </Box>
         </Box>
       </Scrollbar>
     </Drawer>

@@ -41,11 +41,47 @@ const ICONS = {
  * - `disabled`: An optional boolean to disable the item.
  */
 export const useNavData = (): NavSectionProps['data'] => {
-  const { t } = useTranslate('navbar');
+  useTranslate('navbar');
   return useMemo(
     () => [
-      // Sidebar is empty, ready for new project modules.
+      {
+        subheader: 'Boshqaruv',
+        items: [
+          { title: 'Asosiy', path: paths.dashboard.root, icon: ICONS.analytics },
+        ],
+      },
+      /*
+      {
+        subheader: 'Old Content (Commented)',
+        items: [
+          {
+            title: 'Users',
+            path: paths.dashboard.user.root,
+            icon: ICONS.user,
+            children: [{ title: 'List', path: paths.dashboard.user.list }],
+          },
+          {
+            title: 'Word battle',
+            path: paths.dashboard.games.wordBattle.root,
+            icon: ICONS.wordBattle,
+            children: [
+              { title: 'List', path: paths.dashboard.games.wordBattle.list },
+              { title: 'Create', path: paths.dashboard.games.wordBattle.create },
+            ],
+          },
+          {
+            title: 'Flash Card',
+            path: paths.dashboard.games.flashCard.root,
+            icon: ICONS.flashCard,
+            children: [
+              { title: 'List', path: paths.dashboard.games.flashCard.list },
+              { title: 'Create', path: paths.dashboard.games.flashCard.create },
+            ],
+          },
+        ],
+      },
+      */
     ],
-    [t]
+    []
   );
 };

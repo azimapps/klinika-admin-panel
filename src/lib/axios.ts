@@ -2,8 +2,6 @@ import type { AxiosRequestConfig } from 'axios';
 
 import axios from 'axios';
 
-import { CONFIG } from 'src/global-config';
-
 // ----------------------------------------------------------------------
 
 const axiosInstance = axios.create({ baseURL: 'https://klinika-production.up.railway.app/', withCredentials: true });

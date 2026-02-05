@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------------
 
 export const fallbackLng = 'uz';
-export const languages = ['en', 'ru', 'uz'];
+export const languages = ['ru', 'uz'];
 export const defaultNS = 'common';
 
 export type LanguageValue = (typeof languages)[number];
@@ -26,11 +26,6 @@ export const changeLangMessages: Record<
   LanguageValue,
   { success: string; error: string; loading: string }
 > = {
-  en: {
-    success: 'Language has been changed!',
-    error: 'Error changing language!',
-    loading: 'Loading...',
-  },
   ru: {
     success: 'Язык был изменён!',
     error: 'Ошибка при смене языка!',
