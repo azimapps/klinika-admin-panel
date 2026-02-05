@@ -23,6 +23,12 @@ const UserListPage = lazy(() => import('src/pages/dashboard/user/list'));
 const WordBattle = lazy(() => import('src/pages/dashboard/word-battle/list'));
 const CreateCategory = lazy(() => import('src/pages/dashboard/word-battle/create'));
 const FlashCardList = lazy(() => import('src/pages/dashboard/flash-card/topicList'));
+
+// Klinika New Pages (Remote)
+const CategoryListPage = lazy(() => import('src/pages/dashboard/category/list'));
+const DoctorListPage = lazy(() => import('src/pages/dashboard/doctor/list'));
+const AdvantageListPage = lazy(() => import('src/pages/dashboard/advantage/list'));
+const FounderListPage = lazy(() => import('src/pages/dashboard/founder/list'));
 */
 
 // ----------------------------------------------------------------------
@@ -54,14 +60,38 @@ export const routesSection: RouteObject[] = [
       { index: true, element: <OverviewAnalyticsPage /> },
       /*
       {
-        path: 'user',
-        children: [{ path: 'list', element: <UserListPage /> }],
+        path: 'category',
+        children: [
+          { index: true, element: <CategoryListPage /> },
+          { path: 'list', element: <CategoryListPage /> },
+        ],
       },
       {
-        path: 'word-battle',
+        path: 'user',
         children: [
-          { path: 'list', element: <WordBattle /> },
-          { path: 'create', element: <CreateCategory /> },
+          { index: true, element: <UserListPage /> },
+          { path: 'list', element: <UserListPage /> },
+        ],
+      },
+      {
+        path: 'doctor',
+        children: [
+          { index: true, element: <DoctorListPage /> },
+          { path: 'list', element: <DoctorListPage /> },
+        ],
+      },
+      {
+        path: 'advantage',
+        children: [
+          { index: true, element: <AdvantageListPage /> },
+          { path: 'list', element: <AdvantageListPage /> },
+        ],
+      },
+      {
+        path: 'founder',
+        children: [
+          { index: true, element: <FounderListPage /> },
+          { path: 'list', element: <FounderListPage /> },
         ],
       },
       */

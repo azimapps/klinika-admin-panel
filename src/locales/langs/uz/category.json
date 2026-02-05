@@ -1,0 +1,23 @@
+{
+    "category": "Kategoriya",
+    "categories": "Kategoriyalar",
+    "list": "Ro'yxat",
+    "main": "Asosiy",
+    "add": "Qo'shish",
+    "edit": "Tahrirlash",
+    "delete": "O'chirish",
+    "title_uz": "Sarlavha (UZ)",
+    "title_ru": "Sarlavha (RU)",
+    "title_en": "Sarlavha (EN)",
+    "avatar": "Rasm",
+    "upload": "Yuklash",
+    "save": "Saqlash",
+    "cancel": "Bekor qilish",
+    "table": {
+        "title_uz": "Sarlavha (UZ)",
+        "title_ru": "Sarlavha (RU)",
+        "title_en": "Sarlavha (EN)",
+        "avatar": "Rasm",
+        "actions": "Amallar"
+    }
+}

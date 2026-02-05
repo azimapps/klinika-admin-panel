@@ -11,6 +11,18 @@ axiosInstance.interceptors.response.use(
   (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong!')
 );
 
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = sessionStorage.getItem('jwt_access_token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    // console.log('Request:', config.method?.toUpperCase(), config.baseURL, config.url, config.data);
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
 export default axiosInstance;
 
 // ----------------------------------------------------------------------
@@ -40,6 +52,8 @@ export const endpoints = {
     verifyPhone: '/admin/login/verify',
     signIn: 'users/login',
     signUp: '/api/auth/sign-up',
+    request: '/admin/login/request',
+    verify: '/admin/login/verify',
   },
   mail: {
     list: '/api/mail/list',
@@ -56,5 +70,27 @@ export const endpoints = {
     list: '/api/product/list',
     details: '/api/product/details',
     search: '/api/product/search',
+  },
+  category: {
+    list: '/admin/categories/',
+    details: (id: string) => `/admin/categories/${id}`,
+    avatar: (id: string) => `/admin/categories/${id}/avatar`,
+  },
+  doctor: {
+    list: '/admin/doctors/',
+    details: (id: string) => `/admin/doctors/${id}`,
+    avatar: (id: string) => `/admin/doctors/${id}/avatar`,
+  },
+  advantage: {
+    list: '/advantages', // Public endpoint for listing
+    create: '/admin/advantages', // Admin endpoint for creation
+    details: (id: string) => `/admin/advantages/${id}`,
+    image: (id: string) => `/admin/advantages/${id}/image`,
+  },
+  founder: {
+    list: '/founders', // Public endpoint
+    create: '/admin/founders', // Admin creation
+    details: (id: string) => `/admin/founders/${id}`,
+    avatar: (id: string) => `/admin/founders/${id}/avatar`,
   },
 };

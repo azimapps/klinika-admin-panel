@@ -5,11 +5,8 @@ import { TextField, InputAdornment } from '@mui/material';
 import {
   DataGrid,
   gridClasses,
-  GridToolbarExport,
   GridToolbarContainer,
   GridToolbarQuickFilter,
-  GridToolbarColumnsButton,
-  GridToolbarDensitySelector,
 } from '@mui/x-data-grid';
 
 import { useTranslate } from 'src/locales';
@@ -64,6 +61,8 @@ export function DataGridCustom<T>({
       <DataGrid
         checkboxSelection
         disableRowSelectionOnClick
+        disableColumnMenu
+        disableColumnSorting
         rows={data as GridValidRowModel[]}
         columns={column}
         loading={loading}
@@ -75,9 +74,6 @@ export function DataGridCustom<T>({
             <GridToolbarContainer>
               {quickToolbar && <GridToolbarQuickFilter />}
               <Box sx={{ flexGrow: 1 }} />
-              <GridToolbarColumnsButton />
-              <GridToolbarDensitySelector />
-              <GridToolbarExport />
             </GridToolbarContainer>
           ),
           noRowsOverlay: () => <EmptyContent />,

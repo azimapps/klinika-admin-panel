@@ -1,0 +1,25 @@
+{
+    "list": "Список",
+    "add": "Добавить",
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "confirmDelete": "Вы уверены, что хотите удалить?",
+    "main": "Главная",
+    "advantages": "Преимущества",
+    "image": "Изображение",
+    "title_uz": "Заголовок (UZ)",
+    "title_ru": "Заголовок (RU)",
+    "title_en": "Заголовок (EN)",
+    "description_uz": "Описание (UZ)",
+    "description_ru": "Описание (RU)",
+    "description_en": "Описание (EN)",
+    "search": "Поиск...",
+    "table": {
+        "image": "Фото",
+        "title_uz": "Заголовок (UZ)",
+        "description_uz": "Описание",
+        "actions": "Действия"
+    }
+}

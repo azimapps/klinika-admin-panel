@@ -1,0 +1,25 @@
+{
+    "list": "List",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirmDelete": "Are you sure you want to delete?",
+    "main": "Home",
+    "advantages": "Advantages",
+    "image": "Image",
+    "title_uz": "Title (UZ)",
+    "title_ru": "Title (RU)",
+    "title_en": "Title (EN)",
+    "description_uz": "Description (UZ)",
+    "description_ru": "Description (RU)",
+    "description_en": "Description (EN)",
+    "search": "Search...",
+    "table": {
+        "image": "Image",
+        "title_uz": "Title (UZ)",
+        "description_uz": "Description",
+        "actions": "Actions"
+    }
+}

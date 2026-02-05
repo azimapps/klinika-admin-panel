@@ -11,8 +11,6 @@ import { SplashScreen } from 'src/components/loading-screen';
 import { GuestGuard } from 'src/auth/guard/guest-guard';
 
 const CenteredLayout = {
-  SignInPage: lazy(() => import('src/pages/auth/sign-in')),
-  SignUpPage: lazy(() => import('src/pages/auth/sign-up')),
   SignInPhonePage: lazy(() => import('src/pages/auth/sign-in-phone')),
 };
 
@@ -24,9 +22,8 @@ const authCentered = {
     </AuthCenteredLayout>
   ),
   children: [
-    { path: 'sign-in', element: <CenteredLayout.SignInPage /> },
+    { index: true, element: <CenteredLayout.SignInPhonePage /> },
     { path: 'sign-in-phone', element: <CenteredLayout.SignInPhonePage /> },
-    { path: 'sign-up', element: <CenteredLayout.SignUpPage /> },
   ],
 };
 

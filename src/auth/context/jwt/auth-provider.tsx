@@ -19,7 +19,6 @@ export function AuthProvider({ children }: Props) {
   const checkUserSession = useCallback(async () => {
     try {
       const accessToken = sessionStorage.getItem(JWT_STORAGE_KEY);
-
       if (accessToken && isValidToken(accessToken)) {
         setSession(accessToken);
 
@@ -33,10 +32,12 @@ export function AuthProvider({ children }: Props) {
           loading: false
         });
       } else {
+        setSession(null);
         setState({ user: null, loading: false });
       }
     } catch (error) {
       console.error(error);
+      setSession(null);
       setState({ user: null, loading: false });
     }
   }, [setState]);

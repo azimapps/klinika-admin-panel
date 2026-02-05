@@ -4,7 +4,7 @@ export const paths = {
   page500: '/error/500',
   components: '/components',
   auth: {
-    signIn: `/auth/sign-in`,
+    signIn: `/auth/sign-in-phone`,
     signInPhone: `/auth/sign-in-phone`,
     signUp: `/auth/sign-up`,
   },
@@ -13,6 +13,22 @@ export const paths = {
     user: {
       root: `/user`,
       list: `/user/list`,
+    },
+    category: {
+      root: `/category`,
+      list: `/category/list`,
+    },
+    doctor: {
+      root: `/doctor`,
+      list: `/doctor/list`,
+    },
+    advantage: {
+      root: `/advantage`,
+      list: `/advantage/list`,
+    },
+    founder: {
+      root: `/founder`,
+      list: `/founder/list`,
     },
     games: {
       wordBattle: {

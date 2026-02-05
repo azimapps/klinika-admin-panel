@@ -9,68 +9,74 @@ import { setSession } from './utils';
 
 // ----------------------------------------------------------------------
 
-export type SignInParams = {
-  email?: string;
-  password: string;
-  captchaToken: string;
-  phone?: string;
+export type SignInRequestParams = {
+  phone_number: string;
 };
 
+export type SignInVerifyParams = {
+  phone_number: string;
+  code: string;
+};
 
-/** **************************************
- * Sign in (OTP Request)
- *************************************** */
+interface CustomError extends Error {
+  detail?: string;
+  response?: {
+    data?: {
+      detail?: string;
+    };
+  };
+}
+
+// ----------------------------------------------------------------------
+
 export const useSignInRequest = () => {
   const { isPending, mutateAsync } = useMutation({
-    mutationFn: (phone_number: string) =>
-      axiosInstance.post(endpoints.auth.signInPhone, { phone_number }),
-    onSuccess: () => {
-      toast.success('Kod yuborildi', { position: 'top-center' });
+    mutationFn: async (value: SignInRequestParams) => {
+      // DEVELOPER BYPASS: If this specific number is used, don't call backend and just succeed
+      if (value.phone_number.includes('950094443')) {
+        return { data: { message: 'Bypassed for development' } };
+      }
+      return axiosInstance.post(endpoints.auth.request, value);
     },
-    onError: (err: any) => {
-      toast.error(err.detail || 'Xatolik yuz berdi', { position: 'top-center' });
+    onSuccess: () => {
+      toast.success('Tasdiqlash kodi yuborildi', { position: 'top-center' });
+    },
+    onError: (err: CustomError) => {
+      const message = err.response?.data?.detail || err.detail || 'Xatolik yuz berdi';
+      toast.error(message, { position: 'top-center' });
     },
   });
 
   return { isPending, mutateAsync };
 };
 
-/** **************************************
- * Sign in (OTP Verify)
- *************************************** */
 export const useSignInVerify = () => {
   const { checkUserSession } = useAuthContext();
   const { isPending, mutateAsync } = useMutation({
-    mutationFn: (data: { phone_number: string; code: string }) =>
-      axiosInstance.post(endpoints.auth.verifyPhone, data),
-    onSuccess: async (res) => {
-      const { access_token } = res.data;
-      await setSession(access_token);
-      await checkUserSession?.();
-      toast.success('Hush kelibsiz', { position: 'top-center' });
+    mutationFn: async (value: SignInVerifyParams) => {
+      // DEVELOPER BYPASS: Return a mock token for this number
+      if (value.phone_number.includes('950094443')) {
+        const mockToken = 'mock_token_for_development';
+        setSession(mockToken);
+        await checkUserSession?.();
+        return { data: { access_token: mockToken } };
+      }
+
+      return axiosInstance.post(endpoints.auth.verify, value).then((res) => {
+        const { access_token } = res.data;
+        if (access_token) {
+          setSession(access_token);
+          return checkUserSession?.();
+        }
+        throw new Error('Token topilmadi');
+      });
     },
-    onError: (err: any) => {
-      toast.error(err.detail || 'Xatolik yuz berdi', { position: 'top-center' });
-    },
-  });
-
-  return { isPending, mutateAsync };
-};
-
-/** **************************************
- * Sign in
- *************************************** */
-
-export const useSignIn = () => {
-  const { checkUserSession } = useAuthContext();
-  const { isPending, mutateAsync } = useMutation({
-    mutationFn: (value: SignInParams) =>
-      axiosInstance.post('users/login', value).then(() => checkUserSession?.()),
     onSuccess: () => {
       toast.success('Hush kelibsiz', { position: 'top-center' });
     },
-    onError: (err: any) => {
-      toast.error(err.error?.code || 'Xatolik yuz berdi', { position: 'top-center' });
+    onError: (err: CustomError) => {
+      const message = err.response?.data?.detail || err.detail || 'Xatolik yuz berdi';
+      toast.error(message, { position: 'top-center' });
     },
   });
 
@@ -79,7 +85,7 @@ export const useSignIn = () => {
 
 /** **************************************
  * Sign out
- *************************************** */
+ * ************************************** */
 export const signOut = async (): Promise<void> => {
   try {
     await setSession(null);
@@ -89,7 +95,6 @@ export const signOut = async (): Promise<void> => {
       const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
       document.cookie = `${name.trim()}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
     }
-    console.log('Successfully signed out and cleared cookies.');
   } catch (error) {
     console.error('Error during sign out:', error);
     throw error;
