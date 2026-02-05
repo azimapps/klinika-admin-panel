@@ -24,6 +24,9 @@ const CategoryListPage = lazy(() => import('src/pages/dashboard/category/list'))
 // User
 const UserListPage = lazy(() => import('src/pages/dashboard/user/list'));
 
+// Doctor
+const DoctorListPage = lazy(() => import('src/pages/dashboard/doctor/list'));
+
 // ----------------------------------------------------------------------
 
 function SuspenseOutlet() {
@@ -63,6 +66,13 @@ export const routesSection: RouteObject[] = [
         children: [
           { index: true, element: <UserListPage /> },
           { path: 'list', element: <UserListPage /> },
+        ],
+      },
+      {
+        path: 'doctor',
+        children: [
+          { index: true, element: <DoctorListPage /> },
+          { path: 'list', element: <DoctorListPage /> },
         ],
       },
     ],

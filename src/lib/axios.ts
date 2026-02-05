@@ -76,4 +76,9 @@ export const endpoints = {
     details: (id: string) => `/admin/categories/${id}`,
     avatar: (id: string) => `/admin/categories/${id}/avatar`,
   },
+  doctor: {
+    list: '/admin/doctors/',
+    details: (id: string) => `/admin/doctors/${id}`,
+    avatar: (id: string) => `/admin/doctors/${id}/avatar`,
+  },
 };

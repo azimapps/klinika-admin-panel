@@ -18,6 +18,10 @@ export const paths = {
       root: `/category`,
       list: `/category/list`,
     },
+    doctor: {
+      root: `/doctor`,
+      list: `/doctor/list`,
+    },
     games: {
       wordBattle: {
         root: '/word-battle',

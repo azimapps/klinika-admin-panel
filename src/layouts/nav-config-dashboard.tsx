@@ -38,7 +38,7 @@ export const useNavData = (): NavSectionProps['data'] => {
         items: [
           { title: t('statistics'), path: paths.dashboard.root, icon: ICONS.analytics },
           { title: t('categories'), path: paths.dashboard.category.list, icon: ICONS.category },
-          { title: t('users'), path: paths.dashboard.user.list, icon: ICONS.user },
+          { title: t('doctors'), path: paths.dashboard.doctor.list, icon: <Iconify icon="solar:heart-bold" width={24} /> },
         ],
       },
     ],
