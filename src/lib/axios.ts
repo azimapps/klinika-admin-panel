@@ -4,7 +4,11 @@ import axios from 'axios';
 
 // ----------------------------------------------------------------------
 
-const axiosInstance = axios.create({ baseURL: 'https://klinika-production.up.railway.app/', withCredentials: true });
+import { CONFIG } from 'src/global-config';
+
+// ----------------------------------------------------------------------
+
+const axiosInstance = axios.create({ baseURL: CONFIG.serverUrl, withCredentials: true });
 
 axiosInstance.interceptors.response.use(
   (response) => response,

@@ -55,8 +55,7 @@ export function CenteredSignInViewPhone() {
       if (executeRecaptcha) {
         await executeRecaptcha('login_request');
       }
-      const cleanPhone = phone.replace('+', '');
-      await requestSignIn({ phone_number: cleanPhone });
+      await requestSignIn({ phone_number: phone });
       setIsVerifyStep(true);
       countdown.start();
     } catch (error) {
@@ -69,9 +68,8 @@ export function CenteredSignInViewPhone() {
       if (!isVerifyStep) {
         await handleSendCode(data.phone_number);
       } else {
-        const cleanPhone = data.phone_number.replace('+', '');
         await verifySignIn({
-          phone_number: cleanPhone,
+          phone_number: data.phone_number,
           code: data.code || '',
         });
       }
