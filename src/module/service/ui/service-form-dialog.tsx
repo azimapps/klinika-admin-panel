@@ -42,7 +42,7 @@ interface Props {
 }
 
 export function ServiceFormDialog({ open, onClose, currentRow }: Props) {
-    const { t } = useTranslate('service'); // Assumes 'service' namespace exists in locales, otherwise defaults
+    useTranslate('service'); // Assumes 'service' namespace exists in locales, otherwise defaults
 
     const { mutateAsync: createService, isPending: createPending } = useCreateService();
     const { mutateAsync: updateService, isPending: updatePending } = useUpdateService(currentRow?.id?.toString() || '');

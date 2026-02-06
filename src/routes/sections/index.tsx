@@ -29,11 +29,7 @@ function SuspenseOutlet() {
   );
 }
 
-const dashboardLayout = () => (
-  <DashboardLayout>
-    <SuspenseOutlet />
-  </DashboardLayout>
-);
+
 
 // ----------------------------------------------------------------------
 

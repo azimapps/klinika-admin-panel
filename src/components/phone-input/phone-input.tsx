@@ -135,7 +135,7 @@ function getCountryCode(inputValue: string, countryCode?: Country): Country {
       if (phoneNumber?.country) {
         return phoneNumber.country as Country;
       }
-    } catch (err) {
+    } catch {
       // Do nothing
     }
   }
