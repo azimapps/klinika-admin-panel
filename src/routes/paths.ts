@@ -30,6 +30,10 @@ export const paths = {
       root: `/founder`,
       list: `/founder/list`,
     },
+    service: {
+      root: `/service`,
+      list: `/service/list`,
+    },
     games: {
       wordBattle: {
         root: '/word-battle',

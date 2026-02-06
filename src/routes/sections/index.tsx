@@ -39,12 +39,61 @@ const dashboardLayout = () => (
 
 const Page404 = lazy(() => import('src/pages/error/404'));
 
+const CategoryListPage = lazy(() => import('src/pages/dashboard/category/list'));
+const DoctorListPage = lazy(() => import('src/pages/dashboard/doctor/list'));
+const AdvantageListPage = lazy(() => import('src/pages/dashboard/advantage/list'));
+const FounderListPage = lazy(() => import('src/pages/dashboard/founder/list'));
+const ServiceListPage = lazy(() => import('src/pages/dashboard/service/list'));
+
+// ----------------------------------------------------------------------
+
 export const routesSection: RouteObject[] = [
   {
     path: '/',
-    element: <AuthGuard>{dashboardLayout()}</AuthGuard>,
+    element: (
+      <AuthGuard>
+        <DashboardLayout>
+          <SuspenseOutlet />
+        </DashboardLayout>
+      </AuthGuard>
+    ),
     children: [
       { index: true, element: <OverviewAnalyticsPage /> },
+      {
+        path: 'category',
+        children: [
+          { element: <CategoryListPage />, index: true },
+          { path: 'list', element: <CategoryListPage /> },
+        ],
+      },
+      {
+        path: 'doctor',
+        children: [
+          { element: <DoctorListPage />, index: true },
+          { path: 'list', element: <DoctorListPage /> },
+        ],
+      },
+      {
+        path: 'advantage',
+        children: [
+          { element: <AdvantageListPage />, index: true },
+          { path: 'list', element: <AdvantageListPage /> },
+        ],
+      },
+      {
+        path: 'founder',
+        children: [
+          { element: <FounderListPage />, index: true },
+          { path: 'list', element: <FounderListPage /> },
+        ],
+      },
+      {
+        path: 'service',
+        children: [
+          { element: <ServiceListPage />, index: true },
+          { path: 'list', element: <ServiceListPage /> },
+        ],
+      },
     ],
   },
 
@@ -57,15 +106,3 @@ export const routesSection: RouteObject[] = [
   // No match
   { path: '*', element: <Page404 /> },
 ];
-
-/*
-// Previously used pages (commented out for future reference)
-const UserListPage = lazy(() => import('src/pages/dashboard/user/list'));
-const WordBattle = lazy(() => import('src/pages/dashboard/word-battle/list'));
-const CreateCategory = lazy(() => import('src/pages/dashboard/word-battle/create'));
-const FlashCardList = lazy(() => import('src/pages/dashboard/flash-card/topicList'));
-const CategoryListPage = lazy(() => import('src/pages/dashboard/category/list'));
-const DoctorListPage = lazy(() => import('src/pages/dashboard/doctor/list'));
-const AdvantageListPage = lazy(() => import('src/pages/dashboard/advantage/list'));
-const FounderListPage = lazy(() => import('src/pages/dashboard/founder/list'));
-*/

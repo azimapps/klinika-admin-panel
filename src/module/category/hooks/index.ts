@@ -42,10 +42,13 @@ export const useCreateCategory = () => {
             const status = error?.response?.status;
             let errorMessage = 'Xatolik yuz berdi';
 
-            if (Array.isArray(error?.detail)) {
-                errorMessage = error.detail.map((e: any) => e.msg).join(', ');
-            } else if (error?.detail) {
-                errorMessage = error.detail;
+            if (error?.response?.data?.detail) {
+                const detail = error.response.data.detail;
+                if (Array.isArray(detail)) {
+                    errorMessage = detail.map((e: any) => e.msg).join(', ');
+                } else {
+                    errorMessage = detail;
+                }
             } else if (error?.message) {
                 errorMessage = error.message;
             }

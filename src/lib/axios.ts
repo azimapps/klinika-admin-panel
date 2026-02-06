@@ -95,4 +95,20 @@ export const endpoints = {
     details: (id: string) => `/admin/founders/${id}`,
     avatar: (id: string) => `/admin/founders/${id}/avatar`,
   },
+  service: {
+    list: '/admin/services/',
+    create: '/admin/services/',
+    details: (id: string) => `/admin/services/${id}`,
+    image: (id: string) => `/admin/services/${id}/image`,
+  },
+  clinic: {
+    list: '/admin/clinics/',
+    create: '/admin/clinics/',
+    details: (id: string) => `/admin/clinics/${id}`,
+  },
+  faq: {
+    list: '/admin/faqs/',
+    create: '/admin/faqs/',
+    details: (id: string) => `/admin/faqs/${id}`,
+  },
 };
