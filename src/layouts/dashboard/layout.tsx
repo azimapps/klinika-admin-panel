@@ -14,6 +14,7 @@ import { allLangs } from 'src/locales';
 import { Logo } from 'src/components/logo';
 import { useSettingsContext } from 'src/components/settings';
 import { FullScreenButton } from 'src/components/settings/drawer/fullscreen-button';
+import { ThemeToggleButton } from 'src/components/settings/drawer/theme-toggle-button';
 
 import { useAuthContext } from 'src/auth/hooks';
 
@@ -147,6 +148,9 @@ export function DashboardLayout({
 
 
           {/** @slot Contacts popover */}
+
+          {/** @slot Theme toggle button */}
+          <ThemeToggleButton />
 
           {/** @slot Settings button */}
           <SettingsButton />

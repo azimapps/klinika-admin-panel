@@ -43,7 +43,7 @@ export function CenteredSignInViewPhone() {
 
   const methods = useForm<SignInSchemaType>({
     resolver: zodResolver(SignInSchema),
-    defaultValues: { phone_number: '+998', code: '123456' },
+    defaultValues: { phone_number: '+998', code: '' },
   });
 
   const { handleSubmit, register, setValue, watch, formState: { errors } } = methods;
@@ -80,7 +80,7 @@ export function CenteredSignInViewPhone() {
 
   const handleBack = () => {
     setIsVerifyStep(false);
-    setValue('code', '123456');
+    setValue('code', '');
     countdown.reset();
   };
 
