@@ -14,23 +14,23 @@ import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
 
 import { DataGridCustom } from 'src/module/_examples/mui/data-grid-view/data-grid-custom';
 
-import { ServiceFormDialog } from './service-form-dialog';
-import { useGetServices, useDeleteService } from '../hooks';
-import { serviceTableColumns } from './service-table-columns';
+import { ClinicFormDialog } from './clinic-form-dialog';
+import { useGetClinics, useDeleteClinic } from '../hooks';
+import { clinicTableColumns } from './clinic-table-columns';
 
-import type { IService } from '../types';
+import type { IClinic } from '../types';
 
 // ----------------------------------------------------------------------
 
-export function ServiceListView() {
-    const { t } = useTranslate('service');
-    const { data: services = [], isLoading } = useGetServices();
-    const { mutateAsync: deleteService } = useDeleteService();
+export function ClinicListView() {
+    const { t } = useTranslate('clinic');
+    const { data: clinics = [], isLoading } = useGetClinics();
+    const { mutateAsync: deleteClinic } = useDeleteClinic();
 
     const [openForm, setOpenForm] = useState(false);
-    const [selectedRow, setSelectedRow] = useState<IService | undefined>(undefined);
+    const [selectedRow, setSelectedRow] = useState<IClinic | undefined>(undefined);
 
-    const handleOpenForm = useCallback((row?: IService) => {
+    const handleOpenForm = useCallback((row?: IClinic) => {
         setSelectedRow(row);
         setOpenForm(true);
     }, []);
@@ -43,14 +43,14 @@ export function ServiceListView() {
     const handleDelete = useCallback(async (id: number) => {
         if (window.confirm(t('confirmDelete'))) {
             try {
-                await deleteService(id);
+                await deleteClinic(id);
             } catch (error) {
                 console.error(error);
             }
         }
-    }, [deleteService, t]);
+    }, [deleteClinic, t]);
 
-    const columns = serviceTableColumns({
+    const columns = clinicTableColumns({
         t,
         onEdit: handleOpenForm,
         onDelete: handleDelete,
@@ -62,7 +62,7 @@ export function ServiceListView() {
                 heading={t('list_title')}
                 links={[
                     { name: t('main'), href: paths.dashboard.root },
-                    { name: t('services') },
+                    { name: t('clinics') },
                     { name: t('list') },
                 ]}
                 action={
@@ -79,17 +79,17 @@ export function ServiceListView() {
 
             <Card>
                 <Box sx={{ position: 'relative' }}>
-                    <DataGridCustom<IService>
-                        data={services}
+                    <DataGridCustom<IClinic>
+                        data={clinics}
                         column={columns}
                         loading={isLoading}
-                        rowCount={services.length}
+                        rowCount={clinics.length}
                         quickToolbar={false}
                     />
                 </Box>
             </Card>
 
-            <ServiceFormDialog
+            <ClinicFormDialog
                 open={openForm}
                 onClose={handleCloseForm}
                 currentRow={selectedRow}

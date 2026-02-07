@@ -14,23 +14,23 @@ import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
 
 import { DataGridCustom } from 'src/module/_examples/mui/data-grid-view/data-grid-custom';
 
-import { ServiceFormDialog } from './service-form-dialog';
-import { useGetServices, useDeleteService } from '../hooks';
-import { serviceTableColumns } from './service-table-columns';
+import { FAQFormDialog } from './faq-form-dialog';
+import { useGetFAQs, useDeleteFAQ } from '../hooks';
+import { faqTableColumns } from './faq-table-columns';
 
-import type { IService } from '../types';
+import type { IFAQ } from '../types';
 
 // ----------------------------------------------------------------------
 
-export function ServiceListView() {
-    const { t } = useTranslate('service');
-    const { data: services = [], isLoading } = useGetServices();
-    const { mutateAsync: deleteService } = useDeleteService();
+export function FAQListView() {
+    const { t } = useTranslate('faq');
+    const { data: faqs = [], isLoading } = useGetFAQs();
+    const { mutateAsync: deleteFAQ } = useDeleteFAQ();
 
     const [openForm, setOpenForm] = useState(false);
-    const [selectedRow, setSelectedRow] = useState<IService | undefined>(undefined);
+    const [selectedRow, setSelectedRow] = useState<IFAQ | undefined>(undefined);
 
-    const handleOpenForm = useCallback((row?: IService) => {
+    const handleOpenForm = useCallback((row?: IFAQ) => {
         setSelectedRow(row);
         setOpenForm(true);
     }, []);
@@ -43,14 +43,14 @@ export function ServiceListView() {
     const handleDelete = useCallback(async (id: number) => {
         if (window.confirm(t('confirmDelete'))) {
             try {
-                await deleteService(id);
+                await deleteFAQ(id);
             } catch (error) {
                 console.error(error);
             }
         }
-    }, [deleteService, t]);
+    }, [deleteFAQ, t]);
 
-    const columns = serviceTableColumns({
+    const columns = faqTableColumns({
         t,
         onEdit: handleOpenForm,
         onDelete: handleDelete,
@@ -62,7 +62,7 @@ export function ServiceListView() {
                 heading={t('list_title')}
                 links={[
                     { name: t('main'), href: paths.dashboard.root },
-                    { name: t('services') },
+                    { name: t('faqs') },
                     { name: t('list') },
                 ]}
                 action={
@@ -79,17 +79,17 @@ export function ServiceListView() {
 
             <Card>
                 <Box sx={{ position: 'relative' }}>
-                    <DataGridCustom<IService>
-                        data={services}
+                    <DataGridCustom<IFAQ>
+                        data={faqs}
                         column={columns}
                         loading={isLoading}
-                        rowCount={services.length}
+                        rowCount={faqs.length}
                         quickToolbar={false}
                     />
                 </Box>
             </Card>
 
-            <ServiceFormDialog
+            <FAQFormDialog
                 open={openForm}
                 onClose={handleCloseForm}
                 currentRow={selectedRow}

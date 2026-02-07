@@ -1,0 +1,23 @@
+{
+    "list": "Ro'yxat",
+    "add": "Qo'shish",
+    "edit": "Tahrirlash",
+    "delete": "O'chirish",
+    "confirmDelete": "Haqiqatan ham o'chirmoqchimisiz?",
+    "main": "Bosh sahifa",
+    "faqs": "Savol-Javoblar",
+    "question_uz": "Savol (UZ)",
+    "question_ru": "Savol (RU)",
+    "question_en": "Savol (EN)",
+    "answer_uz": "Javob (UZ)",
+    "answer_ru": "Javob (RU)",
+    "answer_en": "Javob (EN)",
+    "save": "Saqlash",
+    "save_and_add": "Saqlash va yana qo'shish",
+    "cancel": "Bekor qilish",
+    "actions": "Amallar",
+    "create_title": "Yangi savol-javob",
+    "edit_title": "Savol-javobni tahrirlash",
+    "list_title": "Savol-Javoblar ro'yxati",
+    "search": "Qidiruv"
+}

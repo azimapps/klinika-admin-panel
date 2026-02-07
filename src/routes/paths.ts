@@ -34,6 +34,14 @@ export const paths = {
       root: `/service`,
       list: `/service/list`,
     },
+    clinic: {
+      root: `/clinic`,
+      list: `/clinic/list`,
+    },
+    faq: {
+      root: `/faq`,
+      list: `/faq/list`,
+    },
     games: {
       wordBattle: {
         root: '/word-battle',

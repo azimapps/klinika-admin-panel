@@ -1,0 +1,23 @@
+{
+    "list": "List",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirmDelete": "Are you sure you want to delete?",
+    "main": "Main",
+    "faqs": "FAQs",
+    "question_uz": "Question (UZ)",
+    "question_ru": "Question (RU)",
+    "question_en": "Question (EN)",
+    "answer_uz": "Answer (UZ)",
+    "answer_ru": "Answer (RU)",
+    "answer_en": "Answer (EN)",
+    "save": "Save",
+    "save_and_add": "Save & Add Another",
+    "cancel": "Cancel",
+    "actions": "Actions",
+    "create_title": "New FAQ",
+    "edit_title": "Edit FAQ",
+    "list_title": "FAQ List",
+    "search": "Search"
+}

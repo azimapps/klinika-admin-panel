@@ -40,6 +40,8 @@ const DoctorListPage = lazy(() => import('src/pages/dashboard/doctor/list'));
 const AdvantageListPage = lazy(() => import('src/pages/dashboard/advantage/list'));
 const FounderListPage = lazy(() => import('src/pages/dashboard/founder/list'));
 const ServiceListPage = lazy(() => import('src/pages/dashboard/service/list'));
+const ClinicListPage = lazy(() => import('src/pages/dashboard/clinic/list'));
+const FAQListPage = lazy(() => import('src/pages/dashboard/faq/list'));
 
 // ----------------------------------------------------------------------
 
@@ -88,6 +90,20 @@ export const routesSection: RouteObject[] = [
         children: [
           { element: <ServiceListPage />, index: true },
           { path: 'list', element: <ServiceListPage /> },
+        ],
+      },
+      {
+        path: 'clinic',
+        children: [
+          { element: <ClinicListPage />, index: true },
+          { path: 'list', element: <ClinicListPage /> },
+        ],
+      },
+      {
+        path: 'faq',
+        children: [
+          { element: <FAQListPage />, index: true },
+          { path: 'list', element: <FAQListPage /> },
         ],
       },
     ],

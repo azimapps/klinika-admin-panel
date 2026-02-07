@@ -24,13 +24,13 @@ import type { IService } from '../types';
 // ----------------------------------------------------------------------
 
 const ServiceSchema = zod.object({
-    title_uz: zod.string().min(1, { message: 'Sarlavha (UZ) majburiy!' }),
-    title_ru: zod.string().min(1, { message: 'Sarlavha (RU) majburiy!' }),
-    title_en: zod.string().min(1, { message: 'Sarlavha (EN) majburiy!' }),
-    description_uz: zod.string().min(1, { message: 'Tavsif (UZ) majburiy!' }),
-    description_ru: zod.string().min(1, { message: 'Tavsif (RU) majburiy!' }),
-    description_en: zod.string().min(1, { message: 'Tavsif (EN) majburiy!' }),
-    price: zod.number().min(0, { message: 'Narx 0 dan katta yoki teng bo\'lishi kerak!' }),
+    title_uz: zod.string().min(1, { message: 'Title (UZ) is required!' }),
+    title_ru: zod.string().min(1, { message: 'Title (RU) is required!' }),
+    title_en: zod.string().min(1, { message: 'Title (EN) is required!' }),
+    description_uz: zod.string().min(1, { message: 'Description (UZ) is required!' }),
+    description_ru: zod.string().min(1, { message: 'Description (RU) is required!' }),
+    description_en: zod.string().min(1, { message: 'Description (EN) is required!' }),
+    price: zod.number().min(0, { message: 'Price must be greater than or equal to 0!' }),
 });
 
 type ServiceSchemaType = zod.infer<typeof ServiceSchema>;
@@ -42,7 +42,7 @@ interface Props {
 }
 
 export function ServiceFormDialog({ open, onClose, currentRow }: Props) {
-    useTranslate('service'); // Assumes 'service' namespace exists in locales, otherwise defaults
+    const { t } = useTranslate('service');
 
     const { mutateAsync: createService, isPending: createPending } = useCreateService();
     const { mutateAsync: updateService, isPending: updatePending } = useUpdateService(currentRow?.id?.toString() || '');
@@ -122,7 +122,7 @@ export function ServiceFormDialog({ open, onClose, currentRow }: Props) {
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
             <Form methods={methods} onSubmit={onSubmit}>
-                <DialogTitle>{currentRow ? 'Xizmatni tahrirlash' : 'Yangi xizmat'}</DialogTitle>
+                <DialogTitle>{currentRow ? t('edit_title') : t('create_title')}</DialogTitle>
 
                 <DialogContent>
                     <Stack spacing={3} sx={{ mt: 2 }}>
@@ -135,19 +135,19 @@ export function ServiceFormDialog({ open, onClose, currentRow }: Props) {
                                 sm: 'repeat(2, 1fr)',
                             }}
                         >
-                            <Field.Text name="title_uz" label="Sarlavha (UZ)" />
-                            <Field.Text name="title_ru" label="Sarlavha (RU)" />
-                            <Field.Text name="title_en" label="Sarlavha (EN)" />
-                            <Field.Text name="price" label="Narxi (so'm)" type="number" />
+                            <Field.Text name="title_uz" label={t('title_uz')} />
+                            <Field.Text name="title_ru" label={t('title_ru')} />
+                            <Field.Text name="title_en" label={t('title_en')} />
+                            <Field.Text name="price" label={t('price')} type="number" />
                         </Box>
 
-                        <Field.Text name="description_uz" label="Tavsif (UZ)" multiline rows={3} />
-                        <Field.Text name="description_ru" label="Tavsif (RU)" multiline rows={3} />
-                        <Field.Text name="description_en" label="Tavsif (EN)" multiline rows={3} />
+                        <Field.Text name="description_uz" label={t('description_uz')} multiline rows={3} />
+                        <Field.Text name="description_ru" label={t('description_ru')} multiline rows={3} />
+                        <Field.Text name="description_en" label={t('description_en')} multiline rows={3} />
 
                         {currentRow && (
                             <Box>
-                                <Typography variant="subtitle2" sx={{ mb: 1 }}>Rasm</Typography>
+                                <Typography variant="subtitle2" sx={{ mb: 1 }}>{t('image')}</Typography>
                                 <Field.Upload
                                     name="image"
                                     thumbnail
@@ -162,10 +162,10 @@ export function ServiceFormDialog({ open, onClose, currentRow }: Props) {
 
                 <DialogActions>
                     <Button variant="outlined" onClick={onClose}>
-                        Bekor qilish
+                        {t('cancel')}
                     </Button>
                     <LoadingButton type="submit" variant="contained" loading={createPending || updatePending || isSubmitting}>
-                        Saqlash
+                        {t('save')}
                     </LoadingButton>
                 </DialogActions>
             </Form>

@@ -6,5 +6,11 @@
   "create": "Create",
   "users": "Users",
   "categories": "Categories",
+  "doctors": "Doctors",
+  "services": "Services",
+  "advantages": "Advantages",
+  "founders": "Founders",
+  "clinics": "Clinics",
+  "faqs": "FAQs",
   "settings": "Settings"
 }

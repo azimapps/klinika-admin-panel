@@ -1,47 +1,32 @@
 import type { TFunction } from 'i18next';
 import type { GridColDef } from '@mui/x-data-grid';
 
-import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 
 import { Iconify } from 'src/components/iconify';
 
-import type { IService } from '../types';
+import type { IFAQ } from '../types';
 
 // ----------------------------------------------------------------------
 
 interface Props {
     t: TFunction;
-    onEdit: (row: IService) => void;
+    onEdit: (row: IFAQ) => void;
     onDelete: (id: number) => void;
 }
 
-export const serviceTableColumns = ({ t, onEdit, onDelete }: Props): GridColDef<IService>[] => [
+export const faqTableColumns = ({ t, onEdit, onDelete }: Props): GridColDef<IFAQ>[] => [
     {
-        field: 'image',
-        headerName: t('image'),
-        width: 80,
-        sortable: false,
-        filterable: false,
-        renderCell: (params) => (
-            <Avatar
-                alt={params.row.title_uz}
-                src={params.row.image || ''}
-                sx={{ width: 40, height: 40, border: (theme) => `solid 2px ${theme.palette.background.neutral}` }}
-            />
-        ),
-    },
-    {
-        field: 'title_uz',
-        headerName: t('title_uz'),
+        field: 'question_uz',
+        headerName: t('question_uz'),
         flex: 1,
         minWidth: 150,
     },
     {
-        field: 'price',
-        headerName: t('price'),
-        width: 120,
-        type: 'number',
+        field: 'answer_uz',
+        headerName: t('answer_uz'),
+        flex: 1,
+        minWidth: 200,
     },
     {
         type: 'actions',

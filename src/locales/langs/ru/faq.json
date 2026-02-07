@@ -1,0 +1,23 @@
+{
+    "list": "Список",
+    "add": "Добавить",
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "confirmDelete": "Вы уверены, что хотите удалить?",
+    "main": "Главная",
+    "faqs": "FAQ",
+    "question_uz": "Вопрос (UZ)",
+    "question_ru": "Вопрос (RU)",
+    "question_en": "Вопрос (EN)",
+    "answer_uz": "Ответ (UZ)",
+    "answer_ru": "Ответ (RU)",
+    "answer_en": "Ответ (EN)",
+    "save": "Сохранить",
+    "save_and_add": "Сохранить и добавить еще",
+    "cancel": "Отмена",
+    "actions": "Действия",
+    "create_title": "Новый FAQ",
+    "edit_title": "Редактировать FAQ",
+    "list_title": "Список FAQ",
+    "search": "Поиск"
+}
