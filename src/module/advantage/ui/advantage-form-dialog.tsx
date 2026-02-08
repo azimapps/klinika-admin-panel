@@ -1,8 +1,9 @@
 import { z as zod } from 'zod';
 import { useForm } from 'react-hook-form';
-import { useEffect, useCallback } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useState, useEffect, useCallback } from 'react';
 
+import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -16,6 +17,7 @@ import DialogContent from '@mui/material/DialogContent';
 import { useTranslate } from 'src/locales';
 
 import { Form, Field } from 'src/components/hook-form';
+import { CustomTabs } from 'src/components/custom-tabs';
 
 import { useCreateAdvantage, useUpdateAdvantage, useUploadAdvantageImage } from '../hooks';
 
@@ -43,6 +45,8 @@ interface Props {
 
 export function AdvantageFormDialog({ open, onClose, currentRow }: Props) {
     const { t } = useTranslate('advantage');
+
+    const [currentTab, setCurrentTab] = useState('uz');
 
     const { mutateAsync: createAdvantage, isPending: createPending } = useCreateAdvantage();
     const { mutateAsync: updateAdvantage, isPending: updatePending } = useUpdateAdvantage(currentRow?.id?.toString() || '');
@@ -92,6 +96,10 @@ export function AdvantageFormDialog({ open, onClose, currentRow }: Props) {
         }
     }, [currentRow, reset]);
 
+    const handleChangeTab = useCallback((event: any, newValue: string) => {
+        setCurrentTab(newValue);
+    }, []);
+
     const onSubmit = handleSubmit(async (data) => {
         try {
             const imageFile = data.image instanceof File ? data.image : null;
@@ -136,22 +144,31 @@ export function AdvantageFormDialog({ open, onClose, currentRow }: Props) {
 
                 <DialogContent>
                     <Stack spacing={3} sx={{ mt: 2 }}>
-                        <Box
-                            rowGap={3}
-                            columnGap={2}
-                            display="grid"
-                            gridTemplateColumns={{
-                                xs: 'repeat(1, 1fr)',
-                                sm: 'repeat(1, 1fr)',
-                            }}
-                        >
-                            <Field.Text name="title_uz" label={t('title_uz')} />
-                            <Field.Text name="title_ru" label={t('title_ru')} />
-                            <Field.Text name="title_en" label={t('title_en')} />
+                        <CustomTabs value={currentTab} onChange={handleChangeTab}>
+                            <Tab value="uz" label="O'zbekcha" />
+                            <Tab value="ru" label="Русский" />
+                            <Tab value="en" label="English" />
+                        </CustomTabs>
 
-                            <Field.Text name="description_uz" label={t('description_uz')} multiline rows={3} />
-                            <Field.Text name="description_ru" label={t('description_ru')} multiline rows={3} />
-                            <Field.Text name="description_en" label={t('description_en')} multiline rows={3} />
+                        <Box sx={{ display: currentTab === 'uz' ? 'block' : 'none' }}>
+                            <Stack spacing={3}>
+                                <Field.Text name="title_uz" label={t('title_uz')} />
+                                <Field.Text name="description_uz" label={t('description_uz')} multiline rows={3} />
+                            </Stack>
+                        </Box>
+
+                        <Box sx={{ display: currentTab === 'ru' ? 'block' : 'none' }}>
+                            <Stack spacing={3}>
+                                <Field.Text name="title_ru" label={t('title_ru')} />
+                                <Field.Text name="description_ru" label={t('description_ru')} multiline rows={3} />
+                            </Stack>
+                        </Box>
+
+                        <Box sx={{ display: currentTab === 'en' ? 'block' : 'none' }}>
+                            <Stack spacing={3}>
+                                <Field.Text name="title_en" label={t('title_en')} />
+                                <Field.Text name="description_en" label={t('description_en')} multiline rows={3} />
+                            </Stack>
                         </Box>
 
                         <Box sx={{ width: '100%', maxWidth: 400, mx: 'auto' }}>

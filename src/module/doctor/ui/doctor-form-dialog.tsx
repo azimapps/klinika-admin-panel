@@ -1,8 +1,9 @@
 import { z as zod } from 'zod';
 import { useForm } from 'react-hook-form';
-import { useEffect, useCallback } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useState, useEffect, useCallback } from 'react';
 
+import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -17,6 +18,7 @@ import DialogContent from '@mui/material/DialogContent';
 import { useTranslate } from 'src/locales';
 
 import { Form, Field } from 'src/components/hook-form';
+import { CustomTabs } from 'src/components/custom-tabs';
 
 import { useGetCategories } from 'src/module/category/hooks';
 
@@ -31,7 +33,7 @@ const DoctorSchema = zod.object({
     fullname_ru: zod.string().min(1, { message: 'F.I.SH (RU) majburiy!' }),
     fullname_en: zod.string().min(1, { message: 'F.I.SH (EN) majburiy!' }),
     phone_number: zod.string().min(1, { message: 'Telefon raqam majburiy!' }),
-    price: zod.coerce.number().min(0, { message: 'Narx noto\'g\'ri!' }),
+    price: zod.coerce.number().min(1, { message: 'Narx majburiy!' }),
     experience: zod.coerce.number().min(0, { message: 'Tajriba noto\'g\'ri!' }),
     category_id: zod.coerce.number().min(1, { message: 'Kategoriya tanlanishi shart!' }),
     is_active: zod.boolean(),
@@ -49,6 +51,8 @@ interface Props {
 export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
     const { t } = useTranslate('doctor');
 
+    const [currentTab, setCurrentTab] = useState('uz');
+
     const { data: categories = [] } = useGetCategories();
 
     const { mutateAsync: createDoctor, isPending: createPending } = useCreateDoctor();
@@ -62,8 +66,8 @@ export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
             fullname_ru: '',
             fullname_en: '',
             phone_number: '',
-            price: 0,
-            experience: 0,
+            price: '' as any,
+            experience: '' as any,
             category_id: 0,
             is_active: true,
             avatar: null,
@@ -96,14 +100,18 @@ export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
                 fullname_ru: '',
                 fullname_en: '',
                 phone_number: '',
-                price: 0,
-                experience: 0,
+                price: '' as any,
+                experience: '' as any,
                 category_id: 0,
                 is_active: true,
                 avatar: null,
             });
         }
     }, [currentRow, reset]);
+
+    const handleChangeTab = useCallback((event: any, newValue: string) => {
+        setCurrentTab(newValue);
+    }, []);
 
     const onSubmit = handleSubmit(async (data) => {
         try {
@@ -142,6 +150,12 @@ export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
         [setValue]
     );
 
+    const TABS = [
+        { value: 'uz', label: 'O\'zbekcha' },
+        { value: 'ru', label: 'Русский' },
+        { value: 'en', label: 'English' },
+    ];
+
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
             <Form methods={methods} onSubmit={onSubmit}>
@@ -149,6 +163,24 @@ export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
 
                 <DialogContent>
                     <Stack spacing={3} sx={{ mt: 2 }}>
+                        <CustomTabs value={currentTab} onChange={handleChangeTab}>
+                            {TABS.map((tab) => (
+                                <Tab key={tab.value} value={tab.value} label={tab.label} />
+                            ))}
+                        </CustomTabs>
+
+                        <Box sx={{ display: currentTab === 'uz' ? 'block' : 'none' }}>
+                            <Field.Text name="fullname_uz" label={t('fullname_uz')} />
+                        </Box>
+
+                        <Box sx={{ display: currentTab === 'ru' ? 'block' : 'none' }}>
+                            <Field.Text name="fullname_ru" label={t('fullname_ru')} />
+                        </Box>
+
+                        <Box sx={{ display: currentTab === 'en' ? 'block' : 'none' }}>
+                            <Field.Text name="fullname_en" label={t('fullname_en')} />
+                        </Box>
+
                         <Box
                             rowGap={3}
                             columnGap={2}
@@ -158,9 +190,6 @@ export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
                                 sm: 'repeat(2, 1fr)',
                             }}
                         >
-                            <Field.Text name="fullname_uz" label={t('fullname_uz')} />
-                            <Field.Text name="fullname_ru" label={t('fullname_ru')} />
-                            <Field.Text name="fullname_en" label={t('fullname_en')} />
                             <Field.Text name="phone_number" label={t('phone_number')} />
 
                             <Field.Text name="price" label={t('price')} type="number" />

@@ -1,8 +1,9 @@
 import { z as zod } from 'zod';
 import { useForm } from 'react-hook-form';
-import { useEffect, useCallback } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useState, useEffect, useCallback } from 'react';
 
+import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -16,6 +17,7 @@ import DialogContent from '@mui/material/DialogContent';
 import { useTranslate } from 'src/locales';
 
 import { Form, Field } from 'src/components/hook-form';
+import { CustomTabs } from 'src/components/custom-tabs';
 
 import { useCreateService, useUpdateService, useUploadServiceImage } from '../hooks';
 
@@ -30,7 +32,7 @@ const ServiceSchema = zod.object({
     description_uz: zod.string().min(1, { message: 'Description (UZ) is required!' }),
     description_ru: zod.string().min(1, { message: 'Description (RU) is required!' }),
     description_en: zod.string().min(1, { message: 'Description (EN) is required!' }),
-    price: zod.number().min(0, { message: 'Price must be greater than or equal to 0!' }),
+    price: zod.coerce.number().min(1, { message: 'Narx majburiy!' }),
 });
 
 type ServiceSchemaType = zod.infer<typeof ServiceSchema>;
@@ -43,6 +45,8 @@ interface Props {
 
 export function ServiceFormDialog({ open, onClose, currentRow }: Props) {
     const { t } = useTranslate('service');
+
+    const [currentTab, setCurrentTab] = useState('uz');
 
     const { mutateAsync: createService, isPending: createPending } = useCreateService();
     const { mutateAsync: updateService, isPending: updatePending } = useUpdateService(currentRow?.id?.toString() || '');
@@ -57,7 +61,7 @@ export function ServiceFormDialog({ open, onClose, currentRow }: Props) {
             description_uz: '',
             description_ru: '',
             description_en: '',
-            price: 0,
+            price: '' as any,
         },
     });
 
@@ -86,10 +90,14 @@ export function ServiceFormDialog({ open, onClose, currentRow }: Props) {
                 description_uz: '',
                 description_ru: '',
                 description_en: '',
-                price: 0,
+                price: '' as any,
             });
         }
     }, [currentRow, reset]);
+
+    const handleChangeTab = useCallback((event: any, newValue: string) => {
+        setCurrentTab(newValue);
+    }, []);
 
     const onSubmit = handleSubmit(async (data) => {
         try {
@@ -126,24 +134,34 @@ export function ServiceFormDialog({ open, onClose, currentRow }: Props) {
 
                 <DialogContent>
                     <Stack spacing={3} sx={{ mt: 2 }}>
-                        <Box
-                            rowGap={3}
-                            columnGap={2}
-                            display="grid"
-                            gridTemplateColumns={{
-                                xs: 'repeat(1, 1fr)',
-                                sm: 'repeat(2, 1fr)',
-                            }}
-                        >
-                            <Field.Text name="title_uz" label={t('title_uz')} />
-                            <Field.Text name="title_ru" label={t('title_ru')} />
-                            <Field.Text name="title_en" label={t('title_en')} />
-                            <Field.Text name="price" label={t('price')} type="number" />
+                        <CustomTabs value={currentTab} onChange={handleChangeTab}>
+                            <Tab value="uz" label="O'zbekcha" />
+                            <Tab value="ru" label="Русский" />
+                            <Tab value="en" label="English" />
+                        </CustomTabs>
+
+                        <Box sx={{ display: currentTab === 'uz' ? 'block' : 'none' }}>
+                            <Stack spacing={3}>
+                                <Field.Text name="title_uz" label={t('title_uz')} />
+                                <Field.Text name="description_uz" label={t('description_uz')} multiline rows={3} />
+                            </Stack>
                         </Box>
 
-                        <Field.Text name="description_uz" label={t('description_uz')} multiline rows={3} />
-                        <Field.Text name="description_ru" label={t('description_ru')} multiline rows={3} />
-                        <Field.Text name="description_en" label={t('description_en')} multiline rows={3} />
+                        <Box sx={{ display: currentTab === 'ru' ? 'block' : 'none' }}>
+                            <Stack spacing={3}>
+                                <Field.Text name="title_ru" label={t('title_ru')} />
+                                <Field.Text name="description_ru" label={t('description_ru')} multiline rows={3} />
+                            </Stack>
+                        </Box>
+
+                        <Box sx={{ display: currentTab === 'en' ? 'block' : 'none' }}>
+                            <Stack spacing={3}>
+                                <Field.Text name="title_en" label={t('title_en')} />
+                                <Field.Text name="description_en" label={t('description_en')} multiline rows={3} />
+                            </Stack>
+                        </Box>
+
+                        <Field.Text name="price" label={t('price')} type="number" />
 
                         {currentRow && (
                             <Box>

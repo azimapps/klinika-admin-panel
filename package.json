@@ -54,6 +54,7 @@
     "@mui/x-data-grid": "^7.28.2",
     "@mui/x-date-pickers": "^7.28.2",
     "@mui/x-tree-view": "^7.28.1",
+    "@pbe/react-yandex-maps": "^1.2.5",
     "@react-pdf/renderer": "^4.3.0",
     "@supabase/supabase-js": "^2.49.3",
     "@tanstack/react-query": "^5.72.1",
