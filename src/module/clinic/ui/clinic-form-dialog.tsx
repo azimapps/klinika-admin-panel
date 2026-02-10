@@ -69,10 +69,28 @@ export function ClinicFormDialog({ open, onClose, currentRow }: Props) {
         watch,
         setValue,
         handleSubmit,
-        formState: { isSubmitting },
+        formState: { isSubmitting, errors },
     } = methods;
 
     const values = watch();
+
+    const TABS = [
+        {
+            value: 'uz',
+            label: "O'zbekcha",
+            hasError: !!errors.title_uz || !!errors.address_uz,
+        },
+        {
+            value: 'ru',
+            label: 'Русский',
+            hasError: !!errors.title_ru || !!errors.address_ru,
+        },
+        {
+            value: 'en',
+            label: 'English',
+            hasError: !!errors.title_en || !!errors.address_en,
+        },
+    ];
 
     useEffect(() => {
         if (currentRow) {
@@ -103,12 +121,6 @@ export function ClinicFormDialog({ open, onClose, currentRow }: Props) {
     const handleChangeTab = useCallback((event: any, newValue: string) => {
         setCurrentTab(newValue);
     }, []);
-
-    const TABS = [
-        { value: 'uz', label: 'O\'zbekcha' },
-        { value: 'ru', label: 'Русский' },
-        { value: 'en', label: 'English' },
-    ];
 
     const [openMap, setOpenMap] = useState(false);
 
@@ -220,7 +232,19 @@ export function ClinicFormDialog({ open, onClose, currentRow }: Props) {
                         <Stack spacing={3}>
                             <CustomTabs value={currentTab} onChange={handleChangeTab}>
                                 {TABS.map((tab) => (
-                                    <Tab key={tab.value} value={tab.value} label={tab.label} />
+                                    <Tab
+                                        key={tab.value}
+                                        value={tab.value}
+                                        label={tab.label}
+                                        sx={{
+                                            ...(tab.hasError && {
+                                                color: 'error.main',
+                                                '&.Mui-selected': {
+                                                    color: 'error.main',
+                                                },
+                                            }),
+                                        }}
+                                    />
                                 ))}
                             </CustomTabs>
 

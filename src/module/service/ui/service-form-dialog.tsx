@@ -68,8 +68,26 @@ export function ServiceFormDialog({ open, onClose, currentRow }: Props) {
     const {
         reset,
         handleSubmit,
-        formState: { isSubmitting },
+        formState: { isSubmitting, errors },
     } = methods;
+
+    const TABS = [
+        {
+            value: 'uz',
+            label: "O'zbekcha",
+            hasError: !!errors.title_uz || !!errors.description_uz,
+        },
+        {
+            value: 'ru',
+            label: 'Русский',
+            hasError: !!errors.title_ru || !!errors.description_ru,
+        },
+        {
+            value: 'en',
+            label: 'English',
+            hasError: !!errors.title_en || !!errors.description_en,
+        },
+    ];
 
     useEffect(() => {
         if (currentRow) {
@@ -135,9 +153,21 @@ export function ServiceFormDialog({ open, onClose, currentRow }: Props) {
                 <DialogContent>
                     <Stack spacing={3} sx={{ mt: 2 }}>
                         <CustomTabs value={currentTab} onChange={handleChangeTab}>
-                            <Tab value="uz" label="O'zbekcha" />
-                            <Tab value="ru" label="Русский" />
-                            <Tab value="en" label="English" />
+                            {TABS.map((tab) => (
+                                <Tab
+                                    key={tab.value}
+                                    value={tab.value}
+                                    label={tab.label}
+                                    sx={{
+                                        ...(tab.hasError && {
+                                            color: 'error.main',
+                                            '&.Mui-selected': {
+                                                color: 'error.main',
+                                            },
+                                        }),
+                                    }}
+                                />
+                            ))}
                         </CustomTabs>
 
                         <Box sx={{ display: currentTab === 'uz' ? 'block' : 'none' }}>

@@ -78,7 +78,7 @@ export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
         reset,
         setValue,
         handleSubmit,
-        formState: { isSubmitting },
+        formState: { isSubmitting, errors },
     } = methods;
 
     useEffect(() => {
@@ -151,9 +151,9 @@ export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
     );
 
     const TABS = [
-        { value: 'uz', label: 'O\'zbekcha' },
-        { value: 'ru', label: 'Русский' },
-        { value: 'en', label: 'English' },
+        { value: 'uz', label: "O'zbekcha", hasError: !!errors.fullname_uz },
+        { value: 'ru', label: 'Русский', hasError: !!errors.fullname_ru },
+        { value: 'en', label: 'English', hasError: !!errors.fullname_en },
     ];
 
     return (
@@ -165,7 +165,19 @@ export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
                     <Stack spacing={3} sx={{ mt: 2 }}>
                         <CustomTabs value={currentTab} onChange={handleChangeTab}>
                             {TABS.map((tab) => (
-                                <Tab key={tab.value} value={tab.value} label={tab.label} />
+                                <Tab
+                                    key={tab.value}
+                                    value={tab.value}
+                                    label={tab.label}
+                                    sx={{
+                                        ...(tab.hasError && {
+                                            color: 'error.main',
+                                            '&.Mui-selected': {
+                                                color: 'error.main',
+                                            },
+                                        }),
+                                    }}
+                                />
                             ))}
                         </CustomTabs>
 

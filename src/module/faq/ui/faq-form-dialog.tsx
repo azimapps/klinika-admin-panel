@@ -64,8 +64,26 @@ export function FAQFormDialog({ open, onClose, currentRow }: Props) {
     const {
         reset,
         handleSubmit,
-        formState: { isSubmitting },
+        formState: { isSubmitting, errors },
     } = methods;
+
+    const TABS = [
+        {
+            value: 'uz',
+            label: "O'zbekcha",
+            hasError: !!errors.question_uz || !!errors.answer_uz,
+        },
+        {
+            value: 'ru',
+            label: 'Русский',
+            hasError: !!errors.question_ru || !!errors.answer_ru,
+        },
+        {
+            value: 'en',
+            label: 'English',
+            hasError: !!errors.question_en || !!errors.answer_en,
+        },
+    ];
 
     useEffect(() => {
         if (currentRow) {
@@ -126,12 +144,6 @@ export function FAQFormDialog({ open, onClose, currentRow }: Props) {
         }
     });
 
-    const TABS = [
-        { value: 'uz', label: 'O\'zbekcha' },
-        { value: 'ru', label: 'Русский' },
-        { value: 'en', label: 'English' },
-    ];
-
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
             <Form methods={methods} onSubmit={onSubmit}>
@@ -144,7 +156,19 @@ export function FAQFormDialog({ open, onClose, currentRow }: Props) {
                         sx={{ mb: 3 }}
                     >
                         {TABS.map((tab) => (
-                            <Tab key={tab.value} value={tab.value} label={tab.label} />
+                            <Tab
+                                key={tab.value}
+                                value={tab.value}
+                                label={tab.label}
+                                sx={{
+                                    ...(tab.hasError && {
+                                        color: 'error.main',
+                                        '&.Mui-selected': {
+                                            color: 'error.main',
+                                        },
+                                    }),
+                                }}
+                            />
                         ))}
                     </CustomTabs>
 
