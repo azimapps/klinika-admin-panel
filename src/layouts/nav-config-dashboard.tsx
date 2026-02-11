@@ -38,6 +38,7 @@ export const useNavData = (): NavSectionProps['data'] => {
           { title: t('clinics'), path: paths.dashboard.clinic.list, icon: ICONS.analytics },
           { title: t('faqs'), path: paths.dashboard.faq.list, icon: ICONS.analytics },
           { title: t('founders'), path: paths.dashboard.founder.list, icon: ICONS.user },
+          { title: t('tips'), path: paths.dashboard.tip.list, icon: ICONS.analytics },
         ],
       },
     ],

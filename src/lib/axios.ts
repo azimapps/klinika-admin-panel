@@ -109,4 +109,10 @@ export const endpoints = {
     create: '/admin/faqs/',
     details: (id: string) => `/admin/faqs/${id}`,
   },
+  tip: {
+    list: '/admin/tips',
+    create: '/admin/tips',
+    details: (id: string) => `/admin/tips/${id}`,
+    image: (id: string) => `/admin/tips/${id}/image`,
+  },
 };

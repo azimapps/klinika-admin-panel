@@ -1,5 +1,5 @@
 
-import { useState, useRef, useCallback } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import { YMaps, Placemark, Map as YMap, ZoomControl } from '@pbe/react-yandex-maps';
 
 import Box from '@mui/material/Box';
@@ -48,7 +48,6 @@ export function MapSelectionDialog({ open, onClose, onSelect, initialCoords }: P
     const [searchQuery, setSearchQuery] = useState('');
     const [options, setOptions] = useState<any[]>([]);
     const [searching, setSearching] = useState(false);
-    const [ymaps, setYmaps] = useState<any>(null);
     const searchTimeout = useRef<any>(null);
 
     const onMapClick = useCallback((event: any) => {
@@ -292,7 +291,7 @@ export function MapSelectionDialog({ open, onClose, onSelect, initialCoords }: P
 
                 <YMaps query={{ lang: 'ru_RU' }}>
                     <YMap
-                        onLoad={(ymapsInstance: any) => setYmaps(ymapsInstance)}
+                        onLoad={() => { }}
                         width="100%"
                         height="100%"
                         state={mapState}
