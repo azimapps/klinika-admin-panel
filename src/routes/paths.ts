@@ -14,6 +14,10 @@ export const paths = {
       root: `/user`,
       list: `/user/list`,
     },
+    client: {
+      root: `/client`,
+      list: `/client/list`,
+    },
     category: {
       root: `/category`,
       list: `/category/list`,

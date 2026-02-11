@@ -1,0 +1,15 @@
+{
+    "list": "Foydalanuvchilar",
+    "first_name": "Ism",
+    "last_name": "Familiya",
+    "phone": "Telefon raqami",
+    "birth_date": "Tug'ilgan sana",
+    "gender": "Jins",
+    "male": "Erkak",
+    "female": "Ayol",
+    "search": "Foydalanuvchilarni qidirish...",
+    "no_clients": "Foydalanuvchilar topilmadi",
+    "total_clients": "Jami foydalanuvchilar",
+    "details": "Foydalanuvchi tafsilotlari",
+    "client": "Foydalanuvchi"
+}

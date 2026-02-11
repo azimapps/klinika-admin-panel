@@ -4,7 +4,7 @@
   "list": "Список",
   "game": "Игры",
   "create": "Создать",
-  "users": "Пользователи",
+  "users": "Админы",
   "categories": "Категории",
   "doctors": "Врачи",
   "services": "Услуги",
@@ -14,5 +14,6 @@
   "faqs": "FAQs",
   "tips": "Советы",
   "notifications": "Уведомления",
+  "clients": "Пользователи",
   "settings": "Настройки"
 }

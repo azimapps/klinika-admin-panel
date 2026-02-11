@@ -44,6 +44,7 @@ const ClinicListPage = lazy(() => import('src/pages/dashboard/clinic/list'));
 const FAQListPage = lazy(() => import('src/pages/dashboard/faq/list'));
 const TipListPage = lazy(() => import('src/pages/dashboard/tip/list'));
 const NotificationListPage = lazy(() => import('src/pages/dashboard/notification/list'));
+const ClientListPage = lazy(() => import('src/pages/dashboard/client/list'));
 
 // ----------------------------------------------------------------------
 
@@ -120,6 +121,13 @@ export const routesSection: RouteObject[] = [
         children: [
           { element: <NotificationListPage />, index: true },
           { path: 'list', element: <NotificationListPage /> },
+        ],
+      },
+      {
+        path: 'client',
+        children: [
+          { element: <ClientListPage />, index: true },
+          { path: 'list', element: <ClientListPage /> },
         ],
       },
     ],

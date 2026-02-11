@@ -1,0 +1,15 @@
+{
+    "list": "Users",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "phone": "Phone Number",
+    "birth_date": "Birth Date",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "search": "Search users...",
+    "no_clients": "No users found",
+    "total_clients": "Total Users",
+    "details": "User Details",
+    "client": "User"
+}

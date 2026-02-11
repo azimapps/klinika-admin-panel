@@ -120,4 +120,8 @@ export const endpoints = {
     create: '/admin/notifications',
     delete: (id: string) => `/admin/notifications/${id}`,
   },
+  client: {
+    list: '/admin/clients',
+    details: (id: string) => `/admin/clients/${id}`,
+  },
 };
