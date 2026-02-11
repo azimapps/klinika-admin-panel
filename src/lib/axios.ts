@@ -115,4 +115,9 @@ export const endpoints = {
     details: (id: string) => `/admin/tips/${id}`,
     image: (id: string) => `/admin/tips/${id}/image`,
   },
+  notification: {
+    list: '/admin/notifications',
+    create: '/admin/notifications',
+    delete: (id: string) => `/admin/notifications/${id}`,
+  },
 };

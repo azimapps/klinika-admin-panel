@@ -43,6 +43,7 @@ const ServiceListPage = lazy(() => import('src/pages/dashboard/service/list'));
 const ClinicListPage = lazy(() => import('src/pages/dashboard/clinic/list'));
 const FAQListPage = lazy(() => import('src/pages/dashboard/faq/list'));
 const TipListPage = lazy(() => import('src/pages/dashboard/tip/list'));
+const NotificationListPage = lazy(() => import('src/pages/dashboard/notification/list'));
 
 // ----------------------------------------------------------------------
 
@@ -112,6 +113,13 @@ export const routesSection: RouteObject[] = [
         children: [
           { element: <TipListPage />, index: true },
           { path: 'list', element: <TipListPage /> },
+        ],
+      },
+      {
+        path: 'notification',
+        children: [
+          { element: <NotificationListPage />, index: true },
+          { path: 'list', element: <NotificationListPage /> },
         ],
       },
     ],

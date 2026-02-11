@@ -46,6 +46,10 @@ export const paths = {
       root: `/tip`,
       list: `/tip/list`,
     },
+    notification: {
+      root: `/notification`,
+      list: `/notification/list`,
+    },
     games: {
       wordBattle: {
         root: '/word-battle',
