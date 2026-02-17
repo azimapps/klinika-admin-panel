@@ -16,6 +16,8 @@
     "price": "Price",
     "experience": "Experience (years)",
     "category": "Category",
+    "clinic": "Clinic",
+    "noClinic": "No clinic selected",
     "rating": "Rating",
     "is_active": "Active",
     "search": "Search...",
@@ -28,6 +30,7 @@
         "price": "Price",
         "experience": "Experience",
         "category": "Category",
+        "clinic": "Clinic",
         "rating": "Rating",
         "status": "Status",
         "actions": "Actions"

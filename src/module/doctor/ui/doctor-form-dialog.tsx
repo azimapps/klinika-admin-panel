@@ -20,6 +20,7 @@ import { useTranslate } from 'src/locales';
 import { Form, Field } from 'src/components/hook-form';
 import { CustomTabs } from 'src/components/custom-tabs';
 
+import { useGetClinics } from 'src/module/clinic/hooks';
 import { useGetCategories } from 'src/module/category/hooks';
 
 import { useCreateDoctor, useUpdateDoctor, useUploadDoctorAvatar } from '../hooks';
@@ -36,6 +37,8 @@ const DoctorSchema = zod.object({
     price: zod.coerce.number().min(1, { message: 'Narx majburiy!' }),
     experience: zod.coerce.number().min(0, { message: 'Tajriba noto\'g\'ri!' }),
     category_id: zod.coerce.number().min(1, { message: 'Kategoriya tanlanishi shart!' }),
+    clinic_id: zod.coerce.number().nullable().optional(),
+    rating: zod.coerce.number().min(0).max(5).optional(),
     is_active: zod.boolean(),
     avatar: zod.any().nullable().optional(),
 });
@@ -54,6 +57,7 @@ export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
     const [currentTab, setCurrentTab] = useState('uz');
 
     const { data: categories = [] } = useGetCategories();
+    const { data: clinics = [] } = useGetClinics();
 
     const { mutateAsync: createDoctor, isPending: createPending } = useCreateDoctor();
     const { mutateAsync: updateDoctor, isPending: updatePending } = useUpdateDoctor(currentRow?.id?.toString() || '');
@@ -69,10 +73,13 @@ export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
             price: '' as any,
             experience: '' as any,
             category_id: 0,
+            clinic_id: 0,
+            rating: 0,
             is_active: true,
             avatar: null,
         },
     });
+
 
     const {
         reset,
@@ -91,6 +98,8 @@ export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
                 price: currentRow.price,
                 experience: currentRow.experience,
                 category_id: currentRow.category_id,
+                clinic_id: currentRow.clinic_id || 0,
+                rating: currentRow.rating,
                 is_active: currentRow.is_active,
                 avatar: currentRow.avatar,
             });
@@ -103,11 +112,14 @@ export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
                 price: '' as any,
                 experience: '' as any,
                 category_id: 0,
+                clinic_id: 0,
+                rating: 0,
                 is_active: true,
                 avatar: null,
             });
         }
     }, [currentRow, reset]);
+
 
     const handleChangeTab = useCallback((event: any, newValue: string) => {
         setCurrentTab(newValue);
@@ -118,13 +130,22 @@ export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
             const avatarFile = data.avatar instanceof File ? data.avatar : null;
             delete data.avatar;
 
+            // Handle optional clinic_id being 0 from select
+            if (data.clinic_id === 0) {
+                data.clinic_id = null;
+            }
+
             if (currentRow) {
                 await updateDoctor(data);
                 if (avatarFile) {
                     await uploadAvatar({ id: currentRow.id.toString(), file: avatarFile });
                 }
             } else {
-                const res = await createDoctor(data);
+                // Remove rating for creation if not supported by backend
+                const createData = { ...data };
+                delete (createData as any).rating;
+
+                const res = await createDoctor(createData as any);
                 if (avatarFile && res?.id) {
                     await uploadAvatar({ id: res.id.toString(), file: avatarFile });
                 }
@@ -135,6 +156,7 @@ export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
             console.error(error);
         }
     });
+
 
     const handleDrop = useCallback(
         (acceptedFiles: File[]) => {
@@ -216,6 +238,17 @@ export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
                                 ))}
                             </Field.Select>
 
+                            <Field.Select name="clinic_id" label={t('clinic')}>
+                                <MenuItem value={0}>{t('noClinic')}</MenuItem>
+                                {clinics.map((clinic) => (
+                                    <MenuItem key={clinic.id} value={clinic.id}>
+                                        {clinic.title_uz}
+                                    </MenuItem>
+                                ))}
+                            </Field.Select>
+
+                            <Field.Text name="rating" label={t('rating')} type="number" inputProps={{ min: 0, max: 5, step: 0.1 }} />
+
                             <Field.Switch name="is_active" label={t('is_active')} />
                         </Box>
 
@@ -256,3 +289,4 @@ export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
         </Dialog>
     );
 }
+

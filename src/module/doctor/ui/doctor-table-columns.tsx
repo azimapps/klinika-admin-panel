@@ -48,6 +48,12 @@ export const doctorTableColumns = ({ t, onEdit, onDelete }: Props): GridColDef<a
         valueGetter: (value: any, row: any) => row.category?.title_uz || '-',
     },
     {
+        field: 'clinic',
+        headerName: t('table.clinic'),
+        width: 150,
+        valueGetter: (value: any, row: any) => row.clinic?.title_uz || '-',
+    },
+    {
         field: 'price',
         headerName: t('table.price'),
         width: 120,
@@ -56,6 +62,12 @@ export const doctorTableColumns = ({ t, onEdit, onDelete }: Props): GridColDef<a
     {
         field: 'experience',
         headerName: t('table.experience'),
+        width: 100,
+        type: 'number',
+    },
+    {
+        field: 'rating',
+        headerName: t('table.rating'),
         width: 100,
         type: 'number',
     },
@@ -86,3 +98,4 @@ export const doctorTableColumns = ({ t, onEdit, onDelete }: Props): GridColDef<a
         ],
     },
 ];
+

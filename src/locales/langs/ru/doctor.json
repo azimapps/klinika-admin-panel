@@ -16,6 +16,8 @@
     "price": "Цена",
     "experience": "Опыт (лет)",
     "category": "Категория",
+    "clinic": "Клиника",
+    "noClinic": "Клиника не выбрана",
     "rating": "Рейтинг",
     "is_active": "Активен",
     "search": "Поиск...",
@@ -28,6 +30,7 @@
         "price": "Цена",
         "experience": "Опыт",
         "category": "Категория",
+        "clinic": "Клиника",
         "rating": "Рейтинг",
         "status": "Статус",
         "actions": "Действия"

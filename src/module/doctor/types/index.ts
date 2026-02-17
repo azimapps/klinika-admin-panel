@@ -1,3 +1,4 @@
+import type { IClinic } from '../../clinic/types';
 import type { ICategory } from '../../category/types';
 
 export interface IDoctor {
@@ -10,6 +11,8 @@ export interface IDoctor {
     experience: number;
     category_id: number;
     category: ICategory;
+    clinic_id: number | null;
+    clinic: IClinic | null;
     rating: number;
     avatar: string | null;
     is_active: boolean;
@@ -23,6 +26,7 @@ export interface IDoctorCreateRequest {
     price: number;
     experience: number;
     category_id: number;
+    clinic_id?: number | null;
     is_active: boolean;
 }
 
@@ -34,6 +38,8 @@ export interface IDoctorUpdateRequest {
     price?: number;
     experience?: number;
     category_id?: number;
+    clinic_id?: number | null;
     rating?: number;
     is_active?: boolean;
 }
+

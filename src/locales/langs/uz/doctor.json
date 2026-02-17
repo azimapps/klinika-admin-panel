@@ -16,6 +16,8 @@
     "price": "Narx",
     "experience": "Tajriba (yil)",
     "category": "Kategoriya",
+    "clinic": "Klinika",
+    "noClinic": "Klinika tanlanmagan",
     "rating": "Reyting",
     "is_active": "Faol",
     "search": "Qidiruv...",
@@ -28,6 +30,7 @@
         "price": "Narx",
         "experience": "Tajriba",
         "category": "Kategoriya",
+        "clinic": "Klinika",
         "rating": "Reyting",
         "status": "Holati",
         "actions": "Amallar"
