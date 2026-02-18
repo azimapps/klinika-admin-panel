@@ -39,6 +39,7 @@ const DAYS = [
 ];
 
 const HOURS = Array.from({ length: 24 }, (_, i) => `${i.toString().padStart(2, '0')}:00`);
+const DEFAULT_SLOTS = HOURS.slice(9, 19); // 09:00 to 18:00
 
 export function DoctorScheduleView() {
     const { t, currentLang } = useTranslate('doctor');
@@ -51,12 +52,18 @@ export function DoctorScheduleView() {
     const { mutateAsync: updateSchedule, isPending: updatePending } = useUpdateDoctorSchedule(selectedDoctorId);
 
     useEffect(() => {
-        if (scheduleData) {
+        if (scheduleData && scheduleData.length > 0) {
             setLocalSchedules(scheduleData.map(s => ({ day_of_week: s.day_of_week, slots: s.slots })));
+        } else if (selectedDoctorId) {
+            const defaultSchedules = DAYS.map(day => ({
+                day_of_week: day.value,
+                slots: DEFAULT_SLOTS,
+            }));
+            setLocalSchedules(defaultSchedules);
         } else {
             setLocalSchedules([]);
         }
-    }, [scheduleData]);
+    }, [scheduleData, selectedDoctorId]);
 
     const handleToggleSlot = (dayIndex: number, slot: string) => {
         const daySchedule = localSchedules.find(s => s.day_of_week === dayIndex);
