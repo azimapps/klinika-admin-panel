@@ -38,16 +38,6 @@ interface Props {
     doctorName: string;
 }
 
-const DAYS = [
-    { value: 0, label: 'Dushanba' },
-    { value: 1, label: 'Seshanba' },
-    { value: 2, label: 'Chorshanba' },
-    { value: 3, label: 'Payshanba' },
-    { value: 4, label: 'Juma' },
-    { value: 5, label: 'Shanba' },
-    { value: 6, label: 'Yakshanba' },
-];
-
 export function DoctorScheduleDialog({ open, onClose, doctorId, doctorName }: Props) {
     const { t } = useTranslate('doctor');
     const [currentTab, setCurrentTab] = useState(0);
@@ -125,6 +115,16 @@ export function DoctorScheduleDialog({ open, onClose, doctorId, doctorName }: Pr
         }
     };
 
+    const DAYS = [
+        { value: 0, label: t('schedule.day_0') },
+        { value: 1, label: t('schedule.day_1') },
+        { value: 2, label: t('schedule.day_2') },
+        { value: 3, label: t('schedule.day_3') },
+        { value: 4, label: t('schedule.day_4') },
+        { value: 5, label: t('schedule.day_5') },
+        { value: 6, label: t('schedule.day_6') },
+    ];
+
     const currentSlots = localSchedules.find(s => s.day_of_week === currentTab)?.slots || [];
 
     return (
@@ -163,7 +163,7 @@ export function DoctorScheduleDialog({ open, onClose, doctorId, doctorName }: Pr
 
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Typography variant="subtitle2">
-                                {DAYS.find(d => d.value === currentTab)?.label} uchun vaqtlar:
+                                {DAYS.find(d => d.value === currentTab)?.label}:
                             </Typography>
                             <Stack direction="row" spacing={1}>
                                 <Tooltip title={t('schedule.copyToAll')}>

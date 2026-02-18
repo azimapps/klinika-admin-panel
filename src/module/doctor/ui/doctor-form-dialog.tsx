@@ -255,7 +255,7 @@ export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
                         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
                             <Field.UploadAvatar
                                 name="avatar"
-                                maxSize={3145728}
+                                maxSize={307200}
                                 onDrop={handleDrop}
                                 helperText={
                                     <Typography
@@ -269,7 +269,7 @@ export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
                                         }}
                                     >
                                         Allowed *.jpeg, *.jpg, *.png, *.gif
-                                        <br /> max size of {3}MB
+                                        <br /> max size of 300KB
                                     </Typography>
                                 }
                             />

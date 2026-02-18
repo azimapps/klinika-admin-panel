@@ -136,7 +136,7 @@ export function DoctorScheduleView() {
                             >
                                 {doctors.map((doctor) => (
                                     <MenuItem key={doctor.id} value={doctor.id.toString()}>
-                                        {doctor.fullname_uz}
+                                        {(doctor as any)[`fullname_${currentLang.value}`] || doctor.fullname_uz}
                                     </MenuItem>
                                 ))}
                             </Select>

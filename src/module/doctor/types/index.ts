@@ -16,6 +16,7 @@ export interface IDoctor {
     rating: number;
     avatar: string | null;
     is_active: boolean;
+    schedules: IDoctorSchedule[];
 }
 
 export interface IDoctorCreateRequest {

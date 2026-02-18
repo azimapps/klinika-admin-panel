@@ -41,6 +41,13 @@
         "add": "Qo'shish",
         "noSlots": "Bu kunda ish vaqti belgilanmagan",
         "copyToAll": "Barcha kunlarga nusxalash",
-        "clearDay": "Kunni tozalash"
+        "clearDay": "Kunni tozalash",
+        "day_0": "Dushanba",
+        "day_1": "Seshanba",
+        "day_2": "Chorshanba",
+        "day_3": "Payshanba",
+        "day_4": "Juma",
+        "day_5": "Shanba",
+        "day_6": "Yakshanba"
     }
 }

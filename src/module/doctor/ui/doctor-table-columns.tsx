@@ -11,12 +11,12 @@ import { Iconify } from 'src/components/iconify';
 
 interface Props {
     t: TFunction;
+    currentLang: string;
     onEdit: (row: any) => void;
     onDelete: (id: number) => void;
-    onSchedule: (row: any) => void;
 }
 
-export const doctorTableColumns = ({ t, onEdit, onDelete, onSchedule }: Props): GridColDef<any>[] => [
+export const doctorTableColumns = ({ t, currentLang, onEdit, onDelete }: Props): GridColDef<any>[] => [
     {
         field: 'avatar',
         headerName: t('table.avatar'),
@@ -25,17 +25,18 @@ export const doctorTableColumns = ({ t, onEdit, onDelete, onSchedule }: Props): 
         filterable: false,
         renderCell: (params) => (
             <Avatar
-                alt={params.row.fullname_uz}
+                alt={params.row[`fullname_${currentLang}`] || params.row.fullname_uz}
                 src={params.row.avatar}
                 sx={{ width: 40, height: 40, border: (theme) => `solid 2px ${theme.palette.background.neutral}` }}
             />
         ),
     },
     {
-        field: 'fullname_uz',
+        field: 'fullname',
         headerName: t('table.fullname_uz'),
         flex: 1,
         minWidth: 150,
+        valueGetter: (value: any, row: any) => row[`fullname_${currentLang}`] || row.fullname_uz,
     },
     {
         field: 'phone_number',
@@ -46,13 +47,13 @@ export const doctorTableColumns = ({ t, onEdit, onDelete, onSchedule }: Props): 
         field: 'category',
         headerName: t('table.category'),
         width: 150,
-        valueGetter: (value: any, row: any) => row.category?.title_uz || '-',
+        valueGetter: (value: any, row: any) => row.category?.[`title_${currentLang}`] || row.category?.title_uz || '-',
     },
     {
         field: 'clinic',
         headerName: t('table.clinic'),
         width: 150,
-        valueGetter: (value: any, row: any) => row.clinic?.title_uz || '-',
+        valueGetter: (value: any, row: any) => row.clinic?.[`title_${currentLang}`] || row.clinic?.title_uz || '-',
     },
     {
         field: 'price',
@@ -86,13 +87,10 @@ export const doctorTableColumns = ({ t, onEdit, onDelete, onSchedule }: Props): 
         type: 'actions',
         field: 'actions',
         headerName: t('table.actions'),
-        width: 140,
+        width: 100,
         align: 'right',
         headerAlign: 'right',
         getActions: (params) => [
-            <IconButton key="schedule" onClick={() => onSchedule(params.row)} sx={{ color: 'primary.main' }}>
-                <Iconify icon="solar:calendar-date-bold" />
-            </IconButton>,
             <IconButton key="edit" onClick={() => onEdit(params.row)}>
                 <Iconify icon="solar:pen-bold" />
             </IconButton>,

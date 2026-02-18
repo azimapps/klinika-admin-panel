@@ -41,6 +41,13 @@
         "add": "Add",
         "noSlots": "No work hours set for this day",
         "copyToAll": "Copy to all days",
-        "clearDay": "Clear day"
+        "clearDay": "Clear day",
+        "day_0": "Monday",
+        "day_1": "Tuesday",
+        "day_2": "Wednesday",
+        "day_3": "Thursday",
+        "day_4": "Friday",
+        "day_5": "Saturday",
+        "day_6": "Sunday"
     }
 }
