@@ -17,6 +17,7 @@ import { DataGridCustom } from 'src/module/_examples/mui/data-grid-view/data-gri
 import { DoctorFormDialog } from './doctor-form-dialog';
 import { useGetDoctors, useDeleteDoctor } from '../hooks';
 import { doctorTableColumns } from './doctor-table-columns';
+import { DoctorScheduleDialog } from './doctor-schedule-dialog';
 
 import type { IDoctor } from '../types';
 
@@ -30,6 +31,9 @@ export function DoctorListView() {
     const [openForm, setOpenForm] = useState(false);
     const [selectedRow, setSelectedRow] = useState<IDoctor | undefined>(undefined);
 
+    const [openSchedule, setOpenSchedule] = useState(false);
+    const [selectedDoctorForSchedule, setSelectedDoctorForSchedule] = useState<IDoctor | undefined>(undefined);
+
     const handleOpenForm = useCallback((row?: IDoctor) => {
         setSelectedRow(row);
         setOpenForm(true);
@@ -38,6 +42,16 @@ export function DoctorListView() {
     const handleCloseForm = useCallback(() => {
         setSelectedRow(undefined);
         setOpenForm(false);
+    }, []);
+
+    const handleOpenSchedule = useCallback((row: IDoctor) => {
+        setSelectedDoctorForSchedule(row);
+        setOpenSchedule(true);
+    }, []);
+
+    const handleCloseSchedule = useCallback(() => {
+        setSelectedDoctorForSchedule(undefined);
+        setOpenSchedule(false);
     }, []);
 
     const handleDelete = useCallback(async (id: number) => {
@@ -54,6 +68,7 @@ export function DoctorListView() {
         t,
         onEdit: handleOpenForm,
         onDelete: handleDelete,
+        onSchedule: handleOpenSchedule,
     });
 
     return (
@@ -93,6 +108,13 @@ export function DoctorListView() {
                 open={openForm}
                 onClose={handleCloseForm}
                 currentRow={selectedRow}
+            />
+
+            <DoctorScheduleDialog
+                open={openSchedule}
+                onClose={handleCloseSchedule}
+                doctorId={selectedDoctorForSchedule?.id?.toString() || ''}
+                doctorName={selectedDoctorForSchedule?.fullname_uz || ''}
             />
         </DashboardContent>
     );

@@ -25,6 +25,7 @@ export const paths = {
     doctor: {
       root: `/doctor`,
       list: `/doctor/list`,
+      schedule: `/doctor/schedule`,
     },
     advantage: {
       root: `/advantage`,

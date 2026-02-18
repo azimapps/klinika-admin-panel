@@ -37,6 +37,7 @@ const Page404 = lazy(() => import('src/pages/error/404'));
 
 const CategoryListPage = lazy(() => import('src/pages/dashboard/category/list'));
 const DoctorListPage = lazy(() => import('src/pages/dashboard/doctor/list'));
+const DoctorSchedulePage = lazy(() => import('src/pages/dashboard/doctor/schedule'));
 const AdvantageListPage = lazy(() => import('src/pages/dashboard/advantage/list'));
 const FounderListPage = lazy(() => import('src/pages/dashboard/founder/list'));
 const ServiceListPage = lazy(() => import('src/pages/dashboard/service/list'));
@@ -72,6 +73,7 @@ export const routesSection: RouteObject[] = [
         children: [
           { element: <DoctorListPage />, index: true },
           { path: 'list', element: <DoctorListPage /> },
+          { path: 'schedule', element: <DoctorSchedulePage /> },
         ],
       },
       {

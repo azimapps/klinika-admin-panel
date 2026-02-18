@@ -34,5 +34,13 @@
         "rating": "Rating",
         "status": "Status",
         "actions": "Actions"
+    },
+    "schedule": {
+        "title": "Working schedule",
+        "selectTime": "Select time",
+        "add": "Add",
+        "noSlots": "No work hours set for this day",
+        "copyToAll": "Copy to all days",
+        "clearDay": "Clear day"
     }
 }

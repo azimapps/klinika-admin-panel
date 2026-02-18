@@ -80,6 +80,7 @@ export const endpoints = {
     list: '/admin/doctors/',
     details: (id: string) => `/admin/doctors/${id}`,
     avatar: (id: string) => `/admin/doctors/${id}/avatar`,
+    schedule: (id: string) => `/admin/doctors/${id}/schedule/`,
   },
   advantage: {
     list: '/advantages', // Public endpoint for listing

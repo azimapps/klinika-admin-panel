@@ -3,7 +3,13 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import axiosInstance, { endpoints } from 'src/lib/axios';
 
-import type { IDoctor, IDoctorCreateRequest, IDoctorUpdateRequest } from '../types';
+import type {
+    IDoctor,
+    IDoctorSchedule,
+    IDoctorScheduleSlot,
+    IDoctorCreateRequest,
+    IDoctorUpdateRequest,
+} from '../types';
 
 // ----------------------------------------------------------------------
 
@@ -21,6 +27,16 @@ export const useGetDoctor = (id: string) =>
         queryKey: ['doctor', id],
         queryFn: async () => {
             const res = await axiosInstance.get(endpoints.doctor.details(id));
+            return res.data;
+        },
+        enabled: !!id,
+    });
+
+export const useGetDoctorSchedule = (id: string) =>
+    useQuery<IDoctorSchedule[]>({
+        queryKey: ['doctor-schedule', id],
+        queryFn: async () => {
+            const res = await axiosInstance.get(endpoints.doctor.schedule(id));
             return res.data;
         },
         enabled: !!id,
@@ -95,6 +111,44 @@ export const useUpdateDoctor = (id: string) => {
     });
 };
 
+export const useUpdateDoctorSchedule = (id: string) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (schedules: IDoctorScheduleSlot[]) => {
+            const res = await axiosInstance.put(endpoints.doctor.schedule(id), { schedules });
+            return res.data;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['doctor-schedule', id] });
+            toast.success('Ish tartibi muvaffaqiyatli yangilandi');
+        },
+        onError: (error: any) => {
+            console.error('Update Schedule Error:', error);
+            const errorMessage = error?.detail || error?.message || 'Xatolik yuz berdi';
+            toast.error(errorMessage);
+        },
+    });
+};
+
+export const useClearDoctorSchedule = (id: string) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async () => {
+            const res = await axiosInstance.delete(endpoints.doctor.schedule(id));
+            return res.data;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['doctor-schedule', id] });
+            toast.success('Ish tartibi tozalandi');
+        },
+        onError: (error: any) => {
+            console.error('Clear Schedule Error:', error);
+            const errorMessage = error?.detail || error?.message || 'Xatolik yuz berdi';
+            toast.error(errorMessage);
+        },
+    });
+};
+
 export const useDeleteDoctor = () => {
     const queryClient = useQueryClient();
     return useMutation({
@@ -138,3 +192,4 @@ export const useUploadDoctorAvatar = () => {
         },
     });
 };
+

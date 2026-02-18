@@ -34,5 +34,13 @@
         "rating": "Reyting",
         "status": "Holati",
         "actions": "Amallar"
+    },
+    "schedule": {
+        "title": "Ish tartibi",
+        "selectTime": "Vaqtni tanlang",
+        "add": "Qo'shish",
+        "noSlots": "Bu kunda ish vaqti belgilanmagan",
+        "copyToAll": "Barcha kunlarga nusxalash",
+        "clearDay": "Kunni tozalash"
     }
 }

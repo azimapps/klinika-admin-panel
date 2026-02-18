@@ -43,3 +43,13 @@ export interface IDoctorUpdateRequest {
     is_active?: boolean;
 }
 
+
+export interface IDoctorScheduleSlot {
+    day_of_week: number;
+    slots: string[];
+}
+
+export interface IDoctorSchedule extends IDoctorScheduleSlot {
+    id: number;
+    doctor_id?: number;
+}

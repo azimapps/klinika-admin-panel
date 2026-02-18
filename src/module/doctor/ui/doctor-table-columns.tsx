@@ -13,9 +13,10 @@ interface Props {
     t: TFunction;
     onEdit: (row: any) => void;
     onDelete: (id: number) => void;
+    onSchedule: (row: any) => void;
 }
 
-export const doctorTableColumns = ({ t, onEdit, onDelete }: Props): GridColDef<any>[] => [
+export const doctorTableColumns = ({ t, onEdit, onDelete, onSchedule }: Props): GridColDef<any>[] => [
     {
         field: 'avatar',
         headerName: t('table.avatar'),
@@ -85,10 +86,13 @@ export const doctorTableColumns = ({ t, onEdit, onDelete }: Props): GridColDef<a
         type: 'actions',
         field: 'actions',
         headerName: t('table.actions'),
-        width: 100,
+        width: 140,
         align: 'right',
         headerAlign: 'right',
         getActions: (params) => [
+            <IconButton key="schedule" onClick={() => onSchedule(params.row)} sx={{ color: 'primary.main' }}>
+                <Iconify icon="solar:calendar-date-bold" />
+            </IconButton>,
             <IconButton key="edit" onClick={() => onEdit(params.row)}>
                 <Iconify icon="solar:pen-bold" />
             </IconButton>,
