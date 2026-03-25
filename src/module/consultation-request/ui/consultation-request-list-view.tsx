@@ -14,13 +14,13 @@ import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
 
 import { DataGridCustom } from 'src/module/_examples/mui/data-grid-view/data-grid-custom';
 
-import {
-    useGetConsultationRequests,
-    useUpdateConsultationRequestStatus,
-    useSendInvoice,
-} from '../hooks';
 import { consultationRequestTableColumns } from './consultation-request-table-columns';
 import { ConsultationRequestDetailDialog } from './consultation-request-detail-dialog';
+import {
+    useGetConsultationRequests,
+    useSendInvoice,
+    useUpdateConsultationRequestStatus,
+} from '../hooks';
 
 import type { IConsultationRequest } from '../types';
 

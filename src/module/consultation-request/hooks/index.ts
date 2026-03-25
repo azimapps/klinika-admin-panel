@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import axiosInstance, { endpoints } from 'src/lib/axios';
 
-import type { IConsultationRequestPagination, ISendInvoiceResponse } from '../types';
+import type { ISendInvoiceResponse, IConsultationRequestPagination } from '../types';
 
 // ----------------------------------------------------------------------
 
