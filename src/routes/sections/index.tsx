@@ -46,6 +46,7 @@ const FAQListPage = lazy(() => import('src/pages/dashboard/faq/list'));
 const TipListPage = lazy(() => import('src/pages/dashboard/tip/list'));
 const NotificationListPage = lazy(() => import('src/pages/dashboard/notification/list'));
 const ClientListPage = lazy(() => import('src/pages/dashboard/client/list'));
+const ConsultationRequestListPage = lazy(() => import('src/pages/dashboard/consultation-request/list'));
 
 // ----------------------------------------------------------------------
 
@@ -130,6 +131,13 @@ export const routesSection: RouteObject[] = [
         children: [
           { element: <ClientListPage />, index: true },
           { path: 'list', element: <ClientListPage /> },
+        ],
+      },
+      {
+        path: 'consultation-request',
+        children: [
+          { element: <ConsultationRequestListPage />, index: true },
+          { path: 'list', element: <ConsultationRequestListPage /> },
         ],
       },
     ],

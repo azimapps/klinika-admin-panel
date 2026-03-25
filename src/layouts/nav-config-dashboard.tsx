@@ -35,6 +35,7 @@ const ICONS = {
   tips: iconify('solar:notes-bold-duotone'),
   notifications: iconify('solar:bell-bing-bold-duotone'),
   clients: iconify('solar:user-rounded-bold'),
+  consultationRequests: iconify('solar:document-text-bold'),
 };
 
 // ----------------------------------------------------------------------
@@ -59,6 +60,7 @@ export const useNavData = (): NavSectionProps['data'] => {
           { title: t('tips'), path: paths.dashboard.tip.list, icon: ICONS.tips },
           { title: t('notifications'), path: paths.dashboard.notification.list, icon: ICONS.notifications },
           { title: t('clients'), path: paths.dashboard.client.list, icon: ICONS.clients },
+          { title: t('consultationRequests'), path: paths.dashboard.consultationRequest.list, icon: ICONS.consultationRequests },
         ],
       },
     ],

@@ -55,6 +55,10 @@ export const paths = {
       root: `/notification`,
       list: `/notification/list`,
     },
+    consultationRequest: {
+      root: `/consultation-request`,
+      list: `/consultation-request/list`,
+    },
     games: {
       wordBattle: {
         root: '/word-battle',

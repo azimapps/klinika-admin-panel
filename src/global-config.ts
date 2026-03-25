@@ -22,7 +22,7 @@ export type ConfigValue = {
 export const CONFIG: ConfigValue = {
   appName: 'Klinika Admin Panel',
   appVersion: packageJson.version,
-  serverUrl: 'https://klinika-production.up.railway.app',
+  serverUrl: import.meta.env.DEV ? '' : 'https://klinika-production.up.railway.app',
   assetsDir: import.meta.env.VITE_ASSETS_DIR ?? '',
   auth: {
     method: 'jwt',

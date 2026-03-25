@@ -125,4 +125,10 @@ export const endpoints = {
     list: '/admin/clients',
     details: (id: string) => `/admin/clients/${id}`,
   },
+  consultationRequest: {
+    list: '/admin/requests',
+    details: (id: string) => `/admin/requests/${id}`,
+    updateStatus: (id: string) => `/admin/requests/${id}/status`,
+    invoice: (id: string) => `/admin/requests/${id}/invoice`,
+  },
 };
