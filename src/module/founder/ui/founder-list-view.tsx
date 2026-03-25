@@ -23,78 +23,77 @@ import type { IFounder } from '../types';
 // ----------------------------------------------------------------------
 
 export function FounderListView() {
-    const { t } = useTranslate('founder');
+  const { t } = useTranslate('founder');
 
-    const { data: founders = [], isLoading } = useGetFounders();
-    const { mutateAsync: deleteFounder } = useDeleteFounder();
+  const { data: founders = [], isLoading } = useGetFounders();
+  const { mutateAsync: deleteFounder } = useDeleteFounder();
 
-    const [openForm, setOpenForm] = useState(false);
-    const [selectedRow, setSelectedRow] = useState<IFounder | undefined>(undefined);
+  const [openForm, setOpenForm] = useState(false);
+  const [selectedRow, setSelectedRow] = useState<IFounder | undefined>(undefined);
 
-    const handleOpenForm = useCallback((row?: IFounder) => {
-        setSelectedRow(row);
-        setOpenForm(true);
-    }, []);
+  const handleOpenForm = useCallback((row?: IFounder) => {
+    setSelectedRow(row);
+    setOpenForm(true);
+  }, []);
 
-    const handleCloseForm = useCallback(() => {
-        setSelectedRow(undefined);
-        setOpenForm(false);
-    }, []);
+  const handleCloseForm = useCallback(() => {
+    setSelectedRow(undefined);
+    setOpenForm(false);
+  }, []);
 
-    const handleDelete = useCallback(async (id: number) => {
-        if (window.confirm(t('confirmDelete') || "Haqiqatan ham o'chirmoqchimisiz?")) {
-            try {
-                await deleteFounder(id);
-            } catch (error) {
-                console.error(error);
-            }
+  const handleDelete = useCallback(
+    async (id: number) => {
+      if (window.confirm(t('confirmDelete') || "Haqiqatan ham o'chirmoqchimisiz?")) {
+        try {
+          await deleteFounder(id);
+        } catch (error) {
+          console.error(error);
         }
-    }, [deleteFounder, t]);
+      }
+    },
+    [deleteFounder, t]
+  );
 
-    const columns = founderTableColumns({
-        t,
-        onEdit: handleOpenForm,
-        onDelete: handleDelete,
-    });
+  const columns = founderTableColumns({
+    t,
+    onEdit: handleOpenForm,
+    onDelete: handleDelete,
+  });
 
-    return (
-        <DashboardContent>
-            <CustomBreadcrumbs
-                heading={`${t('founders')} ${t('list')}`}
-                links={[
-                    { name: t('main'), href: paths.dashboard.root },
-                    { name: t('founders') },
-                    { name: t('list') },
-                ]}
-                action={
-                    <Button
-                        variant="contained"
-                        startIcon={<Iconify icon="mingcute:add-line" />}
-                        onClick={() => handleOpenForm()}
-                    >
-                        {t('add')}
-                    </Button>
-                }
-                sx={{ mb: { xs: 3, md: 5 } }}
-            />
+  return (
+    <DashboardContent>
+      <CustomBreadcrumbs
+        heading={`${t('founders')} ${t('list')}`}
+        links={[
+          { name: t('main'), href: paths.dashboard.root },
+          { name: t('founders') },
+          { name: t('list') },
+        ]}
+        action={
+          <Button
+            variant="contained"
+            startIcon={<Iconify icon="mingcute:add-line" />}
+            onClick={() => handleOpenForm()}
+          >
+            {t('add')}
+          </Button>
+        }
+        sx={{ mb: { xs: 3, md: 5 } }}
+      />
 
-            <Card>
-                <Box sx={{ position: 'relative' }}>
-                    <DataGridCustom<IFounder>
-                        data={founders}
-                        column={columns}
-                        loading={isLoading}
-                        rowCount={founders.length}
-                        quickToolbar={false}
-                    />
-                </Box>
-            </Card>
+      <Card>
+        <Box sx={{ position: 'relative' }}>
+          <DataGridCustom<IFounder>
+            data={founders}
+            column={columns}
+            loading={isLoading}
+            rowCount={founders.length}
+            quickToolbar={false}
+          />
+        </Box>
+      </Card>
 
-            <FounderFormDialog
-                open={openForm}
-                onClose={handleCloseForm}
-                currentRow={selectedRow}
-            />
-        </DashboardContent>
-    );
+      <FounderFormDialog open={openForm} onClose={handleCloseForm} currentRow={selectedRow} />
+    </DashboardContent>
+  );
 }

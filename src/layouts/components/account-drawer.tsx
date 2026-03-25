@@ -31,7 +31,6 @@ export function AccountDrawer() {
     </Avatar>
   );
 
-
   return (
     <>
       <AccountButton

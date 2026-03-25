@@ -9,24 +9,24 @@ import { useSettingsContext } from '../context/use-settings-context';
 // ----------------------------------------------------------------------
 
 export function ThemeToggleButton() {
-    const settings = useSettingsContext();
-    const { mode, setMode } = useColorScheme();
+  const settings = useSettingsContext();
+  const { mode, setMode } = useColorScheme();
 
-    const handleToggleTheme = () => {
-        const newMode = mode === 'light' ? 'dark' : 'light';
-        setMode(newMode);
-        settings.setState({ colorScheme: newMode });
-    };
+  const handleToggleTheme = () => {
+    const newMode = mode === 'light' ? 'dark' : 'light';
+    setMode(newMode);
+    settings.setState({ colorScheme: newMode });
+  };
 
-    return (
-        <Tooltip title={mode === 'dark' ? 'Light mode' : 'Dark mode'}>
-            <IconButton onClick={handleToggleTheme}>
-                {mode === 'light' ? (
-                    <SvgIcon>{settingIcons.moon}</SvgIcon>
-                ) : (
-                    <SvgIcon>{settingIcons.sun}</SvgIcon>
-                )}
-            </IconButton>
-        </Tooltip>
-    );
+  return (
+    <Tooltip title={mode === 'dark' ? 'Light mode' : 'Dark mode'}>
+      <IconButton onClick={handleToggleTheme}>
+        {mode === 'light' ? (
+          <SvgIcon>{settingIcons.moon}</SvgIcon>
+        ) : (
+          <SvgIcon>{settingIcons.sun}</SvgIcon>
+        )}
+      </IconButton>
+    </Tooltip>
+  );
 }

@@ -20,7 +20,7 @@ export type SignInSchemaType = zod.infer<typeof SignInSchema>;
 export const SignInSchema = zod.object({
   phone_number: zod
     .string()
-    .min(9, { message: 'Telefon raqami 9 ta raqamdan iborat bo\'lishi kerak!' })
+    .min(9, { message: "Telefon raqami 9 ta raqamdan iborat bo'lishi kerak!" })
     .max(9, { message: 'Telefon raqami 9 ta raqamdan oshmasligi kerak!' }),
   code: zod.string().optional(),
 });
@@ -78,11 +78,7 @@ export function CenteredSignInView() {
             inputMode: 'numeric',
           },
           input: {
-            startAdornment: (
-              <InputAdornment position="start">
-                +998
-              </InputAdornment>
-            ),
+            startAdornment: <InputAdornment position="start">+998</InputAdornment>,
           },
         }}
       />
@@ -101,7 +97,7 @@ export function CenteredSignInView() {
             htmlInput: {
               maxLength: 6,
               inputMode: 'numeric',
-            }
+            },
           }}
         />
       )}
@@ -119,12 +115,7 @@ export function CenteredSignInView() {
       </Button>
 
       {isSent && (
-        <Button
-          fullWidth
-          size="small"
-          onClick={() => setIsSent(false)}
-          sx={{ mt: -1 }}
-        >
+        <Button fullWidth size="small" onClick={() => setIsSent(false)} sx={{ mt: -1 }}>
           Change phone number
         </Button>
       )}
@@ -137,7 +128,11 @@ export function CenteredSignInView() {
 
       <FormHead
         title={isSent ? 'Verify your account' : 'Sign in to your account'}
-        description={isSent ? `Code sent to +998 ${phone_number}` : 'Enter your phone number to receive a verification code'}
+        description={
+          isSent
+            ? `Code sent to +998 ${phone_number}`
+            : 'Enter your phone number to receive a verification code'
+        }
       />
 
       <Form methods={methods} onSubmit={onSubmit}>

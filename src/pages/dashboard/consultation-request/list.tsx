@@ -7,11 +7,11 @@ import { ConsultationRequestListView } from 'src/module/consultation-request/ui/
 const metadata = { title: `So'rovlar - ${CONFIG.appName}` };
 
 export default function Page() {
-    return (
-        <>
-            <title> {metadata.title}</title>
+  return (
+    <>
+      <title> {metadata.title}</title>
 
-            <ConsultationRequestListView />
-        </>
-    );
+      <ConsultationRequestListView />
+    </>
+  );
 }

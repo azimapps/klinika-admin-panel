@@ -46,22 +46,31 @@ export function CenteredSignInViewPhone() {
     defaultValues: { phone_number: '+998', code: '' },
   });
 
-  const { handleSubmit, register, setValue, watch, formState: { errors } } = methods;
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    watch,
+    formState: { errors },
+  } = methods;
 
   const phoneValue = watch('phone_number');
 
-  const handleSendCode = useCallback(async (phone: string) => {
-    try {
-      if (executeRecaptcha) {
-        await executeRecaptcha('login_request');
+  const handleSendCode = useCallback(
+    async (phone: string) => {
+      try {
+        if (executeRecaptcha) {
+          await executeRecaptcha('login_request');
+        }
+        await requestSignIn({ phone_number: phone });
+        setIsVerifyStep(true);
+        countdown.start();
+      } catch (error) {
+        console.error(error);
       }
-      await requestSignIn({ phone_number: phone });
-      setIsVerifyStep(true);
-      countdown.start();
-    } catch (error) {
-      console.error(error);
-    }
-  }, [executeRecaptcha, requestSignIn, countdown]);
+    },
+    [executeRecaptcha, requestSignIn, countdown]
+  );
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -148,12 +157,7 @@ export function CenteredSignInViewPhone() {
       </Button>
 
       {isVerifyStep && (
-        <FormReturnLink
-          onClick={handleBack}
-          href="#"
-          label={t('backToPhone')}
-          sx={{ mt: 2 }}
-        />
+        <FormReturnLink onClick={handleBack} href="#" label={t('backToPhone')} sx={{ mt: 2 }} />
       )}
     </Box>
   );

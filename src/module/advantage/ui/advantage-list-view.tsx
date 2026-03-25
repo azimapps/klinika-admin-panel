@@ -23,81 +23,80 @@ import type { IAdvantage } from '../types';
 // ----------------------------------------------------------------------
 
 export function AdvantageListView() {
-    const { t } = useTranslate('advantage');
+  const { t } = useTranslate('advantage');
 
-    // Public list uses Public GET endpoint.
-    // Using hooks/index.ts which points to /advantages (public) or /admin/advantages (admin)? 
-    // I setup hooks to use: list: '/advantages' (public)
-    const { data: advantages = [], isLoading } = useGetAdvantages();
-    const { mutateAsync: deleteAdvantage } = useDeleteAdvantage();
+  // Public list uses Public GET endpoint.
+  // Using hooks/index.ts which points to /advantages (public) or /admin/advantages (admin)?
+  // I setup hooks to use: list: '/advantages' (public)
+  const { data: advantages = [], isLoading } = useGetAdvantages();
+  const { mutateAsync: deleteAdvantage } = useDeleteAdvantage();
 
-    const [openForm, setOpenForm] = useState(false);
-    const [selectedRow, setSelectedRow] = useState<IAdvantage | undefined>(undefined);
+  const [openForm, setOpenForm] = useState(false);
+  const [selectedRow, setSelectedRow] = useState<IAdvantage | undefined>(undefined);
 
-    const handleOpenForm = useCallback((row?: IAdvantage) => {
-        setSelectedRow(row);
-        setOpenForm(true);
-    }, []);
+  const handleOpenForm = useCallback((row?: IAdvantage) => {
+    setSelectedRow(row);
+    setOpenForm(true);
+  }, []);
 
-    const handleCloseForm = useCallback(() => {
-        setSelectedRow(undefined);
-        setOpenForm(false);
-    }, []);
+  const handleCloseForm = useCallback(() => {
+    setSelectedRow(undefined);
+    setOpenForm(false);
+  }, []);
 
-    const handleDelete = useCallback(async (id: number) => {
-        if (window.confirm(t('confirmDelete') || "Haqiqatan ham o'chirmoqchimisiz?")) {
-            try {
-                await deleteAdvantage(id);
-            } catch (error) {
-                console.error(error);
-            }
+  const handleDelete = useCallback(
+    async (id: number) => {
+      if (window.confirm(t('confirmDelete') || "Haqiqatan ham o'chirmoqchimisiz?")) {
+        try {
+          await deleteAdvantage(id);
+        } catch (error) {
+          console.error(error);
         }
-    }, [deleteAdvantage, t]);
+      }
+    },
+    [deleteAdvantage, t]
+  );
 
-    const columns = advantageTableColumns({
-        t,
-        onEdit: handleOpenForm,
-        onDelete: handleDelete,
-    });
+  const columns = advantageTableColumns({
+    t,
+    onEdit: handleOpenForm,
+    onDelete: handleDelete,
+  });
 
-    return (
-        <DashboardContent>
-            <CustomBreadcrumbs
-                heading={`${t('advantages')} ${t('list')}`}
-                links={[
-                    { name: t('main'), href: paths.dashboard.root },
-                    { name: t('advantages') },
-                    { name: t('list') },
-                ]}
-                action={
-                    <Button
-                        variant="contained"
-                        startIcon={<Iconify icon="mingcute:add-line" />}
-                        onClick={() => handleOpenForm()}
-                    >
-                        {t('add')}
-                    </Button>
-                }
-                sx={{ mb: { xs: 3, md: 5 } }}
-            />
+  return (
+    <DashboardContent>
+      <CustomBreadcrumbs
+        heading={`${t('advantages')} ${t('list')}`}
+        links={[
+          { name: t('main'), href: paths.dashboard.root },
+          { name: t('advantages') },
+          { name: t('list') },
+        ]}
+        action={
+          <Button
+            variant="contained"
+            startIcon={<Iconify icon="mingcute:add-line" />}
+            onClick={() => handleOpenForm()}
+          >
+            {t('add')}
+          </Button>
+        }
+        sx={{ mb: { xs: 3, md: 5 } }}
+      />
 
-            <Card>
-                <Box sx={{ position: 'relative' }}>
-                    <DataGridCustom<IAdvantage>
-                        data={advantages}
-                        column={columns}
-                        loading={isLoading}
-                        rowCount={advantages.length}
-                        quickToolbar={false}
-                    />
-                </Box>
-            </Card>
+      <Card>
+        <Box sx={{ position: 'relative' }}>
+          <DataGridCustom<IAdvantage>
+            data={advantages}
+            column={columns}
+            loading={isLoading}
+            rowCount={advantages.length}
+            quickToolbar={false}
+          />
+        </Box>
+      </Card>
 
-            <AdvantageFormDialog
-                open={openForm}
-                onClose={handleCloseForm}
-                currentRow={selectedRow}
-            />
-        </DashboardContent>
-    );
+      <AdvantageFormDialog open={openForm} onClose={handleCloseForm} currentRow={selectedRow} />
+    </DashboardContent>
+  );
 }

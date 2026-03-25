@@ -50,7 +50,7 @@ export function PhoneInput({
 
   const handleClickCountry = useCallback(
     (inputValue: Country) => {
-      // Logic from similar components: manually selecting a country can just clear the value 
+      // Logic from similar components: manually selecting a country can just clear the value
       // or we can try to append the dial code. For now, let's keep it simple.
       onChange('' as Value);
     },

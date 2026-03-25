@@ -11,10 +11,13 @@ export const wordSchema = z.object({
 
   isActive: z.string().min(1, { message: 'Holat (isActive) majburiy' }),
   translation: z.string().min(1, { message: 'Tarjima majburiy' }),
-  image: z.union([
-    z.custom<File>((file) => file instanceof File, { message: 'Iltimos rasm yuklang' }),
-    z.string().min(1, { message: 'Rasm topilmadi' }),
-  ]).optional().nullable(),
+  image: z
+    .union([
+      z.custom<File>((file) => file instanceof File, { message: 'Iltimos rasm yuklang' }),
+      z.string().min(1, { message: 'Rasm topilmadi' }),
+    ])
+    .optional()
+    .nullable(),
 });
 
 export type WordCreateFormType = z.infer<typeof wordSchema>;

@@ -23,78 +23,77 @@ import type { IDoctor } from '../types';
 // ----------------------------------------------------------------------
 
 export function DoctorListView() {
-    const { t, currentLang } = useTranslate('doctor');
-    const { data: doctors = [], isLoading } = useGetDoctors();
-    const { mutateAsync: deleteDoctor } = useDeleteDoctor();
+  const { t, currentLang } = useTranslate('doctor');
+  const { data: doctors = [], isLoading } = useGetDoctors();
+  const { mutateAsync: deleteDoctor } = useDeleteDoctor();
 
-    const [openForm, setOpenForm] = useState(false);
-    const [selectedRow, setSelectedRow] = useState<IDoctor | undefined>(undefined);
+  const [openForm, setOpenForm] = useState(false);
+  const [selectedRow, setSelectedRow] = useState<IDoctor | undefined>(undefined);
 
-    const handleOpenForm = useCallback((row?: IDoctor) => {
-        setSelectedRow(row);
-        setOpenForm(true);
-    }, []);
+  const handleOpenForm = useCallback((row?: IDoctor) => {
+    setSelectedRow(row);
+    setOpenForm(true);
+  }, []);
 
-    const handleCloseForm = useCallback(() => {
-        setSelectedRow(undefined);
-        setOpenForm(false);
-    }, []);
+  const handleCloseForm = useCallback(() => {
+    setSelectedRow(undefined);
+    setOpenForm(false);
+  }, []);
 
-    const handleDelete = useCallback(async (id: number) => {
-        if (window.confirm(t('confirmDelete') || "Haqiqatan ham o'chirmoqchimisiz?")) {
-            try {
-                await deleteDoctor(id);
-            } catch (error) {
-                console.error(error);
-            }
+  const handleDelete = useCallback(
+    async (id: number) => {
+      if (window.confirm(t('confirmDelete') || "Haqiqatan ham o'chirmoqchimisiz?")) {
+        try {
+          await deleteDoctor(id);
+        } catch (error) {
+          console.error(error);
         }
-    }, [deleteDoctor, t]);
+      }
+    },
+    [deleteDoctor, t]
+  );
 
-    const columns = doctorTableColumns({
-        t,
-        currentLang: currentLang.value,
-        onEdit: handleOpenForm,
-        onDelete: handleDelete,
-    });
+  const columns = doctorTableColumns({
+    t,
+    currentLang: currentLang.value,
+    onEdit: handleOpenForm,
+    onDelete: handleDelete,
+  });
 
-    return (
-        <DashboardContent>
-            <CustomBreadcrumbs
-                heading={`${t('doctors')} ${t('list')}`}
-                links={[
-                    { name: t('main'), href: paths.dashboard.root },
-                    { name: t('doctors') },
-                    { name: t('list') },
-                ]}
-                action={
-                    <Button
-                        variant="contained"
-                        startIcon={<Iconify icon="mingcute:add-line" />}
-                        onClick={() => handleOpenForm()}
-                    >
-                        {t('add')}
-                    </Button>
-                }
-                sx={{ mb: { xs: 3, md: 5 } }}
-            />
+  return (
+    <DashboardContent>
+      <CustomBreadcrumbs
+        heading={`${t('doctors')} ${t('list')}`}
+        links={[
+          { name: t('main'), href: paths.dashboard.root },
+          { name: t('doctors') },
+          { name: t('list') },
+        ]}
+        action={
+          <Button
+            variant="contained"
+            startIcon={<Iconify icon="mingcute:add-line" />}
+            onClick={() => handleOpenForm()}
+          >
+            {t('add')}
+          </Button>
+        }
+        sx={{ mb: { xs: 3, md: 5 } }}
+      />
 
-            <Card>
-                <Box sx={{ position: 'relative' }}>
-                    <DataGridCustom<IDoctor>
-                        data={doctors}
-                        column={columns}
-                        loading={isLoading}
-                        rowCount={doctors.length}
-                        quickToolbar={false}
-                    />
-                </Box>
-            </Card>
+      <Card>
+        <Box sx={{ position: 'relative' }}>
+          <DataGridCustom<IDoctor>
+            data={doctors}
+            column={columns}
+            loading={isLoading}
+            rowCount={doctors.length}
+            quickToolbar={false}
+          />
+        </Box>
+      </Card>
 
-            <DoctorFormDialog
-                open={openForm}
-                onClose={handleCloseForm}
-                currentRow={selectedRow}
-            />
-        </DashboardContent>
-    );
+      <DoctorFormDialog open={openForm} onClose={handleCloseForm} currentRow={selectedRow} />
+    </DashboardContent>
+  );
 }

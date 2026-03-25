@@ -30,263 +30,272 @@ import type { IDoctor } from '../types';
 // ----------------------------------------------------------------------
 
 const DoctorSchema = zod.object({
-    fullname_uz: zod.string().min(1, { message: 'F.I.SH (UZ) majburiy!' }),
-    fullname_ru: zod.string().min(1, { message: 'F.I.SH (RU) majburiy!' }),
-    fullname_en: zod.string().min(1, { message: 'F.I.SH (EN) majburiy!' }),
-    phone_number: zod.string().min(1, { message: 'Telefon raqam majburiy!' }),
-    price: zod.coerce.number().min(1, { message: 'Narx majburiy!' }),
-    experience: zod.coerce.number().min(0, { message: 'Tajriba noto\'g\'ri!' }),
-    category_id: zod.coerce.number().min(1, { message: 'Kategoriya tanlanishi shart!' }),
-    clinic_id: zod.coerce.number().nullable().optional(),
-    rating: zod.coerce.number().min(0).max(5).optional(),
-    is_active: zod.boolean(),
-    avatar: zod.any().nullable().optional(),
+  fullname_uz: zod.string().min(1, { message: 'F.I.SH (UZ) majburiy!' }),
+  fullname_ru: zod.string().min(1, { message: 'F.I.SH (RU) majburiy!' }),
+  fullname_en: zod.string().min(1, { message: 'F.I.SH (EN) majburiy!' }),
+  phone_number: zod.string().min(1, { message: 'Telefon raqam majburiy!' }),
+  price: zod.coerce.number().min(1, { message: 'Narx majburiy!' }),
+  experience: zod.coerce.number().min(0, { message: "Tajriba noto'g'ri!" }),
+  category_id: zod.coerce.number().min(1, { message: 'Kategoriya tanlanishi shart!' }),
+  clinic_id: zod.coerce.number().nullable().optional(),
+  rating: zod.coerce.number().min(0).max(5).optional(),
+  is_active: zod.boolean(),
+  avatar: zod.any().nullable().optional(),
 });
 
 type DoctorSchemaType = zod.infer<typeof DoctorSchema>;
 
 interface Props {
-    open: boolean;
-    onClose: () => void;
-    currentRow?: IDoctor;
+  open: boolean;
+  onClose: () => void;
+  currentRow?: IDoctor;
 }
 
 export function DoctorFormDialog({ open, onClose, currentRow }: Props) {
-    const { t } = useTranslate('doctor');
+  const { t } = useTranslate('doctor');
 
-    const [currentTab, setCurrentTab] = useState('uz');
+  const [currentTab, setCurrentTab] = useState('uz');
 
-    const { data: categories = [] } = useGetCategories();
-    const { data: clinics = [] } = useGetClinics();
+  const { data: categories = [] } = useGetCategories();
+  const { data: clinics = [] } = useGetClinics();
 
-    const { mutateAsync: createDoctor, isPending: createPending } = useCreateDoctor();
-    const { mutateAsync: updateDoctor, isPending: updatePending } = useUpdateDoctor(currentRow?.id?.toString() || '');
-    const { mutateAsync: uploadAvatar } = useUploadDoctorAvatar();
+  const { mutateAsync: createDoctor, isPending: createPending } = useCreateDoctor();
+  const { mutateAsync: updateDoctor, isPending: updatePending } = useUpdateDoctor(
+    currentRow?.id?.toString() || ''
+  );
+  const { mutateAsync: uploadAvatar } = useUploadDoctorAvatar();
 
-    const methods = useForm<DoctorSchemaType>({
-        resolver: zodResolver(DoctorSchema),
-        defaultValues: {
-            fullname_uz: '',
-            fullname_ru: '',
-            fullname_en: '',
-            phone_number: '',
-            price: '' as any,
-            experience: '' as any,
-            category_id: 0,
-            clinic_id: 0,
-            rating: 0,
-            is_active: true,
-            avatar: null,
-        },
-    });
+  const methods = useForm<DoctorSchemaType>({
+    resolver: zodResolver(DoctorSchema),
+    defaultValues: {
+      fullname_uz: '',
+      fullname_ru: '',
+      fullname_en: '',
+      phone_number: '',
+      price: '' as any,
+      experience: '' as any,
+      category_id: 0,
+      clinic_id: 0,
+      rating: 0,
+      is_active: true,
+      avatar: null,
+    },
+  });
 
+  const {
+    reset,
+    setValue,
+    handleSubmit,
+    formState: { isSubmitting, errors },
+  } = methods;
 
-    const {
-        reset,
-        setValue,
-        handleSubmit,
-        formState: { isSubmitting, errors },
-    } = methods;
+  useEffect(() => {
+    if (currentRow) {
+      reset({
+        fullname_uz: currentRow.fullname_uz,
+        fullname_ru: currentRow.fullname_ru,
+        fullname_en: currentRow.fullname_en,
+        phone_number: currentRow.phone_number,
+        price: currentRow.price,
+        experience: currentRow.experience,
+        category_id: currentRow.category_id,
+        clinic_id: currentRow.clinic_id || 0,
+        rating: currentRow.rating,
+        is_active: currentRow.is_active,
+        avatar: currentRow.avatar,
+      });
+    } else {
+      reset({
+        fullname_uz: '',
+        fullname_ru: '',
+        fullname_en: '',
+        phone_number: '',
+        price: '' as any,
+        experience: '' as any,
+        category_id: 0,
+        clinic_id: 0,
+        rating: 0,
+        is_active: true,
+        avatar: null,
+      });
+    }
+  }, [currentRow, reset]);
 
-    useEffect(() => {
-        if (currentRow) {
-            reset({
-                fullname_uz: currentRow.fullname_uz,
-                fullname_ru: currentRow.fullname_ru,
-                fullname_en: currentRow.fullname_en,
-                phone_number: currentRow.phone_number,
-                price: currentRow.price,
-                experience: currentRow.experience,
-                category_id: currentRow.category_id,
-                clinic_id: currentRow.clinic_id || 0,
-                rating: currentRow.rating,
-                is_active: currentRow.is_active,
-                avatar: currentRow.avatar,
-            });
-        } else {
-            reset({
-                fullname_uz: '',
-                fullname_ru: '',
-                fullname_en: '',
-                phone_number: '',
-                price: '' as any,
-                experience: '' as any,
-                category_id: 0,
-                clinic_id: 0,
-                rating: 0,
-                is_active: true,
-                avatar: null,
-            });
+  const handleChangeTab = useCallback((event: any, newValue: string) => {
+    setCurrentTab(newValue);
+  }, []);
+
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      const avatarFile = data.avatar instanceof File ? data.avatar : null;
+      delete data.avatar;
+
+      // Handle optional clinic_id being 0 from select
+      if (data.clinic_id === 0) {
+        data.clinic_id = null;
+      }
+
+      if (currentRow) {
+        await updateDoctor(data);
+        if (avatarFile) {
+          await uploadAvatar({ id: currentRow.id.toString(), file: avatarFile });
         }
-    }, [currentRow, reset]);
+      } else {
+        // Remove rating for creation if not supported by backend
+        const createData = { ...data };
+        delete (createData as any).rating;
 
-
-    const handleChangeTab = useCallback((event: any, newValue: string) => {
-        setCurrentTab(newValue);
-    }, []);
-
-    const onSubmit = handleSubmit(async (data) => {
-        try {
-            const avatarFile = data.avatar instanceof File ? data.avatar : null;
-            delete data.avatar;
-
-            // Handle optional clinic_id being 0 from select
-            if (data.clinic_id === 0) {
-                data.clinic_id = null;
-            }
-
-            if (currentRow) {
-                await updateDoctor(data);
-                if (avatarFile) {
-                    await uploadAvatar({ id: currentRow.id.toString(), file: avatarFile });
-                }
-            } else {
-                // Remove rating for creation if not supported by backend
-                const createData = { ...data };
-                delete (createData as any).rating;
-
-                const res = await createDoctor(createData as any);
-                if (avatarFile && res?.id) {
-                    await uploadAvatar({ id: res.id.toString(), file: avatarFile });
-                }
-            }
-            onClose();
-            reset();
-        } catch (error) {
-            console.error(error);
+        const res = await createDoctor(createData as any);
+        if (avatarFile && res?.id) {
+          await uploadAvatar({ id: res.id.toString(), file: avatarFile });
         }
-    });
+      }
+      onClose();
+      reset();
+    } catch (error) {
+      console.error(error);
+    }
+  });
 
+  const handleDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const file = acceptedFiles[0];
+      const newFile = Object.assign(file, {
+        preview: URL.createObjectURL(file),
+      });
 
-    const handleDrop = useCallback(
-        (acceptedFiles: File[]) => {
-            const file = acceptedFiles[0];
-            const newFile = Object.assign(file, {
-                preview: URL.createObjectURL(file),
-            });
+      if (file) {
+        setValue('avatar', newFile, { shouldValidate: true });
+      }
+    },
+    [setValue]
+  );
 
-            if (file) {
-                setValue('avatar', newFile, { shouldValidate: true });
-            }
-        },
-        [setValue]
-    );
+  const TABS = [
+    { value: 'uz', label: "O'zbekcha", hasError: !!errors.fullname_uz },
+    { value: 'ru', label: 'Русский', hasError: !!errors.fullname_ru },
+    { value: 'en', label: 'English', hasError: !!errors.fullname_en },
+  ];
 
-    const TABS = [
-        { value: 'uz', label: "O'zbekcha", hasError: !!errors.fullname_uz },
-        { value: 'ru', label: 'Русский', hasError: !!errors.fullname_ru },
-        { value: 'en', label: 'English', hasError: !!errors.fullname_en },
-    ];
+  return (
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
+      <Form methods={methods} onSubmit={onSubmit}>
+        <DialogTitle>{currentRow ? t('edit') : t('add')}</DialogTitle>
 
-    return (
-        <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-            <Form methods={methods} onSubmit={onSubmit}>
-                <DialogTitle>{currentRow ? t('edit') : t('add')}</DialogTitle>
+        <DialogContent>
+          <Stack spacing={3} sx={{ mt: 2 }}>
+            <CustomTabs value={currentTab} onChange={handleChangeTab}>
+              {TABS.map((tab) => (
+                <Tab
+                  key={tab.value}
+                  value={tab.value}
+                  label={tab.label}
+                  sx={{
+                    ...(tab.hasError && {
+                      color: 'error.main',
+                      '&.Mui-selected': {
+                        color: 'error.main',
+                      },
+                    }),
+                  }}
+                />
+              ))}
+            </CustomTabs>
 
-                <DialogContent>
-                    <Stack spacing={3} sx={{ mt: 2 }}>
-                        <CustomTabs value={currentTab} onChange={handleChangeTab}>
-                            {TABS.map((tab) => (
-                                <Tab
-                                    key={tab.value}
-                                    value={tab.value}
-                                    label={tab.label}
-                                    sx={{
-                                        ...(tab.hasError && {
-                                            color: 'error.main',
-                                            '&.Mui-selected': {
-                                                color: 'error.main',
-                                            },
-                                        }),
-                                    }}
-                                />
-                            ))}
-                        </CustomTabs>
+            <Box sx={{ display: currentTab === 'uz' ? 'block' : 'none' }}>
+              <Field.Text name="fullname_uz" label={t('fullname_uz')} />
+            </Box>
 
-                        <Box sx={{ display: currentTab === 'uz' ? 'block' : 'none' }}>
-                            <Field.Text name="fullname_uz" label={t('fullname_uz')} />
-                        </Box>
+            <Box sx={{ display: currentTab === 'ru' ? 'block' : 'none' }}>
+              <Field.Text name="fullname_ru" label={t('fullname_ru')} />
+            </Box>
 
-                        <Box sx={{ display: currentTab === 'ru' ? 'block' : 'none' }}>
-                            <Field.Text name="fullname_ru" label={t('fullname_ru')} />
-                        </Box>
+            <Box sx={{ display: currentTab === 'en' ? 'block' : 'none' }}>
+              <Field.Text name="fullname_en" label={t('fullname_en')} />
+            </Box>
 
-                        <Box sx={{ display: currentTab === 'en' ? 'block' : 'none' }}>
-                            <Field.Text name="fullname_en" label={t('fullname_en')} />
-                        </Box>
+            <Box
+              rowGap={3}
+              columnGap={2}
+              display="grid"
+              gridTemplateColumns={{
+                xs: 'repeat(1, 1fr)',
+                sm: 'repeat(2, 1fr)',
+              }}
+            >
+              <Field.Text name="phone_number" label={t('phone_number')} />
 
-                        <Box
-                            rowGap={3}
-                            columnGap={2}
-                            display="grid"
-                            gridTemplateColumns={{
-                                xs: 'repeat(1, 1fr)',
-                                sm: 'repeat(2, 1fr)',
-                            }}
-                        >
-                            <Field.Text name="phone_number" label={t('phone_number')} />
+              <Field.Text name="price" label={t('price')} type="number" />
+              <Field.Text name="experience" label={t('experience')} type="number" />
 
-                            <Field.Text name="price" label={t('price')} type="number" />
-                            <Field.Text name="experience" label={t('experience')} type="number" />
+              <Field.Select name="category_id" label={t('category')}>
+                <MenuItem value={0} disabled>
+                  Tanlang...
+                </MenuItem>
+                {categories.map((category) => (
+                  <MenuItem key={category.id} value={category.id}>
+                    {category.title_uz}
+                  </MenuItem>
+                ))}
+              </Field.Select>
 
-                            <Field.Select name="category_id" label={t('category')}>
-                                <MenuItem value={0} disabled>Tanlang...</MenuItem>
-                                {categories.map((category) => (
-                                    <MenuItem key={category.id} value={category.id}>
-                                        {category.title_uz}
-                                    </MenuItem>
-                                ))}
-                            </Field.Select>
+              <Field.Select name="clinic_id" label={t('clinic')}>
+                <MenuItem value={0}>{t('noClinic')}</MenuItem>
+                {clinics.map((clinic) => (
+                  <MenuItem key={clinic.id} value={clinic.id}>
+                    {clinic.title_uz}
+                  </MenuItem>
+                ))}
+              </Field.Select>
 
-                            <Field.Select name="clinic_id" label={t('clinic')}>
-                                <MenuItem value={0}>{t('noClinic')}</MenuItem>
-                                {clinics.map((clinic) => (
-                                    <MenuItem key={clinic.id} value={clinic.id}>
-                                        {clinic.title_uz}
-                                    </MenuItem>
-                                ))}
-                            </Field.Select>
+              <Field.Text
+                name="rating"
+                label={t('rating')}
+                type="number"
+                inputProps={{ min: 0, max: 5, step: 0.1 }}
+              />
 
-                            <Field.Text name="rating" label={t('rating')} type="number" inputProps={{ min: 0, max: 5, step: 0.1 }} />
+              <Field.Switch name="is_active" label={t('is_active')} />
+            </Box>
 
-                            <Field.Switch name="is_active" label={t('is_active')} />
-                        </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+              <Field.UploadAvatar
+                name="avatar"
+                maxSize={307200}
+                onDrop={handleDrop}
+                helperText={
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      mt: 3,
+                      mx: 'auto',
+                      display: 'block',
+                      textAlign: 'center',
+                      color: 'text.disabled',
+                    }}
+                  >
+                    Allowed *.jpeg, *.jpg, *.png, *.gif
+                    <br /> max size of 300KB
+                  </Typography>
+                }
+              />
+            </Box>
+          </Stack>
+        </DialogContent>
 
-                        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-                            <Field.UploadAvatar
-                                name="avatar"
-                                maxSize={307200}
-                                onDrop={handleDrop}
-                                helperText={
-                                    <Typography
-                                        variant="caption"
-                                        sx={{
-                                            mt: 3,
-                                            mx: 'auto',
-                                            display: 'block',
-                                            textAlign: 'center',
-                                            color: 'text.disabled',
-                                        }}
-                                    >
-                                        Allowed *.jpeg, *.jpg, *.png, *.gif
-                                        <br /> max size of 300KB
-                                    </Typography>
-                                }
-                            />
-                        </Box>
-                    </Stack>
-                </DialogContent>
-
-                <DialogActions>
-                    <Button variant="outlined" onClick={onClose}>
-                        {t('cancel')}
-                    </Button>
-                    <LoadingButton type="submit" variant="contained" loading={createPending || updatePending || isSubmitting}>
-                        {t('save')}
-                    </LoadingButton>
-                </DialogActions>
-            </Form>
-        </Dialog>
-    );
+        <DialogActions>
+          <Button variant="outlined" onClick={onClose}>
+            {t('cancel')}
+          </Button>
+          <LoadingButton
+            type="submit"
+            variant="contained"
+            loading={createPending || updatePending || isSubmitting}
+          >
+            {t('save')}
+          </LoadingButton>
+        </DialogActions>
+      </Form>
+    </Dialog>
+  );
 }
-

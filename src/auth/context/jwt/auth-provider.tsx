@@ -28,9 +28,9 @@ export function AuthProvider({ children }: Props) {
         setState({
           user: {
             ...decoded,
-            accessToken
+            accessToken,
           },
-          loading: false
+          loading: false,
         });
       } else {
         setSession(null);

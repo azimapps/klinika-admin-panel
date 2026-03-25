@@ -26,202 +26,210 @@ import type { IAdvantage } from '../types';
 // ----------------------------------------------------------------------
 
 const AdvantageSchema = zod.object({
-    title_uz: zod.string().min(1, { message: 'Sarlavha (UZ) majburiy!' }),
-    title_ru: zod.string().min(1, { message: 'Sarlavha (RU) majburiy!' }),
-    title_en: zod.string().min(1, { message: 'Sarlavha (EN) majburiy!' }),
-    description_uz: zod.string().min(1, { message: 'Tavsif (UZ) majburiy!' }),
-    description_ru: zod.string().min(1, { message: 'Tavsif (RU) majburiy!' }),
-    description_en: zod.string().min(1, { message: 'Tavsif (EN) majburiy!' }),
-    image: zod.any().nullable().optional(),
+  title_uz: zod.string().min(1, { message: 'Sarlavha (UZ) majburiy!' }),
+  title_ru: zod.string().min(1, { message: 'Sarlavha (RU) majburiy!' }),
+  title_en: zod.string().min(1, { message: 'Sarlavha (EN) majburiy!' }),
+  description_uz: zod.string().min(1, { message: 'Tavsif (UZ) majburiy!' }),
+  description_ru: zod.string().min(1, { message: 'Tavsif (RU) majburiy!' }),
+  description_en: zod.string().min(1, { message: 'Tavsif (EN) majburiy!' }),
+  image: zod.any().nullable().optional(),
 });
 
 type AdvantageSchemaType = zod.infer<typeof AdvantageSchema>;
 
 interface Props {
-    open: boolean;
-    onClose: () => void;
-    currentRow?: IAdvantage;
+  open: boolean;
+  onClose: () => void;
+  currentRow?: IAdvantage;
 }
 
 export function AdvantageFormDialog({ open, onClose, currentRow }: Props) {
-    const { t } = useTranslate('advantage');
+  const { t } = useTranslate('advantage');
 
-    const [currentTab, setCurrentTab] = useState('uz');
+  const [currentTab, setCurrentTab] = useState('uz');
 
-    const { mutateAsync: createAdvantage, isPending: createPending } = useCreateAdvantage();
-    const { mutateAsync: updateAdvantage, isPending: updatePending } = useUpdateAdvantage(currentRow?.id?.toString() || '');
-    const { mutateAsync: uploadImage } = useUploadAdvantageImage();
+  const { mutateAsync: createAdvantage, isPending: createPending } = useCreateAdvantage();
+  const { mutateAsync: updateAdvantage, isPending: updatePending } = useUpdateAdvantage(
+    currentRow?.id?.toString() || ''
+  );
+  const { mutateAsync: uploadImage } = useUploadAdvantageImage();
 
-    const methods = useForm<AdvantageSchemaType>({
-        resolver: zodResolver(AdvantageSchema),
-        defaultValues: {
-            title_uz: '',
-            title_ru: '',
-            title_en: '',
-            description_uz: '',
-            description_ru: '',
-            description_en: '',
-            image: null,
-        },
-    });
+  const methods = useForm<AdvantageSchemaType>({
+    resolver: zodResolver(AdvantageSchema),
+    defaultValues: {
+      title_uz: '',
+      title_ru: '',
+      title_en: '',
+      description_uz: '',
+      description_ru: '',
+      description_en: '',
+      image: null,
+    },
+  });
 
-    const {
-        reset,
-        setValue,
-        handleSubmit,
-        formState: { isSubmitting, errors },
-    } = methods;
+  const {
+    reset,
+    setValue,
+    handleSubmit,
+    formState: { isSubmitting, errors },
+  } = methods;
 
-    const TABS = [
-        {
-            value: 'uz',
-            label: "O'zbekcha",
-            hasError: !!errors.title_uz || !!errors.description_uz,
-        },
-        {
-            value: 'ru',
-            label: 'Русский',
-            hasError: !!errors.title_ru || !!errors.description_ru,
-        },
-        {
-            value: 'en',
-            label: 'English',
-            hasError: !!errors.title_en || !!errors.description_en,
-        },
-    ];
+  const TABS = [
+    {
+      value: 'uz',
+      label: "O'zbekcha",
+      hasError: !!errors.title_uz || !!errors.description_uz,
+    },
+    {
+      value: 'ru',
+      label: 'Русский',
+      hasError: !!errors.title_ru || !!errors.description_ru,
+    },
+    {
+      value: 'en',
+      label: 'English',
+      hasError: !!errors.title_en || !!errors.description_en,
+    },
+  ];
 
-    useEffect(() => {
-        if (currentRow) {
-            reset({
-                title_uz: currentRow.title_uz,
-                title_ru: currentRow.title_ru,
-                title_en: currentRow.title_en,
-                description_uz: currentRow.description_uz,
-                description_ru: currentRow.description_ru,
-                description_en: currentRow.description_en,
-                image: currentRow.image,
-            });
-        } else {
-            reset({
-                title_uz: '',
-                title_ru: '',
-                title_en: '',
-                description_uz: '',
-                description_ru: '',
-                description_en: '',
-                image: null,
-            });
+  useEffect(() => {
+    if (currentRow) {
+      reset({
+        title_uz: currentRow.title_uz,
+        title_ru: currentRow.title_ru,
+        title_en: currentRow.title_en,
+        description_uz: currentRow.description_uz,
+        description_ru: currentRow.description_ru,
+        description_en: currentRow.description_en,
+        image: currentRow.image,
+      });
+    } else {
+      reset({
+        title_uz: '',
+        title_ru: '',
+        title_en: '',
+        description_uz: '',
+        description_ru: '',
+        description_en: '',
+        image: null,
+      });
+    }
+  }, [currentRow, reset]);
+
+  const handleChangeTab = useCallback((event: any, newValue: string) => {
+    setCurrentTab(newValue);
+  }, []);
+
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      const imageFile = data.image instanceof File ? data.image : null;
+      delete data.image;
+
+      if (currentRow) {
+        await updateAdvantage(data);
+        if (imageFile) {
+          await uploadImage({ id: currentRow.id.toString(), file: imageFile });
         }
-    }, [currentRow, reset]);
-
-    const handleChangeTab = useCallback((event: any, newValue: string) => {
-        setCurrentTab(newValue);
-    }, []);
-
-    const onSubmit = handleSubmit(async (data) => {
-        try {
-            const imageFile = data.image instanceof File ? data.image : null;
-            delete data.image;
-
-            if (currentRow) {
-                await updateAdvantage(data);
-                if (imageFile) {
-                    await uploadImage({ id: currentRow.id.toString(), file: imageFile });
-                }
-            } else {
-                const res = await createAdvantage(data);
-                if (imageFile && res?.id) {
-                    await uploadImage({ id: res.id.toString(), file: imageFile });
-                }
-            }
-            onClose();
-            reset();
-        } catch (error) {
-            console.error(error);
+      } else {
+        const res = await createAdvantage(data);
+        if (imageFile && res?.id) {
+          await uploadImage({ id: res.id.toString(), file: imageFile });
         }
-    });
+      }
+      onClose();
+      reset();
+    } catch (error) {
+      console.error(error);
+    }
+  });
 
-    const handleDrop = useCallback(
-        (acceptedFiles: File[]) => {
-            const file = acceptedFiles[0];
-            const newFile = Object.assign(file, {
-                preview: URL.createObjectURL(file),
-            });
+  const handleDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const file = acceptedFiles[0];
+      const newFile = Object.assign(file, {
+        preview: URL.createObjectURL(file),
+      });
 
-            if (file) {
-                setValue('image', newFile, { shouldValidate: true });
-            }
-        },
-        [setValue]
-    );
+      if (file) {
+        setValue('image', newFile, { shouldValidate: true });
+      }
+    },
+    [setValue]
+  );
 
-    return (
-        <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-            <Form methods={methods} onSubmit={onSubmit}>
-                <DialogTitle>{currentRow ? t('edit') : t('add')}</DialogTitle>
+  return (
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
+      <Form methods={methods} onSubmit={onSubmit}>
+        <DialogTitle>{currentRow ? t('edit') : t('add')}</DialogTitle>
 
-                <DialogContent>
-                    <Stack spacing={3} sx={{ mt: 2 }}>
-                        <CustomTabs value={currentTab} onChange={handleChangeTab}>
-                            {TABS.map((tab) => (
-                                <Tab
-                                    key={tab.value}
-                                    value={tab.value}
-                                    label={tab.label}
-                                    sx={{
-                                        ...(tab.hasError && {
-                                            color: 'error.main',
-                                            '&.Mui-selected': {
-                                                color: 'error.main',
-                                            },
-                                        }),
-                                    }}
-                                />
-                            ))}
-                        </CustomTabs>
+        <DialogContent>
+          <Stack spacing={3} sx={{ mt: 2 }}>
+            <CustomTabs value={currentTab} onChange={handleChangeTab}>
+              {TABS.map((tab) => (
+                <Tab
+                  key={tab.value}
+                  value={tab.value}
+                  label={tab.label}
+                  sx={{
+                    ...(tab.hasError && {
+                      color: 'error.main',
+                      '&.Mui-selected': {
+                        color: 'error.main',
+                      },
+                    }),
+                  }}
+                />
+              ))}
+            </CustomTabs>
 
-                        <Box sx={{ display: currentTab === 'uz' ? 'block' : 'none' }}>
-                            <Stack spacing={3}>
-                                <Field.Text name="title_uz" label={t('title_uz')} />
-                                <Field.Text name="description_uz" label={t('description_uz')} multiline rows={3} />
-                            </Stack>
-                        </Box>
+            <Box sx={{ display: currentTab === 'uz' ? 'block' : 'none' }}>
+              <Stack spacing={3}>
+                <Field.Text name="title_uz" label={t('title_uz')} />
+                <Field.Text name="description_uz" label={t('description_uz')} multiline rows={3} />
+              </Stack>
+            </Box>
 
-                        <Box sx={{ display: currentTab === 'ru' ? 'block' : 'none' }}>
-                            <Stack spacing={3}>
-                                <Field.Text name="title_ru" label={t('title_ru')} />
-                                <Field.Text name="description_ru" label={t('description_ru')} multiline rows={3} />
-                            </Stack>
-                        </Box>
+            <Box sx={{ display: currentTab === 'ru' ? 'block' : 'none' }}>
+              <Stack spacing={3}>
+                <Field.Text name="title_ru" label={t('title_ru')} />
+                <Field.Text name="description_ru" label={t('description_ru')} multiline rows={3} />
+              </Stack>
+            </Box>
 
-                        <Box sx={{ display: currentTab === 'en' ? 'block' : 'none' }}>
-                            <Stack spacing={3}>
-                                <Field.Text name="title_en" label={t('title_en')} />
-                                <Field.Text name="description_en" label={t('description_en')} multiline rows={3} />
-                            </Stack>
-                        </Box>
+            <Box sx={{ display: currentTab === 'en' ? 'block' : 'none' }}>
+              <Stack spacing={3}>
+                <Field.Text name="title_en" label={t('title_en')} />
+                <Field.Text name="description_en" label={t('description_en')} multiline rows={3} />
+              </Stack>
+            </Box>
 
-                        <Box sx={{ width: '100%', maxWidth: 400, mx: 'auto' }}>
-                            <Typography variant="subtitle2" sx={{ mb: 1 }}>{t('image')}</Typography>
-                            <Field.Upload
-                                name="image"
-                                maxSize={3145728}
-                                onDrop={handleDrop}
-                                onRemove={() => setValue('image', null)}
-                            />
-                        </Box>
-                    </Stack>
-                </DialogContent>
+            <Box sx={{ width: '100%', maxWidth: 400, mx: 'auto' }}>
+              <Typography variant="subtitle2" sx={{ mb: 1 }}>
+                {t('image')}
+              </Typography>
+              <Field.Upload
+                name="image"
+                maxSize={3145728}
+                onDrop={handleDrop}
+                onRemove={() => setValue('image', null)}
+              />
+            </Box>
+          </Stack>
+        </DialogContent>
 
-                <DialogActions>
-                    <Button variant="outlined" onClick={onClose}>
-                        {t('cancel')}
-                    </Button>
-                    <LoadingButton type="submit" variant="contained" loading={createPending || updatePending || isSubmitting}>
-                        {t('save')}
-                    </LoadingButton>
-                </DialogActions>
-            </Form>
-        </Dialog>
-    );
+        <DialogActions>
+          <Button variant="outlined" onClick={onClose}>
+            {t('cancel')}
+          </Button>
+          <LoadingButton
+            type="submit"
+            variant="contained"
+            loading={createPending || updatePending || isSubmitting}
+          >
+            {t('save')}
+          </LoadingButton>
+        </DialogActions>
+      </Form>
+    </Dialog>
+  );
 }

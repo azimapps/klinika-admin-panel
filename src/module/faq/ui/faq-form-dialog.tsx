@@ -25,198 +25,200 @@ import type { IFAQ } from '../types';
 // ----------------------------------------------------------------------
 
 const FAQSchema = zod.object({
-    question_uz: zod.string().min(1, { message: 'Required!' }),
-    question_ru: zod.string().min(1, { message: 'Required!' }),
-    question_en: zod.string().min(1, { message: 'Required!' }),
-    answer_uz: zod.string().min(1, { message: 'Required!' }),
-    answer_ru: zod.string().min(1, { message: 'Required!' }),
-    answer_en: zod.string().min(1, { message: 'Required!' }),
+  question_uz: zod.string().min(1, { message: 'Required!' }),
+  question_ru: zod.string().min(1, { message: 'Required!' }),
+  question_en: zod.string().min(1, { message: 'Required!' }),
+  answer_uz: zod.string().min(1, { message: 'Required!' }),
+  answer_ru: zod.string().min(1, { message: 'Required!' }),
+  answer_en: zod.string().min(1, { message: 'Required!' }),
 });
 
 type FAQSchemaType = zod.infer<typeof FAQSchema>;
 
 interface Props {
-    open: boolean;
-    onClose: () => void;
-    currentRow?: IFAQ;
+  open: boolean;
+  onClose: () => void;
+  currentRow?: IFAQ;
 }
 
 export function FAQFormDialog({ open, onClose, currentRow }: Props) {
-    const { t } = useTranslate('faq');
+  const { t } = useTranslate('faq');
 
-    const [currentTab, setCurrentTab] = useState('uz');
+  const [currentTab, setCurrentTab] = useState('uz');
 
-    const { mutateAsync: createFAQ, isPending: createPending } = useCreateFAQ();
-    const { mutateAsync: updateFAQ, isPending: updatePending } = useUpdateFAQ(currentRow?.id?.toString() || '');
+  const { mutateAsync: createFAQ, isPending: createPending } = useCreateFAQ();
+  const { mutateAsync: updateFAQ, isPending: updatePending } = useUpdateFAQ(
+    currentRow?.id?.toString() || ''
+  );
 
-    const methods = useForm<FAQSchemaType>({
-        resolver: zodResolver(FAQSchema),
-        defaultValues: {
-            question_uz: '',
-            question_ru: '',
-            question_en: '',
-            answer_uz: '',
-            answer_ru: '',
-            answer_en: '',
-        },
-    });
+  const methods = useForm<FAQSchemaType>({
+    resolver: zodResolver(FAQSchema),
+    defaultValues: {
+      question_uz: '',
+      question_ru: '',
+      question_en: '',
+      answer_uz: '',
+      answer_ru: '',
+      answer_en: '',
+    },
+  });
 
-    const {
-        reset,
-        handleSubmit,
-        formState: { isSubmitting, errors },
-    } = methods;
+  const {
+    reset,
+    handleSubmit,
+    formState: { isSubmitting, errors },
+  } = methods;
 
-    const TABS = [
-        {
-            value: 'uz',
-            label: "O'zbekcha",
-            hasError: !!errors.question_uz || !!errors.answer_uz,
-        },
-        {
-            value: 'ru',
-            label: 'Русский',
-            hasError: !!errors.question_ru || !!errors.answer_ru,
-        },
-        {
-            value: 'en',
-            label: 'English',
-            hasError: !!errors.question_en || !!errors.answer_en,
-        },
-    ];
+  const TABS = [
+    {
+      value: 'uz',
+      label: "O'zbekcha",
+      hasError: !!errors.question_uz || !!errors.answer_uz,
+    },
+    {
+      value: 'ru',
+      label: 'Русский',
+      hasError: !!errors.question_ru || !!errors.answer_ru,
+    },
+    {
+      value: 'en',
+      label: 'English',
+      hasError: !!errors.question_en || !!errors.answer_en,
+    },
+  ];
 
-    useEffect(() => {
-        if (currentRow) {
-            reset({
-                question_uz: currentRow.question_uz,
-                question_ru: currentRow.question_ru,
-                question_en: currentRow.question_en,
-                answer_uz: currentRow.answer_uz,
-                answer_ru: currentRow.answer_ru,
-                answer_en: currentRow.answer_en,
-            });
-        } else {
-            reset({
-                question_uz: '',
-                question_ru: '',
-                question_en: '',
-                answer_uz: '',
-                answer_ru: '',
-                answer_en: '',
-            });
-        }
-    }, [currentRow, reset]);
+  useEffect(() => {
+    if (currentRow) {
+      reset({
+        question_uz: currentRow.question_uz,
+        question_ru: currentRow.question_ru,
+        question_en: currentRow.question_en,
+        answer_uz: currentRow.answer_uz,
+        answer_ru: currentRow.answer_ru,
+        answer_en: currentRow.answer_en,
+      });
+    } else {
+      reset({
+        question_uz: '',
+        question_ru: '',
+        question_en: '',
+        answer_uz: '',
+        answer_ru: '',
+        answer_en: '',
+      });
+    }
+  }, [currentRow, reset]);
 
-    const handleChangeTab = useCallback((event: any, newValue: string) => {
-        setCurrentTab(newValue);
-    }, []);
+  const handleChangeTab = useCallback((event: any, newValue: string) => {
+    setCurrentTab(newValue);
+  }, []);
 
-    const onSubmit = handleSubmit(async (data) => {
-        try {
-            if (currentRow) {
-                await updateFAQ(data);
-                onClose();
-                reset();
-            } else {
-                await createFAQ(data);
-                onClose();
-                reset();
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    });
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      if (currentRow) {
+        await updateFAQ(data);
+        onClose();
+        reset();
+      } else {
+        await createFAQ(data);
+        onClose();
+        reset();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  });
 
-    const onSaveAndAdd = handleSubmit(async (data) => {
-        try {
-            await createFAQ(data);
-            reset({
-                question_uz: '',
-                question_ru: '',
-                question_en: '',
-                answer_uz: '',
-                answer_ru: '',
-                answer_en: '',
-            });
-            setCurrentTab('uz'); // Reset to first tab
-        } catch (error) {
-            console.error(error);
-        }
-    });
+  const onSaveAndAdd = handleSubmit(async (data) => {
+    try {
+      await createFAQ(data);
+      reset({
+        question_uz: '',
+        question_ru: '',
+        question_en: '',
+        answer_uz: '',
+        answer_ru: '',
+        answer_en: '',
+      });
+      setCurrentTab('uz'); // Reset to first tab
+    } catch (error) {
+      console.error(error);
+    }
+  });
 
-    return (
-        <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-            <Form methods={methods} onSubmit={onSubmit}>
-                <DialogTitle>{currentRow ? t('edit_title') : t('create_title')}</DialogTitle>
+  return (
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
+      <Form methods={methods} onSubmit={onSubmit}>
+        <DialogTitle>{currentRow ? t('edit_title') : t('create_title')}</DialogTitle>
 
-                <DialogContent>
-                    <CustomTabs
-                        value={currentTab}
-                        onChange={handleChangeTab}
-                        sx={{ mb: 3 }}
-                    >
-                        {TABS.map((tab) => (
-                            <Tab
-                                key={tab.value}
-                                value={tab.value}
-                                label={tab.label}
-                                sx={{
-                                    ...(tab.hasError && {
-                                        color: 'error.main',
-                                        '&.Mui-selected': {
-                                            color: 'error.main',
-                                        },
-                                    }),
-                                }}
-                            />
-                        ))}
-                    </CustomTabs>
+        <DialogContent>
+          <CustomTabs value={currentTab} onChange={handleChangeTab} sx={{ mb: 3 }}>
+            {TABS.map((tab) => (
+              <Tab
+                key={tab.value}
+                value={tab.value}
+                label={tab.label}
+                sx={{
+                  ...(tab.hasError && {
+                    color: 'error.main',
+                    '&.Mui-selected': {
+                      color: 'error.main',
+                    },
+                  }),
+                }}
+              />
+            ))}
+          </CustomTabs>
 
-                    <Stack spacing={3}>
-                        <Box sx={{ display: currentTab === 'uz' ? 'block' : 'none' }}>
-                            <Stack spacing={3}>
-                                <Field.Text name="question_uz" label={t('question_uz')} multiline rows={2} />
-                                <Field.Text name="answer_uz" label={t('answer_uz')} multiline rows={3} />
-                            </Stack>
-                        </Box>
+          <Stack spacing={3}>
+            <Box sx={{ display: currentTab === 'uz' ? 'block' : 'none' }}>
+              <Stack spacing={3}>
+                <Field.Text name="question_uz" label={t('question_uz')} multiline rows={2} />
+                <Field.Text name="answer_uz" label={t('answer_uz')} multiline rows={3} />
+              </Stack>
+            </Box>
 
-                        <Box sx={{ display: currentTab === 'ru' ? 'block' : 'none' }}>
-                            <Stack spacing={3}>
-                                <Field.Text name="question_ru" label={t('question_ru')} multiline rows={2} />
-                                <Field.Text name="answer_ru" label={t('answer_ru')} multiline rows={3} />
-                            </Stack>
-                        </Box>
+            <Box sx={{ display: currentTab === 'ru' ? 'block' : 'none' }}>
+              <Stack spacing={3}>
+                <Field.Text name="question_ru" label={t('question_ru')} multiline rows={2} />
+                <Field.Text name="answer_ru" label={t('answer_ru')} multiline rows={3} />
+              </Stack>
+            </Box>
 
-                        <Box sx={{ display: currentTab === 'en' ? 'block' : 'none' }}>
-                            <Stack spacing={3}>
-                                <Field.Text name="question_en" label={t('question_en')} multiline rows={2} />
-                                <Field.Text name="answer_en" label={t('answer_en')} multiline rows={3} />
-                            </Stack>
-                        </Box>
-                    </Stack>
-                </DialogContent>
+            <Box sx={{ display: currentTab === 'en' ? 'block' : 'none' }}>
+              <Stack spacing={3}>
+                <Field.Text name="question_en" label={t('question_en')} multiline rows={2} />
+                <Field.Text name="answer_en" label={t('answer_en')} multiline rows={3} />
+              </Stack>
+            </Box>
+          </Stack>
+        </DialogContent>
 
-                <DialogActions>
-                    <Button variant="outlined" onClick={onClose}>
-                        {t('cancel')}
-                    </Button>
+        <DialogActions>
+          <Button variant="outlined" onClick={onClose}>
+            {t('cancel')}
+          </Button>
 
-                    {!currentRow && (
-                        <LoadingButton
-                            type="button"
-                            variant="outlined"
-                            loading={createPending || isSubmitting}
-                            onClick={onSaveAndAdd}
-                        >
-                            {t('save_and_add')}
-                        </LoadingButton>
-                    )}
+          {!currentRow && (
+            <LoadingButton
+              type="button"
+              variant="outlined"
+              loading={createPending || isSubmitting}
+              onClick={onSaveAndAdd}
+            >
+              {t('save_and_add')}
+            </LoadingButton>
+          )}
 
-                    <LoadingButton type="submit" variant="contained" loading={createPending || updatePending || isSubmitting}>
-                        {t('save')}
-                    </LoadingButton>
-                </DialogActions>
-            </Form>
-        </Dialog>
-    );
+          <LoadingButton
+            type="submit"
+            variant="contained"
+            loading={createPending || updatePending || isSubmitting}
+          >
+            {t('save')}
+          </LoadingButton>
+        </DialogActions>
+      </Form>
+    </Dialog>
+  );
 }

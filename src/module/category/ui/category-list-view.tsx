@@ -23,77 +23,76 @@ import type { ICategory } from '../types';
 // ----------------------------------------------------------------------
 
 export function CategoryListView() {
-    const { t } = useTranslate('category');
-    const { data: categories = [], isLoading } = useGetCategories();
-    const { mutateAsync: deleteCategory } = useDeleteCategory();
+  const { t } = useTranslate('category');
+  const { data: categories = [], isLoading } = useGetCategories();
+  const { mutateAsync: deleteCategory } = useDeleteCategory();
 
-    const [openForm, setOpenForm] = useState(false);
-    const [selectedRow, setSelectedRow] = useState<ICategory | undefined>(undefined);
+  const [openForm, setOpenForm] = useState(false);
+  const [selectedRow, setSelectedRow] = useState<ICategory | undefined>(undefined);
 
-    const handleOpenForm = useCallback((row?: ICategory) => {
-        setSelectedRow(row);
-        setOpenForm(true);
-    }, []);
+  const handleOpenForm = useCallback((row?: ICategory) => {
+    setSelectedRow(row);
+    setOpenForm(true);
+  }, []);
 
-    const handleCloseForm = useCallback(() => {
-        setSelectedRow(undefined);
-        setOpenForm(false);
-    }, []);
+  const handleCloseForm = useCallback(() => {
+    setSelectedRow(undefined);
+    setOpenForm(false);
+  }, []);
 
-    const handleDelete = useCallback(async (id: number) => {
-        if (window.confirm(t('confirmDelete') || "Haqiqatan ham o'chirmoqchimisiz?")) {
-            try {
-                await deleteCategory(id);
-            } catch (error) {
-                console.error(error);
-            }
+  const handleDelete = useCallback(
+    async (id: number) => {
+      if (window.confirm(t('confirmDelete') || "Haqiqatan ham o'chirmoqchimisiz?")) {
+        try {
+          await deleteCategory(id);
+        } catch (error) {
+          console.error(error);
         }
-    }, [deleteCategory, t]);
+      }
+    },
+    [deleteCategory, t]
+  );
 
-    const columns = categoryTableColumns({
-        t,
-        onEdit: handleOpenForm,
-        onDelete: handleDelete,
-    });
+  const columns = categoryTableColumns({
+    t,
+    onEdit: handleOpenForm,
+    onDelete: handleDelete,
+  });
 
-    return (
-        <DashboardContent>
-            <CustomBreadcrumbs
-                heading={`${t('categories')} ${t('list')}`}
-                links={[
-                    { name: t('main'), href: paths.dashboard.root },
-                    { name: t('categories') },
-                    { name: t('list') },
-                ]}
-                action={
-                    <Button
-                        variant="contained"
-                        startIcon={<Iconify icon="mingcute:add-line" />}
-                        onClick={() => handleOpenForm()}
-                    >
-                        {t('add')}
-                    </Button>
-                }
-                sx={{ mb: { xs: 3, md: 5 } }}
-            />
+  return (
+    <DashboardContent>
+      <CustomBreadcrumbs
+        heading={`${t('categories')} ${t('list')}`}
+        links={[
+          { name: t('main'), href: paths.dashboard.root },
+          { name: t('categories') },
+          { name: t('list') },
+        ]}
+        action={
+          <Button
+            variant="contained"
+            startIcon={<Iconify icon="mingcute:add-line" />}
+            onClick={() => handleOpenForm()}
+          >
+            {t('add')}
+          </Button>
+        }
+        sx={{ mb: { xs: 3, md: 5 } }}
+      />
 
-            <Card>
-                <Box sx={{ position: 'relative' }}>
-                    <DataGridCustom<ICategory>
-                        data={categories}
-                        column={columns}
-                        loading={isLoading}
-                        rowCount={categories.length}
-                        quickToolbar={false}
-                    />
-                </Box>
-            </Card>
+      <Card>
+        <Box sx={{ position: 'relative' }}>
+          <DataGridCustom<ICategory>
+            data={categories}
+            column={columns}
+            loading={isLoading}
+            rowCount={categories.length}
+            quickToolbar={false}
+          />
+        </Box>
+      </Card>
 
-            <CategoryFormDialog
-                open={openForm}
-                onClose={handleCloseForm}
-                currentRow={selectedRow}
-            />
-        </DashboardContent>
-    );
+      <CategoryFormDialog open={openForm} onClose={handleCloseForm} currentRow={selectedRow} />
+    </DashboardContent>
+  );
 }

@@ -7,11 +7,11 @@ import { NotificationListView } from 'src/module/notification/ui/notification-li
 const metadata = { title: `Notifications | Dashboard - ${CONFIG.appName}` };
 
 export default function Page() {
-    return (
-        <>
-            <title>{metadata.title}</title>
+  return (
+    <>
+      <title>{metadata.title}</title>
 
-            <NotificationListView />
-        </>
-    );
+      <NotificationListView />
+    </>
+  );
 }

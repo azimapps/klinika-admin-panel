@@ -23,72 +23,72 @@ import type { INotification } from '../types';
 // ----------------------------------------------------------------------
 
 export function NotificationListView() {
-    const { t } = useTranslate('notification');
-    const { data: notifications = [], isLoading } = useGetNotifications();
-    const { mutateAsync: deleteNotification } = useDeleteNotification();
+  const { t } = useTranslate('notification');
+  const { data: notifications = [], isLoading } = useGetNotifications();
+  const { mutateAsync: deleteNotification } = useDeleteNotification();
 
-    const [openForm, setOpenForm] = useState(false);
+  const [openForm, setOpenForm] = useState(false);
 
-    const handleOpenForm = useCallback(() => {
-        setOpenForm(true);
-    }, []);
+  const handleOpenForm = useCallback(() => {
+    setOpenForm(true);
+  }, []);
 
-    const handleCloseForm = useCallback(() => {
-        setOpenForm(false);
-    }, []);
+  const handleCloseForm = useCallback(() => {
+    setOpenForm(false);
+  }, []);
 
-    const handleDelete = useCallback(async (id: number) => {
-        if (window.confirm(t('confirm_delete'))) {
-            try {
-                await deleteNotification(id);
-            } catch (error) {
-                console.error(error);
-            }
+  const handleDelete = useCallback(
+    async (id: number) => {
+      if (window.confirm(t('confirm_delete'))) {
+        try {
+          await deleteNotification(id);
+        } catch (error) {
+          console.error(error);
         }
-    }, [deleteNotification, t]);
+      }
+    },
+    [deleteNotification, t]
+  );
 
-    const columns = notificationTableColumns({
-        t,
-        onDelete: handleDelete,
-    });
+  const columns = notificationTableColumns({
+    t,
+    onDelete: handleDelete,
+  });
 
-    return (
-        <DashboardContent>
-            <CustomBreadcrumbs
-                heading={t('list_title')}
-                links={[
-                    { name: 'Dashboard', href: paths.dashboard.root },
-                    { name: t('list_title') },
-                    { name: t('list') },
-                ]}
-                action={
-                    <Button
-                        variant="contained"
-                        startIcon={<Iconify icon="mingcute:add-line" />}
-                        onClick={handleOpenForm}
-                    >
-                        {t('add')}
-                    </Button>
-                }
-                sx={{ mb: { xs: 3, md: 5 } }}
-            />
+  return (
+    <DashboardContent>
+      <CustomBreadcrumbs
+        heading={t('list_title')}
+        links={[
+          { name: 'Dashboard', href: paths.dashboard.root },
+          { name: t('list_title') },
+          { name: t('list') },
+        ]}
+        action={
+          <Button
+            variant="contained"
+            startIcon={<Iconify icon="mingcute:add-line" />}
+            onClick={handleOpenForm}
+          >
+            {t('add')}
+          </Button>
+        }
+        sx={{ mb: { xs: 3, md: 5 } }}
+      />
 
-            <Card>
-                <Box sx={{ position: 'relative' }}>
-                    <DataGridCustom<INotification>
-                        data={notifications}
-                        column={columns}
-                        loading={isLoading}
-                        rowCount={notifications.length}
-                        quickToolbar={false}
-                    />
-                </Box>
-            </Card>
+      <Card>
+        <Box sx={{ position: 'relative' }}>
+          <DataGridCustom<INotification>
+            data={notifications}
+            column={columns}
+            loading={isLoading}
+            rowCount={notifications.length}
+            quickToolbar={false}
+          />
+        </Box>
+      </Card>
 
-            <NotificationFormDialog
-                open={openForm}
-                onClose={handleCloseForm}
-            />
-        </DashboardContent>
-    );
+      <NotificationFormDialog open={openForm} onClose={handleCloseForm} />
+    </DashboardContent>
+  );
 }

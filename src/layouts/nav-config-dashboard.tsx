@@ -16,9 +16,7 @@ const icon = (name: string) => (
   <SvgColor src={`${CONFIG.assetsDir}/assets/icons/navbar/${name}.svg`} />
 );
 
-const iconify = (name: string) => (
-  <Iconify icon={name as any} width={24} />
-);
+const iconify = (name: string) => <Iconify icon={name as any} width={24} />;
 
 const ICONS = {
   user: icon('ic-user'),
@@ -58,9 +56,17 @@ export const useNavData = (): NavSectionProps['data'] => {
           { title: t('faqs'), path: paths.dashboard.faq.list, icon: ICONS.faq },
           { title: t('founders'), path: paths.dashboard.founder.list, icon: ICONS.founders },
           { title: t('tips'), path: paths.dashboard.tip.list, icon: ICONS.tips },
-          { title: t('notifications'), path: paths.dashboard.notification.list, icon: ICONS.notifications },
+          {
+            title: t('notifications'),
+            path: paths.dashboard.notification.list,
+            icon: ICONS.notifications,
+          },
           { title: t('clients'), path: paths.dashboard.client.list, icon: ICONS.clients },
-          { title: t('consultationRequests'), path: paths.dashboard.consultationRequest.list, icon: ICONS.consultationRequests },
+          {
+            title: t('consultationRequests'),
+            path: paths.dashboard.consultationRequest.list,
+            icon: ICONS.consultationRequests,
+          },
         ],
       },
     ],

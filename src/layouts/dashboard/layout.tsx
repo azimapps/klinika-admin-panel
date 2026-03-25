@@ -146,7 +146,6 @@ export function DashboardLayout({
           {/** @slot Language popover */}
           <LanguagePopover data={allLangs} />
 
-
           {/** @slot Contacts popover */}
 
           {/** @slot Theme toggle button */}

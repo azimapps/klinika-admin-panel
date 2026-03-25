@@ -23,77 +23,76 @@ import type { IClinic } from '../types';
 // ----------------------------------------------------------------------
 
 export function ClinicListView() {
-    const { t } = useTranslate('clinic');
-    const { data: clinics = [], isLoading } = useGetClinics();
-    const { mutateAsync: deleteClinic } = useDeleteClinic();
+  const { t } = useTranslate('clinic');
+  const { data: clinics = [], isLoading } = useGetClinics();
+  const { mutateAsync: deleteClinic } = useDeleteClinic();
 
-    const [openForm, setOpenForm] = useState(false);
-    const [selectedRow, setSelectedRow] = useState<IClinic | undefined>(undefined);
+  const [openForm, setOpenForm] = useState(false);
+  const [selectedRow, setSelectedRow] = useState<IClinic | undefined>(undefined);
 
-    const handleOpenForm = useCallback((row?: IClinic) => {
-        setSelectedRow(row);
-        setOpenForm(true);
-    }, []);
+  const handleOpenForm = useCallback((row?: IClinic) => {
+    setSelectedRow(row);
+    setOpenForm(true);
+  }, []);
 
-    const handleCloseForm = useCallback(() => {
-        setSelectedRow(undefined);
-        setOpenForm(false);
-    }, []);
+  const handleCloseForm = useCallback(() => {
+    setSelectedRow(undefined);
+    setOpenForm(false);
+  }, []);
 
-    const handleDelete = useCallback(async (id: number) => {
-        if (window.confirm(t('confirmDelete'))) {
-            try {
-                await deleteClinic(id);
-            } catch (error) {
-                console.error(error);
-            }
+  const handleDelete = useCallback(
+    async (id: number) => {
+      if (window.confirm(t('confirmDelete'))) {
+        try {
+          await deleteClinic(id);
+        } catch (error) {
+          console.error(error);
         }
-    }, [deleteClinic, t]);
+      }
+    },
+    [deleteClinic, t]
+  );
 
-    const columns = clinicTableColumns({
-        t,
-        onEdit: handleOpenForm,
-        onDelete: handleDelete,
-    });
+  const columns = clinicTableColumns({
+    t,
+    onEdit: handleOpenForm,
+    onDelete: handleDelete,
+  });
 
-    return (
-        <DashboardContent>
-            <CustomBreadcrumbs
-                heading={t('list_title')}
-                links={[
-                    { name: t('main'), href: paths.dashboard.root },
-                    { name: t('clinics') },
-                    { name: t('list') },
-                ]}
-                action={
-                    <Button
-                        variant="contained"
-                        startIcon={<Iconify icon="mingcute:add-line" />}
-                        onClick={() => handleOpenForm()}
-                    >
-                        {t('add')}
-                    </Button>
-                }
-                sx={{ mb: { xs: 3, md: 5 } }}
-            />
+  return (
+    <DashboardContent>
+      <CustomBreadcrumbs
+        heading={t('list_title')}
+        links={[
+          { name: t('main'), href: paths.dashboard.root },
+          { name: t('clinics') },
+          { name: t('list') },
+        ]}
+        action={
+          <Button
+            variant="contained"
+            startIcon={<Iconify icon="mingcute:add-line" />}
+            onClick={() => handleOpenForm()}
+          >
+            {t('add')}
+          </Button>
+        }
+        sx={{ mb: { xs: 3, md: 5 } }}
+      />
 
-            <Card>
-                <Box sx={{ position: 'relative' }}>
-                    <DataGridCustom<IClinic>
-                        data={clinics}
-                        column={columns}
-                        loading={isLoading}
-                        rowCount={clinics.length}
-                        quickToolbar={false}
-                    />
-                </Box>
-            </Card>
+      <Card>
+        <Box sx={{ position: 'relative' }}>
+          <DataGridCustom<IClinic>
+            data={clinics}
+            column={columns}
+            loading={isLoading}
+            rowCount={clinics.length}
+            quickToolbar={false}
+          />
+        </Box>
+      </Card>
 
-            <ClinicFormDialog
-                open={openForm}
-                onClose={handleCloseForm}
-                currentRow={selectedRow}
-            />
-        </DashboardContent>
-    );
+      <ClinicFormDialog open={openForm} onClose={handleCloseForm} currentRow={selectedRow} />
+    </DashboardContent>
+  );
 }
