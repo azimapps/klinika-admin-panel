@@ -26,6 +26,10 @@
   "engines": {
     "node": ">=20"
   },
+  "overrides": {
+    "react": "$react",
+    "react-dom": "$react-dom"
+  },
   "packageManager": "yarn@1.22.22",
   "dependencies": {
     "@auth0/auth0-react": "^2.3.0",
