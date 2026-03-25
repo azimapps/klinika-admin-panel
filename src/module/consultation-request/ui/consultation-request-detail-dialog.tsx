@@ -155,7 +155,7 @@ export function ConsultationRequestDetailDialog({
                                             variant="body2"
                                             sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}
                                         >
-                                            <Iconify icon="solar:file-bold" width={16} />
+                                            <Iconify icon={"solar:file-bold" as any} width={16} />
                                             {fileName}
                                         </Link>
                                     );
@@ -230,7 +230,7 @@ export function ConsultationRequestDetailDialog({
                                     variant="contained"
                                     loading={isSendingInvoice}
                                     onClick={handleSendInvoice}
-                                    startIcon={<Iconify icon="solar:bill-check-bold" />}
+                                    startIcon={<Iconify icon={"solar:bill-check-bold" as any} />}
                                     sx={{ minWidth: 120, height: 40 }}
                                 >
                                     {t('send')}

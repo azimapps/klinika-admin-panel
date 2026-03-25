@@ -36,8 +36,8 @@ export interface IConsultationRequest {
 export function getStatusName(status: ConsultationRequestStatusRaw): ConsultationRequestStatusName {
     if (typeof status === 'string') return status as ConsultationRequestStatusName;
     if (typeof status === 'object' && status !== null) {
-        // Try common keys: name, value, status
-        return (status.name || status.value || status.status || 'new') as ConsultationRequestStatusName;
+        const obj = status as Record<string, any>;
+        return (obj.name || obj.value || obj.status || 'new') as ConsultationRequestStatusName;
     }
     return 'new';
 }
