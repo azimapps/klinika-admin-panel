@@ -33,27 +33,27 @@ export default defineConfig({
     host: true,
     proxy: {
       '/admin': {
-        target: 'https://klinika-production.up.railway.app',
+        target: 'https://api.menu24.uz',
         changeOrigin: true,
         secure: false,
       },
       '/users': {
-        target: 'https://klinika-production.up.railway.app',
+        target: 'https://api.menu24.uz',
         changeOrigin: true,
         secure: false,
       },
       '/api': {
-        target: 'https://klinika-production.up.railway.app',
+        target: 'https://api.menu24.uz',
         changeOrigin: true,
         secure: false,
       },
       '/advantages': {
-        target: 'https://klinika-production.up.railway.app',
+        target: 'https://api.menu24.uz',
         changeOrigin: true,
         secure: false,
       },
       '/founders': {
-        target: 'https://klinika-production.up.railway.app',
+        target: 'https://api.menu24.uz',
         changeOrigin: true,
         secure: false,
       },
