@@ -39,9 +39,11 @@ const DoctorSchedulePage = lazy(() => import('src/pages/dashboard/doctor/schedul
 const AdvantageListPage = lazy(() => import('src/pages/dashboard/advantage/list'));
 const FounderListPage = lazy(() => import('src/pages/dashboard/founder/list'));
 const ServiceListPage = lazy(() => import('src/pages/dashboard/service/list'));
+const ContentPage = lazy(() => import('src/pages/dashboard/content'));
 const ClinicListPage = lazy(() => import('src/pages/dashboard/clinic/list'));
 const FAQListPage = lazy(() => import('src/pages/dashboard/faq/list'));
 const TipListPage = lazy(() => import('src/pages/dashboard/tip/list'));
+const VideoListPage = lazy(() => import('src/pages/dashboard/video/list'));
 const NotificationListPage = lazy(() => import('src/pages/dashboard/notification/list'));
 const ClientListPage = lazy(() => import('src/pages/dashboard/client/list'));
 const ConsultationRequestListPage = lazy(
@@ -62,6 +64,7 @@ export const routesSection: RouteObject[] = [
     ),
     children: [
       { index: true, element: <OverviewAnalyticsPage /> },
+      { path: 'content', element: <ContentPage /> },
       {
         path: 'category',
         children: [
@@ -117,6 +120,13 @@ export const routesSection: RouteObject[] = [
         children: [
           { element: <TipListPage />, index: true },
           { path: 'list', element: <TipListPage /> },
+        ],
+      },
+      {
+        path: 'video',
+        children: [
+          { element: <VideoListPage />, index: true },
+          { path: 'list', element: <VideoListPage /> },
         ],
       },
       {

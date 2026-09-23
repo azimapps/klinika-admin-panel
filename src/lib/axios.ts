@@ -116,6 +116,12 @@ export const endpoints = {
     details: (id: string) => `/admin/tips/${id}`,
     image: (id: string) => `/admin/tips/${id}/image`,
   },
+  video: {
+    list: '/admin/videos',
+    create: '/admin/videos',
+    details: (id: string) => `/admin/videos/${id}`,
+    thumbnail: (id: string) => `/admin/videos/${id}/thumbnail`,
+  },
   notification: {
     list: '/admin/notifications',
     create: '/admin/notifications',

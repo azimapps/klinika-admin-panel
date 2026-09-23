@@ -51,6 +51,10 @@ export const paths = {
       root: `/tip`,
       list: `/tip/list`,
     },
+    video: {
+      root: `/video`,
+      list: `/video/list`,
+    },
     notification: {
       root: `/notification`,
       list: `/notification/list`,

@@ -33,27 +33,27 @@ export default defineConfig({
     host: true,
     proxy: {
       '/admin': {
-        target: 'https://api.rentoni.uz',
+        target: process.env.API_PROXY_TARGET || 'https://api.rentoni.uz',
         changeOrigin: true,
         secure: false,
       },
       '/users': {
-        target: 'https://api.rentoni.uz',
+        target: process.env.API_PROXY_TARGET || 'https://api.rentoni.uz',
         changeOrigin: true,
         secure: false,
       },
       '/api': {
-        target: 'https://api.rentoni.uz',
+        target: process.env.API_PROXY_TARGET || 'https://api.rentoni.uz',
         changeOrigin: true,
         secure: false,
       },
       '/advantages': {
-        target: 'https://api.rentoni.uz',
+        target: process.env.API_PROXY_TARGET || 'https://api.rentoni.uz',
         changeOrigin: true,
         secure: false,
       },
       '/founders': {
-        target: 'https://api.rentoni.uz',
+        target: process.env.API_PROXY_TARGET || 'https://api.rentoni.uz',
         changeOrigin: true,
         secure: false,
       },
