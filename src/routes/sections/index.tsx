@@ -50,6 +50,7 @@ const ConsultationRequestListPage = lazy(
   () => import('src/pages/dashboard/consultation-request/list')
 );
 const OpsRequestListPage = lazy(() => import('src/pages/dashboard/ops/requests'));
+const StaffListPage = lazy(() => import('src/pages/dashboard/staff/list'));
 
 // ----------------------------------------------------------------------
 
@@ -71,6 +72,13 @@ export const routesSection: RouteObject[] = [
         children: [
           { element: <OpsRequestListPage />, index: true },
           { path: 'requests', element: <OpsRequestListPage /> },
+        ],
+      },
+      {
+        path: 'staff',
+        children: [
+          { element: <StaffListPage />, index: true },
+          { path: 'list', element: <StaffListPage /> },
         ],
       },
       {

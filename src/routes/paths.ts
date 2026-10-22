@@ -14,6 +14,10 @@ export const paths = {
       root: `/ops`,
       requests: `/ops/requests`,
     },
+    staff: {
+      root: `/staff`,
+      list: `/staff/list`,
+    },
     user: {
       root: `/user`,
       list: `/user/list`,

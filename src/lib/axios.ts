@@ -61,6 +61,14 @@ export const endpoints = {
     me: '/staff/auth/me',
     changePassword: '/staff/auth/change-password',
   },
+  // HOMEMED staff user management (administrator only)
+  staffUsers: {
+    list: '/staff/users',
+    detail: (id: string) => `/staff/users/${id}`,
+    block: (id: string) => `/staff/users/${id}/block`,
+    unblock: (id: string) => `/staff/users/${id}/unblock`,
+    resetPassword: (id: string) => `/staff/users/${id}/reset-password`,
+  },
   // HOMEMED operator panel (no trailing slashes — redirect_slashes=False)
   ops: {
     requests: '/ops/requests',
