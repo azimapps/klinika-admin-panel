@@ -13,6 +13,11 @@ export type SignInRequestParams = {
   phone_number: string;
 };
 
+export type StaffSignInParams = {
+  username: string;
+  password: string;
+};
+
 export type SignInVerifyParams = {
   phone_number: string;
   code: string;
@@ -84,11 +89,44 @@ export const useSignInVerify = () => {
 };
 
 /** **************************************
+ * Staff sign in (HOMEMED operator panel) — username + password
+ * ************************************** */
+export const useStaffSignIn = () => {
+  const { checkUserSession } = useAuthContext();
+  const { isPending, mutateAsync } = useMutation({
+    mutationFn: async (value: StaffSignInParams) => {
+      const res = await axiosInstance.post(endpoints.staff.login, value);
+      const { access_token, role, full_name } = res.data;
+      if (!access_token) {
+        throw new Error('Token topilmadi');
+      }
+      await setSession(access_token);
+      // keep role / name around for the panel header & role-gated UI
+      if (role) sessionStorage.setItem('staff_role', role);
+      if (full_name) sessionStorage.setItem('staff_full_name', full_name);
+      await checkUserSession?.();
+      return res.data;
+    },
+    onSuccess: () => {
+      toast.success('Xush kelibsiz', { position: 'top-center' });
+    },
+    onError: (err: CustomError) => {
+      const message = err.response?.data?.detail || err.detail || 'Login yoki parol xato';
+      toast.error(message, { position: 'top-center' });
+    },
+  });
+
+  return { isPending, mutateAsync };
+};
+
+/** **************************************
  * Sign out
  * ************************************** */
 export const signOut = async (): Promise<void> => {
   try {
     await setSession(null);
+    sessionStorage.removeItem('staff_role');
+    sessionStorage.removeItem('staff_full_name');
     const cookies = document.cookie.split(';');
     for (const cookie of cookies) {
       const eqPos = cookie.indexOf('=');

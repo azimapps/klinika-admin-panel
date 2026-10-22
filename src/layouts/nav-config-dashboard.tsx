@@ -35,6 +35,7 @@ const ICONS = {
   notifications: iconify('solar:bell-bing-bold-duotone'),
   clients: iconify('solar:user-rounded-bold'),
   consultationRequests: iconify('solar:document-text-bold'),
+  opsRequests: iconify('solar:clipboard-list-bold'),
 };
 
 // ----------------------------------------------------------------------
@@ -44,6 +45,16 @@ export const useNavData = (): NavSectionProps['data'] => {
 
   return useMemo(
     () => [
+      {
+        subheader: 'Operator panel',
+        items: [
+          {
+            title: t('opsRequests'),
+            path: paths.dashboard.ops.requests,
+            icon: ICONS.opsRequests,
+          },
+        ],
+      },
       {
         subheader: 'Boshqaruv',
         items: [

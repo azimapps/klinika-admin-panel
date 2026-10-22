@@ -49,6 +49,7 @@ const ClientListPage = lazy(() => import('src/pages/dashboard/client/list'));
 const ConsultationRequestListPage = lazy(
   () => import('src/pages/dashboard/consultation-request/list')
 );
+const OpsRequestListPage = lazy(() => import('src/pages/dashboard/ops/requests'));
 
 // ----------------------------------------------------------------------
 
@@ -65,6 +66,13 @@ export const routesSection: RouteObject[] = [
     children: [
       { index: true, element: <OverviewAnalyticsPage /> },
       { path: 'content', element: <ContentPage /> },
+      {
+        path: 'ops',
+        children: [
+          { element: <OpsRequestListPage />, index: true },
+          { path: 'requests', element: <OpsRequestListPage /> },
+        ],
+      },
       {
         path: 'category',
         children: [
