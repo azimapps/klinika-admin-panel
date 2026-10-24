@@ -47,9 +47,14 @@ export const useNavData = (): NavSectionProps['data'] => {
   const { t } = useTranslate('navbar');
   const { user } = useAuthContext();
   const isAdmin = user?.role === 'administrator';
+  // Only explicit operator/senior-operator staff accounts are restricted to the
+  // operator panel. Administrators and legacy logins (no role) keep full access.
+  const isOperatorOnly =
+    user?.role === 'operator' || user?.role === 'senior_operator';
 
   return useMemo(
     () => [
+      // Every staff member sees the operator panel. Staff management is admin-only.
       {
         subheader: 'Operator panel',
         items: [
@@ -69,35 +74,52 @@ export const useNavData = (): NavSectionProps['data'] => {
             : []),
         ],
       },
-      {
-        subheader: 'Boshqaruv',
-        items: [
-          { title: t('statistics'), path: paths.dashboard.root, icon: ICONS.statistics },
-          { title: t('categories'), path: paths.dashboard.category.list, icon: ICONS.categories },
-          { title: t('doctors'), path: paths.dashboard.doctor.list, icon: ICONS.doctors },
-          { title: t('schedule'), path: paths.dashboard.doctor.schedule, icon: ICONS.schedule },
-          { title: t('services'), path: paths.dashboard.service.list, icon: ICONS.services },
-          { title: t('advantages'), path: paths.dashboard.advantage.list, icon: ICONS.advantages },
-          { title: 'Klinika va hujjatlar', path: '/content', icon: ICONS.statistics },
-          { title: t('clinics'), path: paths.dashboard.clinic.list, icon: ICONS.clinics },
-          { title: t('faqs'), path: paths.dashboard.faq.list, icon: ICONS.faq },
-          { title: t('founders'), path: paths.dashboard.founder.list, icon: ICONS.founders },
-          { title: t('tips'), path: paths.dashboard.tip.list, icon: ICONS.tips },
-          { title: t('videos'), path: paths.dashboard.video.list, icon: ICONS.videos },
-          {
-            title: t('notifications'),
-            path: paths.dashboard.notification.list,
-            icon: ICONS.notifications,
-          },
-          { title: t('clients'), path: paths.dashboard.client.list, icon: ICONS.clients },
-          {
-            title: t('consultationRequests'),
-            path: paths.dashboard.consultationRequest.list,
-            icon: ICONS.consultationRequests,
-          },
-        ],
-      },
+      // Content-management is hidden from operator/senior-operator accounts.
+      ...(!isOperatorOnly
+        ? [
+            {
+              subheader: 'Boshqaruv',
+              items: [
+                { title: t('statistics'), path: paths.dashboard.root, icon: ICONS.statistics },
+                {
+                  title: t('categories'),
+                  path: paths.dashboard.category.list,
+                  icon: ICONS.categories,
+                },
+                { title: t('doctors'), path: paths.dashboard.doctor.list, icon: ICONS.doctors },
+                {
+                  title: t('schedule'),
+                  path: paths.dashboard.doctor.schedule,
+                  icon: ICONS.schedule,
+                },
+                { title: t('services'), path: paths.dashboard.service.list, icon: ICONS.services },
+                {
+                  title: t('advantages'),
+                  path: paths.dashboard.advantage.list,
+                  icon: ICONS.advantages,
+                },
+                { title: 'Klinika va hujjatlar', path: '/content', icon: ICONS.statistics },
+                { title: t('clinics'), path: paths.dashboard.clinic.list, icon: ICONS.clinics },
+                { title: t('faqs'), path: paths.dashboard.faq.list, icon: ICONS.faq },
+                { title: t('founders'), path: paths.dashboard.founder.list, icon: ICONS.founders },
+                { title: t('tips'), path: paths.dashboard.tip.list, icon: ICONS.tips },
+                { title: t('videos'), path: paths.dashboard.video.list, icon: ICONS.videos },
+                {
+                  title: t('notifications'),
+                  path: paths.dashboard.notification.list,
+                  icon: ICONS.notifications,
+                },
+                { title: t('clients'), path: paths.dashboard.client.list, icon: ICONS.clients },
+                {
+                  title: t('consultationRequests'),
+                  path: paths.dashboard.consultationRequest.list,
+                  icon: ICONS.consultationRequests,
+                },
+              ],
+            },
+          ]
+        : []),
     ],
-    [t, isAdmin]
+    [t, isAdmin, isOperatorOnly]
   );
 };
