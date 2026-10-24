@@ -1,0 +1,35 @@
+{
+  "main": "Asosiy",
+  "staff": "Xodimlar",
+  "list_title": "Xodimlar ro'yxati",
+  "create": "Yangi xodim",
+  "create_title": "Yangi xodim qo'shish",
+  "edit_title": "Xodimni tahrirlash",
+  "cancel": "Bekor qilish",
+  "save": "Saqlash",
+  "edit": "Tahrirlash",
+  "actions": "Amallar",
+
+  "username": "Login",
+  "full_name": "F.I.SH",
+  "password": "Parol",
+  "new_password": "Yangi parol",
+  "password_hint": "Kamida 8 ta belgi",
+  "password_min": "Parol kamida 8 ta belgidan iborat bo'lishi kerak",
+  "username_required": "Login majburiy",
+  "phone": "Telefon",
+  "role": "Lavozim",
+  "status": "Holati",
+  "active": "Faol",
+  "blocked": "Bloklangan",
+  "all_roles": "Barchasi",
+
+  "role_operator": "Operator",
+  "role_senior_operator": "Katta operator",
+  "role_administrator": "Administrator",
+
+  "reset_password": "Parolni tiklash",
+  "block": "Bloklash",
+  "unblock": "Blokdan chiqarish",
+  "cannot_block_self": "O'z hisobingizni bloklay olmaysiz"
+}

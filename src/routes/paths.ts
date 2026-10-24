@@ -4,12 +4,20 @@ export const paths = {
   page500: '/error/500',
   components: '/components',
   auth: {
-    signIn: `/auth/sign-in-phone`,
+    signIn: `/auth/sign-in`,
     signInPhone: `/auth/sign-in-phone`,
     signUp: `/auth/sign-up`,
   },
   dashboard: {
     root: '/',
+    ops: {
+      root: `/ops`,
+      requests: `/ops/requests`,
+    },
+    staff: {
+      root: `/staff`,
+      list: `/staff/list`,
+    },
     user: {
       root: `/user`,
       list: `/user/list`,

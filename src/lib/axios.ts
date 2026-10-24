@@ -55,6 +55,34 @@ export const endpoints = {
     request: '/admin/login/request',
     verify: '/admin/login/verify',
   },
+  // HOMEMED staff auth (username + password)
+  staff: {
+    login: '/staff/auth/login',
+    me: '/staff/auth/me',
+    changePassword: '/staff/auth/change-password',
+  },
+  // HOMEMED staff user management (administrator only)
+  staffUsers: {
+    list: '/staff/users',
+    detail: (id: string) => `/staff/users/${id}`,
+    block: (id: string) => `/staff/users/${id}/block`,
+    unblock: (id: string) => `/staff/users/${id}/unblock`,
+    resetPassword: (id: string) => `/staff/users/${id}/reset-password`,
+  },
+  // HOMEMED operator panel (no trailing slashes — redirect_slashes=False)
+  ops: {
+    requests: '/ops/requests',
+    newCount: '/ops/requests/new-count',
+    detail: (id: string) => `/ops/requests/${id}`,
+    take: (id: string) => `/ops/requests/${id}/take`,
+    status: (id: string) => `/ops/requests/${id}/status`,
+    assign: (id: string) => `/ops/requests/${id}/assign`,
+    history: (id: string) => `/ops/requests/${id}/history`,
+    clientLookup: '/ops/clients/lookup',
+    paymentLink: (id: string) => `/ops/requests/${id}/payment/link`,
+    paymentMark: (id: string) => `/ops/requests/${id}/payment/mark`,
+  },
+  districts: '/districts',
   mail: {
     list: '/api/mail/list',
     details: '/api/mail/details',

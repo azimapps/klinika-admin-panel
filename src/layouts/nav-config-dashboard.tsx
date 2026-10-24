@@ -10,6 +10,8 @@ import { useTranslate } from 'src/locales';
 import { Iconify } from 'src/components/iconify';
 import { SvgColor } from 'src/components/svg-color';
 
+import { useAuthContext } from 'src/auth/hooks';
+
 // ----------------------------------------------------------------------
 
 const icon = (name: string) => (
@@ -35,15 +37,38 @@ const ICONS = {
   notifications: iconify('solar:bell-bing-bold-duotone'),
   clients: iconify('solar:user-rounded-bold'),
   consultationRequests: iconify('solar:document-text-bold'),
+  opsRequests: iconify('solar:clipboard-list-bold'),
+  staff: iconify('solar:users-group-two-rounded-bold'),
 };
 
 // ----------------------------------------------------------------------
 
 export const useNavData = (): NavSectionProps['data'] => {
   const { t } = useTranslate('navbar');
+  const { user } = useAuthContext();
+  const isAdmin = user?.role === 'administrator';
 
   return useMemo(
     () => [
+      {
+        subheader: 'Operator panel',
+        items: [
+          {
+            title: t('opsRequests'),
+            path: paths.dashboard.ops.requests,
+            icon: ICONS.opsRequests,
+          },
+          ...(isAdmin
+            ? [
+                {
+                  title: t('staff'),
+                  path: paths.dashboard.staff.list,
+                  icon: ICONS.staff,
+                },
+              ]
+            : []),
+        ],
+      },
       {
         subheader: 'Boshqaruv',
         items: [
@@ -73,6 +98,6 @@ export const useNavData = (): NavSectionProps['data'] => {
         ],
       },
     ],
-    [t]
+    [t, isAdmin]
   );
 };

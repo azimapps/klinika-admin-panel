@@ -18,5 +18,7 @@
   "clients": "Пользователи",
   "settings": "Настройки",
   "consultationRequests": "Заявки",
+  "opsRequests": "Заказы",
+  "staff": "Сотрудники",
   "videos": "Видео"
 }
