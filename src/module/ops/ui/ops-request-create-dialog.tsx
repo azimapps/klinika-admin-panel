@@ -9,6 +9,7 @@ import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
 import LoadingButton from '@mui/lab/LoadingButton';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
@@ -27,7 +28,9 @@ import type { IDistrict, IOpsRequestCreate } from '../types';
 
 const Schema = zod.object({
   full_name: zod.string().min(1, { message: 'Ism majburiy!' }),
-  phone: zod.string().min(1, { message: 'Telefon majburiy!' }),
+  phone: zod
+    .string()
+    .regex(/^\+998\d{9}$/, { message: "To'liq telefon raqam kiriting: +998 va 9 ta raqam" }),
   service_type: zod.enum(['doctor', 'nurse', 'nanny']),
   district_id: zod.coerce.number().optional(),
   visit_at: zod.string().optional(),
@@ -54,7 +57,7 @@ export function OpsRequestCreateDialog({ open, onClose }: Props) {
     resolver: zodResolver(Schema),
     defaultValues: {
       full_name: '',
-      phone: '',
+      phone: '+998',
       service_type: 'doctor',
       district_id: 0,
       visit_at: '',
@@ -62,7 +65,23 @@ export function OpsRequestCreateDialog({ open, onClose }: Props) {
     },
   });
 
-  const { reset, watch, setValue, handleSubmit } = methods;
+  const {
+    reset,
+    watch,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = methods;
+
+  const phoneValue = watch('phone');
+
+  // Keep the field anchored to the +998 prefix and capped at 9 subscriber digits.
+  const handlePhoneChange = (raw: string) => {
+    const digits = (raw.startsWith('+998') ? raw.slice(4) : raw.replace(/^\+?998?/, ''))
+      .replace(/\D/g, '')
+      .slice(0, 9);
+    setValue('phone', `+998${digits}`, { shouldValidate: true });
+  };
 
   useEffect(() => {
     if (open) {
@@ -102,10 +121,19 @@ export function OpsRequestCreateDialog({ open, onClose }: Props) {
         <DialogContent>
           <Stack spacing={2.5} sx={{ pt: 1 }}>
             <Stack direction="row" spacing={1.5} alignItems="flex-start">
-              <Field.Text name="phone" label={t('col_phone')} sx={{ flex: 1 }} />
+              <TextField
+                fullWidth
+                label={t('col_phone')}
+                value={phoneValue}
+                onChange={(e) => handlePhoneChange(e.target.value)}
+                error={!!errors.phone}
+                helperText={errors.phone?.message}
+                slotProps={{ htmlInput: { inputMode: 'numeric', maxLength: 13 } }}
+                sx={{ flex: 1 }}
+              />
               <Button
                 variant="outlined"
-                onClick={() => setLookupPhone(watch('phone'))}
+                onClick={() => setLookupPhone(phoneValue)}
                 startIcon={<Iconify icon={'solar:magnifer-bold' as any} />}
                 sx={{ height: 56, whiteSpace: 'nowrap' }}
               >
