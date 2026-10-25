@@ -46,7 +46,6 @@ const ICONS = {
 export const useNavData = (): NavSectionProps['data'] => {
   const { t } = useTranslate('navbar');
   const { user } = useAuthContext();
-  const isAdmin = user?.role === 'administrator';
   // Only explicit operator/senior-operator staff accounts are restricted to the
   // operator panel. Administrators and legacy logins (no role) keep full access.
   const isOperatorOnly =
@@ -63,15 +62,6 @@ export const useNavData = (): NavSectionProps['data'] => {
             path: paths.dashboard.ops.requests,
             icon: ICONS.opsRequests,
           },
-          ...(isAdmin
-            ? [
-                {
-                  title: t('staff'),
-                  path: paths.dashboard.staff.list,
-                  icon: ICONS.staff,
-                },
-              ]
-            : []),
         ],
       },
       // Content-management is hidden from operator/senior-operator accounts.
@@ -110,6 +100,7 @@ export const useNavData = (): NavSectionProps['data'] => {
                   icon: ICONS.notifications,
                 },
                 { title: t('clients'), path: paths.dashboard.client.list, icon: ICONS.clients },
+                { title: t('staff'), path: paths.dashboard.staff.list, icon: ICONS.staff },
                 {
                   title: t('consultationRequests'),
                   path: paths.dashboard.consultationRequest.list,
@@ -120,6 +111,6 @@ export const useNavData = (): NavSectionProps['data'] => {
           ]
         : []),
     ],
-    [t, isAdmin, isOperatorOnly]
+    [t, isOperatorOnly]
   );
 };
