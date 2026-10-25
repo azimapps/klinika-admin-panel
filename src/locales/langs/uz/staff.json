@@ -31,5 +31,7 @@
   "reset_password": "Parolni tiklash",
   "block": "Bloklash",
   "unblock": "Blokdan chiqarish",
-  "cannot_block_self": "O'z hisobingizni bloklay olmaysiz"
+  "cannot_block_self": "O'z hisobingizni bloklay olmaysiz",
+  "admin_required_title": "Administrator hisobi talab qilinadi",
+  "admin_required_body": "Xodimlarni ro'yxatdan o'tkazish uchun administrator (xodim) hisobi bilan kiring. Tizimdan chiqing va /auth/sign-in sahifasida admin login va parol bilan qayta kiring."
 }

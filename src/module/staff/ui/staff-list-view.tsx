@@ -3,7 +3,9 @@ import { useState, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Card from '@mui/material/Card';
+import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
+import AlertTitle from '@mui/material/AlertTitle';
 
 import { paths } from 'src/routes/paths';
 
@@ -17,7 +19,6 @@ import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
 import { DataGridCustom } from 'src/module/_examples/mui/data-grid-view/data-grid-custom';
 
 import { useAuthContext } from 'src/auth/hooks';
-import { RoleBasedGuard } from 'src/auth/guard';
 
 import { StaffFormDialog } from './staff-form-dialog';
 import { staffTableColumns } from './staff-table-columns';
@@ -48,7 +49,12 @@ export function StaffListView() {
   const [resetUser, setResetUser] = useState<IStaffUser | undefined>(undefined);
 
   const params: IStaffListParams = { ...(roleTab !== 'all' && { role: roleTab }) };
-  const { data: staff = [], isLoading } = useGetStaff(params);
+  const { data: staff = [], isLoading, isError } = useGetStaff(params);
+
+  // The staff-user API only accepts a staff ADMINISTRATOR token. If the current
+  // session isn't one (e.g. the legacy phone login), the request fails — guide
+  // the user to sign in with their staff administrator account.
+  const needsStaffAdmin = isError;
 
   const blockStaff = useBlockStaff();
   const unblockStaff = useUnblockStaff();
@@ -88,60 +94,66 @@ export function StaffListView() {
   });
 
   return (
-    <RoleBasedGuard hasContent currentRole={user?.role || ''} allowedRoles="administrator">
-      <DashboardContent>
-        <CustomBreadcrumbs
-          heading={t('list_title')}
-          links={[{ name: t('main'), href: paths.dashboard.root }, { name: t('staff') }]}
-          action={
-            <Button
-              variant="contained"
-              startIcon={<Iconify icon="mingcute:add-line" />}
-              onClick={() => handleOpenForm()}
-            >
-              {t('create')}
-            </Button>
-          }
-          sx={{ mb: { xs: 3, md: 5 } }}
-        />
-
-        <Card>
-          <CustomTabs
-            value={roleTab}
-            onChange={(_, v) => setRoleTab(v)}
-            sx={{ px: 2.5, pt: 1 }}
-            variant="scrollable"
-            scrollButtons="auto"
+    <DashboardContent>
+      <CustomBreadcrumbs
+        heading={t('list_title')}
+        links={[{ name: t('main'), href: paths.dashboard.root }, { name: t('staff') }]}
+        action={
+          <Button
+            variant="contained"
+            startIcon={<Iconify icon="mingcute:add-line" />}
+            onClick={() => handleOpenForm()}
+            disabled={needsStaffAdmin}
           >
-            {ROLE_TABS.map((tab) => (
-              <Tab
-                key={tab.value}
-                value={tab.value}
-                label={tab.value === 'all' ? t('all_roles') : t(`role_${tab.label}`)}
-              />
-            ))}
-          </CustomTabs>
+            {t('create')}
+          </Button>
+        }
+        sx={{ mb: { xs: 3, md: 5 } }}
+      />
 
-          <Box sx={{ position: 'relative' }}>
-            <DataGridCustom<IStaffUser>
-              data={staff}
-              column={columns}
-              loading={isLoading}
-              rowCount={staff.length}
-              quickToolbar={false}
-              checkboxSelection={false}
+      {needsStaffAdmin && (
+        <Alert severity="warning" sx={{ mb: 3 }}>
+          <AlertTitle>{t('admin_required_title')}</AlertTitle>
+          {t('admin_required_body')}
+        </Alert>
+      )}
+
+      <Card>
+        <CustomTabs
+          value={roleTab}
+          onChange={(_, v) => setRoleTab(v)}
+          sx={{ px: 2.5, pt: 1 }}
+          variant="scrollable"
+          scrollButtons="auto"
+        >
+          {ROLE_TABS.map((tab) => (
+            <Tab
+              key={tab.value}
+              value={tab.value}
+              label={tab.value === 'all' ? t('all_roles') : t(`role_${tab.label}`)}
             />
-          </Box>
-        </Card>
+          ))}
+        </CustomTabs>
 
-        <StaffFormDialog open={openForm} onClose={handleCloseForm} currentRow={selectedRow} />
+        <Box sx={{ position: 'relative' }}>
+          <DataGridCustom<IStaffUser>
+            data={staff}
+            column={columns}
+            loading={isLoading}
+            rowCount={staff.length}
+            quickToolbar={false}
+            checkboxSelection={false}
+          />
+        </Box>
+      </Card>
 
-        <StaffResetPasswordDialog
-          open={openReset}
-          onClose={() => setOpenReset(false)}
-          user={resetUser}
-        />
-      </DashboardContent>
-    </RoleBasedGuard>
+      <StaffFormDialog open={openForm} onClose={handleCloseForm} currentRow={selectedRow} />
+
+      <StaffResetPasswordDialog
+        open={openReset}
+        onClose={() => setOpenReset(false)}
+        user={resetUser}
+      />
+    </DashboardContent>
   );
 }
